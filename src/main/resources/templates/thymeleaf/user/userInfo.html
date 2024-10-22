@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>League Information</title>
+</head>
+<body>
+	<h1>[[${sumName}]]님의 정보입니다.</h1>
+    <table border="1" width="500">
+        <thead>
+            <tr>
+                <th>Queue Type</th>
+                <th>Tier</th>
+                <th>Rank</th>
+                <th>League Points</th>
+                <th>Wins</th>
+                <th>Losses</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="entry : ${leagueEntryDTOs}">
+                <th th:text="${entry.queueType}">큐 타입</th>
+                <th>
+				    <img th:src="|/static/img/tier/${entry.tier}_icon.jpg|" alt="티어이미지" style="width: 200px; height: 200px;" />
+				    <span th:text="${entry.tier}">티어</span>
+				</th>
+                <th th:text="${entry.rank}">랭크</th>
+                <th th:text="${entry.leaguePoints}">포인트</th>
+                <th th:text="${entry.wins}">승리 횟수</th>
+                <th th:text="${entry.losses}">패배</th>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
