@@ -39,8 +39,10 @@ public class AccountSearchService {
         String tagLine = summonerName.substring(index + 1);
         try {
             // 각각 인코딩
-            gameName = URLEncoder.encode(gameName, "UTF-8");
-            tagLine = URLEncoder.encode(tagLine, "UTF-8");
+//            gameName = URLEncoder.encode(gameName, "UTF-8");
+//            tagLine = URLEncoder.encode(tagLine, "UTF-8");
+//            System.out.println(gameName);
+//            System.out.println(tagLine);
         } catch (Exception e) {
             e.printStackTrace();
         }
