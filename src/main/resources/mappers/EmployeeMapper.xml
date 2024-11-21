@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="TFT.mapper.EmployeeMapper">
+	<insert id="employeeRegist">
+		insert into employees
+		(emp_num, emp_id, emp_pw, emp_name, emp_addr, emp_addr_detail, emp_post, emp_phone, emp_jumin, 
+		emp_email, emp_hire_date, emp_image)
+		values
+		(#{empNum}, #{empId}, #{empPw}, #{empName}, #{empAddr}, #{empAddrDetail}, #{empPost}, #{empPhone}, #{empJumin}, 
+		#{empEmail}, sysdate, null)
+	</insert>
+</mapper>
