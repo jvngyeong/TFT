@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+   
+<mapper namespace="TFT.mapper.MemberMapper">
+	<sql id="memberColumns">
+		MEMBER_NUM, MEMBER_NAME, MEMBER_ID, MEMBER_PW, MEMBER_ADDR, MEMBER_ADDR_DETAIL, MEMBER_POST, MEMBER_REGIST,
+		GENDER, MEMBER_PHONE1, MEMBER_PHONE2, MEMBER_EMAIL, MEMBER_BIRTH, MEMBER_POINT, MEMBER_EMAIL_CONF
+	</sql>
+
+	<insert id="memberRegist">
+		insert into members(<include refid="memberColumns"></include>)
+		values(#{memberNum}, #{memberName}, #{memberId}, #{memberPw}, #{memberAddr}, #{memberAddrDetail}, #{memberPost},
+		sysdate, #{gender}, #{memberPhone1}, #{memberPhone2}, #{memberEmail}, #{memberBirth}, 0, null)
+	</insert>
+	
+	<select id="memberListSelect" resultType="memberDTO">
+		select <include refid="memberColumns"></include> from members
+	</select>
+	
+	<select id="memberSelectOne" resultType = "memberDTO">
+		select <include refid="memberColumns"></include> from members where member_num = #{memberNum}
+	</select>
+	
+	<update id="memberUpdate">
+		update members set member_name = #{memberName}, member_id = #{memberId}, member_pw = #{memberPw}, 
+		member_addr = #{memberAddr}, member_addr_detail = #{memberAddrDetail}, member_post = #{memberPost},
+		gender = #{gender}, member_phone1 = #{memberPhone1}, member_phone2 = #{memberPhone2}, member_email = #{memberEmail},
+		member_birth = #{memberBirth} where member_num = #{memberNum}
+	</update>
+	
+	<delete id="memberDelete">
+		delete from members where member_num = #{memberNum}
+	</delete>
+</mapper>

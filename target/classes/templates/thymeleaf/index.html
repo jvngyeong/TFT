@@ -11,7 +11,8 @@
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
 	rel="stylesheet">
 <link rel="stylesheet" href="/static/css/index.css">
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script
+	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/static/js/daumAddressScript.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
 <script
@@ -43,9 +44,9 @@
 				}
 			})
 		})
-		$("#employeeInfo").click(function() {
+		$("#employeeList").click(function() {
 			$.ajax({
-				url : "/employee/employeeInfo",
+				url : "/employee/employeeList",
 				dataType : "html",
 				success : function(result) {
 					$("#wholeContent").html(result);
@@ -67,6 +68,30 @@
 				}
 			})
 		})
+		$("#memberWrite").click(function() {
+			$.ajax({
+				url : "/member/memberWrite",
+				dataType : "html",
+				success : function(result) {
+					$("#wholeContent").html(result);
+				},
+				error : function() {
+					alert("오류가 발생했습니다.");
+				}
+			})
+		})
+		$("#memberList").click(function() {
+			$.ajax({
+				url : "/member/memberList",
+				dataType : "html",
+				success : function(result) {
+					$("#wholeContent").html(result);
+				},
+				error : function() {
+					alert("오류가 발생했습니다.");
+				}
+			})
+		})
 	});
 </script>
 </head>
@@ -78,16 +103,16 @@
 				<a href="/" class="w3-bar-item w3-button"><b>롤토체스 </b>전적 검색</a>
 				<!-- Float links to the right. Hide them on small screens -->
 				<div class="w3-right w3-hide-small">
-					<a id="shopBtn" class="w3-bar-item w3-button">상점</a>
-					<a id="" class="w3-bar-item w3-button">회원가입</a>
-					<a id="goodsWrite" class="w3-bar-item w3-button">상품 등록</a>
-					<li class="dropdown">
-						<a class="w3-bar-item w3-button">직원 관리</a>
+					<a id="shopBtn" class="w3-bar-item w3-button">상점</a> 
+					<a id="memberWrite"class="w3-bar-item w3-button">회원가입</a> 
+					<a id="goodsWrite"class="w3-bar-item w3-button">상품 등록</a>
+					<a id="memberList" class="w3-bar-item w3-button">회원 관리</a>
+					<li class="dropdown"><a class="w3-bar-item w3-button">직원
+							관리</a>
 						<div class="dropdown-content">
-							<a id="employeeInfo" class="w3-bar-item w3-button">직원 목록</a> 
-							<a id="employeeWrite" class="w3-bar-item w3-button">직원 가입</a> 
-						</div>
-					</li>	
+							<a id="employeeList" class="w3-bar-item w3-button">직원 목록</a> <a
+								id="employeeWrite" class="w3-bar-item w3-button">직원 가입</a>
+						</div></li>
 				</div>
 			</ul>
 		</div>

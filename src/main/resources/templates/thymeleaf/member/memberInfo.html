@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="/static/css/employeeInfo.css">
+	
+	<script type="text/javascript">
+		function memberPwCheck(memberNum, task){
+			$.ajax({
+				url : "member/memberPwCheck",
+				data : {"memberNum" : memberNum, "task" : task},
+				dataType : "html",
+				success: function(result){
+					$("#wholeContent").html(result);
+				},
+				error : function(){
+					alert("오류가 발생했습니다.");
+				}
+			})
+		}
+	</script>
+</head>
+<body>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" id="contact">
+					<br />
+					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">[[${dto.memberName}]]님의 상세정보입니다.</h3>
+					<table border = '1'>
+						<tr>
+							<td>직원 번호</td>
+							<td>
+								[[${dto.memberNum}]]
+							</td>
+						</tr>
+						
+						<tr>
+							<td>아이디</td>
+							<td>
+								[[${dto.memberId}]]
+							</td>
+						</tr>
+						<tr>
+							<td>이름</td>
+							<td>
+								[[${dto.memberName}]]
+							</td>
+						</tr>
+						<tr>
+							<td>주소</td>
+							<td>
+								[[${dto.memberAddr}]]
+							</td>
+						</tr>
+						<tr>
+							<td>상세 주소</td>
+							<td>
+								[[${dto.memberAddrDetail}]]
+							</td>
+						</tr>
+						<tr>
+							<td>우편 번호</td>
+							<td>
+								[[${dto.memberPost}]]
+							</td>
+						</tr>
+						<tr>
+							<td>가입일</td>
+							<td>
+								[[${#dates.format(dto.memberRegist, 'yyyy-MM-dd')}]]
+							</td>
+						</tr>
+						<tr>
+						<td>성별</td>
+							<th:block th:if="${#strings.trim(dto.gender) == 'M'}">
+							    <td>남자</td>
+							</th:block>
+							<th:block th:if="${#strings.trim(dto.gender) == 'F'}">
+							    <td>여자</td>
+							</th:block>
+						</tr>
+						<tr>
+							<td>전화번호 1</td>
+							<td>
+								[[${dto.memberPhone1}]]
+							</td>
+						</tr>
+						<tr>
+							<td>전화번호 2</td>
+							<td>
+								[[${dto.memberPhone2}]]
+							</td>
+						</tr>
+						<tr>
+							<td>이메일</td>
+							<td>
+								[[${dto.memberEmail}]]
+							</td>
+						</tr>
+					</table>
+
+					<input class="w3-button w3-black w3-section" th:attr="onclick=|memberPwCheck('${dto.memberNum}', 'Update')|"  type="button" value = "정보 수정">
+					<input class="w3-button w3-black w3-section" th:attr="onclick=|memberPwCheck('${dto.memberNum}', 'Delete')|" type="button" value = "탈퇴하기">
+				</div>	
+				<!-- End page content -->
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer class="w3-center w3-black w3-padding-16">
+			<p>
+				Powered by <a href="https://www.w3schools.com/w3css/default.asp"
+					title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

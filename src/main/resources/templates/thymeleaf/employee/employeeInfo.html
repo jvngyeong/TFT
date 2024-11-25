@@ -1,72 +1,111 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>전략적 팀 전투 정보 제공 사이트입니다.</title>
+	<link rel="stylesheet" href="/static/css/employeeInfo.css">
+	
+	<script type="text/javascript">
+		function empPwCheck(empNum, task){
+			$.ajax({
+				url : "employee/empPwCheck",
+				data : {"empNum" : empNum, "task" : task},
+				dataType : "html",
+				success: function(result){
+					$("#wholeContent").html(result);
+				},
+				error : function(){
+					alert("오류가 발생했습니다.");
+				}
+			})
+		}
+	</script>
 </head>
 <body>
-	<div id="wholeContent" style="margin-top : 50px">
-		<!-- About Section -->
-		<div class="w3-container w3-padding-32" id="about">
-			<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">직원 관리</h3>
-			<ul>
-				<li>
-					<a href = "/employee/employeeWrite">직원 가입</a>
-				</li>
-			</ul>
-		</div>
-		
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" id="contact">
+					<br />
+					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">[[${dto.empName}]]님의 상세정보입니다.</h3>
+					<table border = '1'>
+						<tr>
+							<td>직원 번호</td>
+							<td>
+								[[${empNum}]]
+							</td>
+						</tr>
+						
+						<tr>
+							<td>아이디</td>
+							<td>
+								[[${dto.empId}]]
+							</td>
+						</tr>
+						<tr>
+							<td>이름</td>
+							<td>
+								[[${dto.empName}]]
+							</td>
+						</tr>
+						<tr>
+							<td>주소</td>
+							<td>
+								[[${dto.empAddr}]]
+							</td>
+						</tr>
+						<tr>
+							<td>상세 주소</td>
+							<td>
+								[[${dto.empAddrDetail}]]
+							</td>
+						</tr>
+						<tr>
+							<td>우편 번호</td>
+							<td>
+								[[${dto.empPost}]]
+							</td>
+						</tr>
+						<tr>
+							<td>전화번호</td>
+							<td>
+								[[${dto.empPhone}]]
+							</td>
+						</tr>
+						<tr>
+							<td>주민등록번호</td>
+							<td>
+								[[${dto.empJumin}]]
+							</td>
+						</tr>
+						<tr>
+							<td>이메일</td>
+							<td>
+								[[${dto.empEmail}]]
+							</td>
+						</tr>
+						<tr>
+							<td>이미지</td>
+							<td>
+								[[${dto.empImage}]]
+							</td>
+						</tr>
+					</table>
 
-		<div class="w3-row-padding w3-grayscale">
-			<div class="w3-col l3 m6 w3-margin-bottom">
-				<img src="/w3images/team2.jpg" alt="John" style="width: 100%">
-				<h3>John Doe</h3>
-				<p class="w3-opacity">CEO & Founder</p>
-				<p>Phasellus eget enim eu lectus faucibus vestibulum.
-					Suspendisse sodales pellentesque elementum.</p>
-				<p>
-					<button class="w3-button w3-light-grey w3-block">Contact</button>
-				</p>
-			</div>
-			<div class="w3-col l3 m6 w3-margin-bottom">
-				<img src="/w3images/team1.jpg" alt="Jane" style="width: 100%">
-				<h3>Jane Doe</h3>
-				<p class="w3-opacity">Architect</p>
-				<p>Phasellus eget enim eu lectus faucibus vestibulum.
-					Suspendisse sodales pellentesque elementum.</p>
-				<p>
-					<button class="w3-button w3-light-grey w3-block">Contact</button>
-				</p>
-			</div>
-			<div class="w3-col l3 m6 w3-margin-bottom">
-				<img src="/w3images/team3.jpg" alt="Mike" style="width: 100%">
-				<h3>Mike Ross</h3>
-				<p class="w3-opacity">Architect</p>
-				<p>Phasellus eget enim eu lectus faucibus vestibulum.
-					Suspendisse sodales pellentesque elementum.</p>
-				<p>
-					<button class="w3-button w3-light-grey w3-block">Contact</button>
-				</p>
-			</div>
-			<div class="w3-col l3 m6 w3-margin-bottom">
-				<img src="/w3images/team4.jpg" alt="Dan" style="width: 100%">
-				<h3>Dan Star</h3>
-				<p class="w3-opacity">Architect</p>
-				<p>Phasellus eget enim eu lectus faucibus vestibulum.
-					Suspendisse sodales pellentesque elementum.</p>
-				<p>
-					<button class="w3-button w3-light-grey w3-block">Contact</button>
-				</p>
+					<input class="w3-button w3-black w3-section" th:attr="onclick=|empPwCheck('${empNum}', 'Update')|"  type="button" value = "정보 수정">
+					<input class="w3-button w3-black w3-section" th:attr="onclick=|empPwCheck('${empNum}', 'Delete')|" type="button" value = "탈퇴하기">
+				</div>	
+				<!-- End page content -->
 			</div>
 		</div>
-	</div>
 
-	<!-- Footer -->
-	<footer class="w3-center w3-black w3-padding-16">
-		<p>
-			Powered by <a href="https://www.w3schools.com/w3css/default.asp"
-				title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
-		</p>
-	</footer>
+		<!-- Footer -->
+		<footer class="w3-center w3-black w3-padding-16">
+			<p>
+				Powered by <a href="https://www.w3schools.com/w3css/default.asp"
+					title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
+			</p>
+		</footer>
 	</div>
 </body>
 </html>

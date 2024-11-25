@@ -21,6 +21,9 @@ public class EmployeeCommand {
     @NotEmpty(message = "* 비밀번호 : 필수 정보입니다.")
     String empPw;             // EMP_PW: 직원 비밀번호
     
+    @NotEmpty(message = "* 비밀번호 확인 : 필수 정보입니다.")
+    String empPwCon;
+    
     @NotEmpty(message = "* 이름 : 필수 정보입니다.")
     String empName;           // EMP_NAME: 직원 이름
     

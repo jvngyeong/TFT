@@ -2,11 +2,13 @@ package TFT.domain;
 
 import java.util.Date;
 
+import org.apache.ibatis.type.Alias;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 
 @Data
+@Alias("employeeDTO")
 public class EmployeeDTO {
 	String empNum; // EMP_NUM: 직원 번호 (Not Null)
 	String empId; // EMP_ID: 직원 ID

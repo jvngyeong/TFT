@@ -1,0 +1,76 @@
+input:not([type="submit"]) {
+    font-family: 'Noto Sans KR', 'Noto Sans Korean', "Nanum Gothic", sans-serif !important;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    border: 0;
+    outline: none;
+    font-size: 10px;
+}
+
+input::placeholder {
+    color: #d9d9d9;
+}
+
+input[name = 'empNum'] {
+    background-color: #d9d9d9;
+    color: #fff;
+}
+
+.dust-class {
+    width: 50%;
+    box-sizing: border-box;
+    margin: 20px auto;
+    position: relative;
+}
+
+.dust-class label {
+    display: inline-block;
+    position: absolute;
+    top: 2px;
+    left: 14px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background: white;
+    font-size: 14px;
+    color: #888;
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 1px 1px 2.5px rgba(0, 0, 0, 0.2);
+}
+
+.dust-class input[name = 'empNum'] + label {
+    background-color: #d9d9d9;
+    color: #fff;
+}
+
+.dust-class input[name = 'empNum'] {
+    background-color: #d9d9d9;
+    color: #fff;
+}
+
+.dust-class input[name = 'empNum'] + label {
+    background-color: #d9d9d9;
+    color: #fff;
+}
+
+
+.dust-class.ver2 label {
+    top: initial;
+    bottom: -20px;
+}
+
+.dust-class label span {
+    color: #da4841;
+    vertical-align: -1px;
+}
+
+.dust-class input {
+    width: 100%;
+    border: 1px solid #dddddd !important;
+    font-size: 1rem;
+    line-height: 1.45;
+    letter-spacing: -0.04rem;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+}

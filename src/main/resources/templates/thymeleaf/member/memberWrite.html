@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/css/memForm.css">
+	<script type="text/javascript">
+		$(function(){
+			$("#sample4_roadAddress").click(function(){
+				execDaumPostcode();
+			});
+			
+			
+		    $('#memberForm').submit(function(event) {
+		        event.preventDefault(); // 기본 폼 제출 방지
+		        
+		        // FormData 객체를 사용하여 폼 데이터 준비
+		        var formData = new FormData(this);
+				$.ajax({
+					type : "post",
+					url : "/member/memberWrite",
+					data: formData,
+					dataType : "json",
+					contentType: false, 
+					processData: false,
+					success : function(result){
+						if(JSON.stringify(result) == '{}'){
+							location.href = "/";
+						}
+						else{
+			            	$(".errMsg").css("color", "none");
+			            	$(".errMsg").text("");
+							for (let field in result) {
+					            const errorMessage = result[field]; // 각 필드의 에러 메시지
+					            if(errorMessage != ''){
+					            	$("#"+field).text(errorMessage);
+					            	$("#"+field).css("color", "red");
+					            	$("input[name='" + field + "']").focus();
+					            }
+					        }
+						}
+					},
+					error : function(xhr){
+						alert("실패");
+					}
+				});
+			});
+			
+		});
+	</script>
+</head>
+<body>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" id="contact">
+					<br />
+					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">회원가입</h3>
+					<p>가입에 필요한 정보를 입력해주세요.</p>
+					<form id = "memberForm" method = "post" th:object="${employeeCommand}">
+						<div class = "dust-class">
+							<label for ="memberId"><span>* </span>아이디</label>
+							<input class="txt-input" type="text" placeholder="아이디" name="memberId">
+							<div id = "memberId" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="memberPw"><span>* </span>비밀번호</label>
+							<input class="txt-input" type="password" placeholder="비밀번호" name="memberPw">
+							<div id = "memberPw" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="memberPwCon"><span>* </span>비밀번호 확인</label>
+							<input class="txt-input" type="password" placeholder="비밀번호 확인" name="memberPwCon">
+							<div id = "memberPwCon" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="memberName"><span>* </span>이름</label>
+							<input class="txt-input" type="text" placeholder="이름" name="memberName">
+							<div id = "memberName" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="sample4_roadAddress"><span>* </span>주소</label>
+							<input class="txt-input" type="text" placeholder="주소" id = "sample4_roadAddress" name="memberAddr">
+							<div id = "memberAddr" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="memberAddrDetail">상세주소</label>
+							<input class="txt-input" type="text" placeholder="상세주소" name="memberAddrDetail">
+						</div>
+						<div class = "dust-class">
+							<label for ="sample4_postcode"><span>* </span>우편번호</label>
+							<input class="txt-input" type="text" placeholder="우편번호" id = "sample4_postcode" name="memberPost" readonly="readonly">
+							<div id = "memberPost" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="memberPhone1"><span>* </span>전화번호 1</label>
+							<input class="txt-input" type="text" placeholder="전화번호 1" name="memberPhone1">
+							<div id = "memberPhone1" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="memberPhone2">전화번호 2</label>
+							<input class="txt-input" type="text" placeholder="전화번호 2" name="memberPhone2">
+							<div id = "memberPhone2" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="memberEmail"><span>* </span>이메일</label>
+							<input class="txt-input" type="email" placeholder="이메일" name="memberEmail">
+							<div id = "memberEmail" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="memberBirth"><span>* </span>생년월일</label>
+							<input class="txt-input" type="date" name="memberBirth">
+							<div id = "memberBirth" class = "errMsg"></div>
+						</div>
+						<div class = "dust-container">
+							<div class = "dust-class" name = "radioDiv">
+								<label for ="gender"><span>* </span>남자</label>
+								<input type="radio" name="gender" value = "M" checked="checked">
+								<div id = "gender" class = "errMsg"></div>
+							</div>
+							<div class = "dust-class" name = "radioDiv">
+								<label for ="gender"><span>* </span>여자</label>
+								<input type="radio" name="gender" value = "F">
+								<div id = "gender" class = "errMsg"></div>
+							</div>
+						</div>
+					<input class="w3-button w3-black w3-section" type="submit" value = "가입하기">
+					</form>
+				</div>
+				</div>	
+				<!-- End page content -->
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer class="w3-center w3-black w3-padding-16">
+			<p>
+				Powered by <a href="https://www.w3schools.com/w3css/default.asp"
+					title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

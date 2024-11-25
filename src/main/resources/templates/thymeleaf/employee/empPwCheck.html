@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+	$(function() {
+		var task = $("#task").val();
+		$('#empForm').submit(function(event) {
+			event.preventDefault();
+			if ($("#empPw").val() != $("#empPwCon").val()) {
+				alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+			} else {
+				conf = true;
+				$.ajax({
+					type : "post",
+					url : "employee/empPwCheck",
+					data : {"empPw" : $("#empPw").val(), "encodedPw" : '[[${dto.empPw}]]'},
+					success : function(result){
+						if(result == "200"){
+							if(task == "Delete"){
+								conf = confirm("정말 탈퇴하시겠습니까?");
+							}
+							if(conf == true){
+								$.ajax({
+									url : "employee/employee"+task,
+									data : {"empNum" : "[[${empNum}]]"},
+									dataType : "html",
+									success : function(result2){
+										if(task == "Update"){
+											$("#wholeContent").html(result2);
+										}
+										else{
+											location.href = "/";
+										}
+									},
+									error : function(){
+										alert("오류가 발생했습니다.");
+									}
+								})
+							}
+						}
+						else{
+							alert("비밀번호가 일치하지 않습니다.");
+						}
+					},
+					error : function(result){
+						alert("오류가 발생했습니다.");
+					}
+				})
+			}
+		});
+	});
+</script>
+</head>
+<body>
+	<input type = "hidden" th:value = "${task}" id = "task"/>
+	<input type = "hidden" th:value = "${task}" id = "task"/>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" id="contact">
+					<br />
+					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">비밀번호
+						확인</h3>
+					<form id="empForm" method="post">
+						<input class="w3-input w3-section w3-border" type="password"
+							placeholder="비밀번호" name="empPw" id="empPw"> <input
+							class="w3-input w3-section w3-border" type="password"
+							placeholder="비밀번호 확인" name="empPwCon" id="empPwCon"> <input
+							class="w3-button w3-black w3-section" type="submit" value="확인">
+					</form>
+				</div>
+				<!-- End page content -->
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer class="w3-center w3-black w3-padding-16">
+			<p>
+				Powered by <a href="https://www.w3schools.com/w3css/default.asp"
+					title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

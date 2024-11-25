@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>전략적 팀 전투 정보 제공 사이트입니다.</title>
+	<script type="text/javascript">	
+		function memberInfo(memberNum){
+			$.ajax({
+				url : "member/memberInfo",
+				type : "post",
+				data : {"memberNum" : memberNum},
+				dataType : "html",
+				success : function(result){
+					$("#wholeContent").html(result);
+				},
+				error : function(){
+					alert("오류가 발생했습니다.");
+				}
+			})
+		}
+	</script>
+</head>
+<body>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" style="padding-bottom: 0 !important;" id="contact">
+					<br />
+					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">회원 목록</h3>
+					<p>가입한 회원의 목록입니다.</p>
+				</div>
+				<div class="w3-row-padding w3-grayscale">
+					<th:block th:each="list : ${list}">
+						<div class="w3-col l3 m6 w3-margin-bottom">	
+							<h3>[[${list.memberName}]]</h3>
+							<p class="w3-opacity">ID : [[${list.memberId}]]</p>
+							<p>
+								Phone : [[${list.memberPhone1}]] <br /> Email : [[${list.memberEmail}]]
+							</p>
+							<p></p>
+							<p>
+								<button class="w3-button w3-light-grey w3-block" id = "infoBtn" th:attr="onclick=|memberInfo('${list.memberNum}')|">상세 보기</button>
+							</p>
+						</div>
+					</th:block>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+	<footer class="w3-center w3-black w3-padding-16">
+		<p>
+			Powered by <a href="https://www.w3schools.com/w3css/default.asp"
+				title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
+		</p>
+	</footer>
+</body>
+</html>

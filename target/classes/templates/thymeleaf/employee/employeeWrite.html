@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="/static/css/empForm.css">
 	<script type="text/javascript">
 		$(function(){
 			$("#sample4_roadAddress").click(function(){
@@ -25,11 +26,14 @@
 							location.href = "/";
 						}
 						else{
+			            	$(".errMsg").css("color", "none");
+			            	$(".errMsg").text("");
 							for (let field in result) {
 					            const errorMessage = result[field]; // 각 필드의 에러 메시지
 					            if(errorMessage != ''){
 					            	$("#"+field).text(errorMessage);
 					            	$("#"+field).css("color", "red");
+					            	$("input[name='" + field + "']").focus();
 					            }
 					        }
 						}
@@ -39,7 +43,6 @@
 					}
 				});
 			});
-			
 		});
 	</script>
 </head>
@@ -54,27 +57,63 @@
 					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">직원 가입</h3>
 					<p>가입에 필요한 정보를 입력해주세요.</p>
 					<form id = "empForm" method = "post" th:object="${employeeCommand}">
-						<input class="w3-input w3-section w3-border" type="text" placeholder="ID" name="empId">
-						<div id = "empId" class = "errMsg"></div>
-						<input class="w3-input w3-section w3-border" type="password" placeholder="Password" name="empPw" th:value="${employeeCommand.empPw}">
-						<div id = "empPw" class = "errMsg"></div> 
-						<input class="w3-input w3-section w3-border" type="text" placeholder="이름" name="empName"> 
-						<div id = "empName" class = "errMsg"></div>
-						<input class="w3-input w3-section w3-border" type="text" id = "sample4_roadAddress" placeholder="주소" name="empAddr" readonly="readonly"> 
-						<div id = "empAddr" class = "errMsg"></div>
-						<input class="w3-input w3-section w3-border" type="text" placeholder="상세 주소" name="empAddrDetail">
-						<input class="w3-input w3-section w3-border" type="text" id = "sample4_postcode" placeholder="우편번호" name="empPost" readonly="readonly">
-						<div id = "empPost" class = "errMsg"></div>
-						<input class="w3-input w3-section w3-border" type="tel" placeholder="전화번호" name="empPhone">
-						<div id = "empPhone" class = "errMsg"></div>
-						<input class="w3-input w3-section w3-border" type="text" placeholder="주민번호" name="empJumin">
-						<div id = "empJumin" class = "errMsg"></div>
-						<input class="w3-input w3-section w3-border" type="email" placeholder="이메일" name="empEmail"> 
-						<div id = "empEmail" class = "errMsg"></div>
-						<input class="w3-input w3-section w3-border" type="file" name="empImage">
-						<div id = "empImage" class = "errMsg"></div>
-						<input class="w3-button w3-black w3-section" type="submit" value = "가입하기">
+						<div class = "dust-class">
+							<label for ="empId"><span>* </span>아이디</label>
+							<input class="txt-input" type="text" placeholder="아이디" name="empId">
+							<div id = "empId" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="empPw"><span>* </span>비밀번호</label>
+							<input class="txt-input" type="password" placeholder="비밀번호" name="empPw">
+							<div id = "empPw" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="empId"><span>* </span>비밀번호 확인</label>
+							<input class="txt-input" type="password" placeholder="비밀번호 확인" name="empPwCon">
+							<div id = "empPwCon" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="empName"><span>* </span>이름</label>
+							<input class="txt-input" type="text" placeholder="이름" name="empName">
+							<div id = "empName" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="sample4_roadAddress"><span>* </span>주소</label>
+							<input class="txt-input" type="text" placeholder="주소" id = "sample4_roadAddress" name="empAddr">
+							<div id = "empAddr" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="empAddrDetail">상세주소</label>
+							<input class="txt-input" type="text" placeholder="상세주소" name="empAddrDetail">
+						</div>
+						<div class = "dust-class">
+							<label for ="sample4_postcode"><span>* </span>우편번호</label>
+							<input class="txt-input" type="text" placeholder="우편번호" id = "sample4_postcode" name="empPost" readonly="readonly">
+							<div id = "empPost" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="empPhone"><span>* </span>전화번호</label>
+							<input class="txt-input" type="text" placeholder="전화번호" name="empPhone">
+							<div id = "empPhone" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="empJumin"><span>* </span>주민등록번호</label>
+							<input class="txt-input" type="text" placeholder="주민등록번호" name="empJumin">
+							<div id = "empJumin" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="empEmail"><span>* </span>이메일</label>
+							<input class="txt-input" type="email" placeholder="이메일" name="empEmail">
+							<div id = "empEmail" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+						<label for ="empImage" name = "empImage"><span>* </span>직원 사진</label>
+							<input class="txt-input" type="file" name="empImage">
+							<div id = "empImage" class = "errMsg"></div>
+						</div>
+					<input class="w3-button w3-black w3-section" type="submit" value = "가입하기">
 					</form>
+				</div>
 				</div>	
 				<!-- End page content -->
 			</div>

@@ -1,58 +1,60 @@
 #sumName {
-  width: 300px;
-  height: 40px;
-  font-size: 15px;
-  border: 0;
-  border-radius: 15px;
-  outline: none;
-  padding-left: 10px;
-  background-color: rgb(233, 233, 233);
+	width: 300px;
+	height: 40px;
+	font-size: 15px;
+	border: 0;
+	border-radius: 15px;
+	outline: none;
+	padding-left: 10px;
+	background-color: rgb(233, 233, 233);
 }
 
 .btn-3d.red {
-  background-color: #e74c3c;
-  box-shadow: 0 0 0 1px #c63702 inset,
-        0 0 0 2px rgba(255,255,255,0.15) inset,
-        0 8px 0 0 #C24032,
-        0 8px 0 1px rgba(0,0,0,0.4),
-        0 8px 8px 1px rgba(0,0,0,0.5);
+	background-color: #e74c3c;
+	box-shadow: 0 0 0 1px #c63702 inset, 0 0 0 2px rgba(255, 255, 255, 0.15)
+		inset, 0 8px 0 0 #C24032, 0 8px 0 1px rgba(0, 0, 0, 0.4), 0 8px 8px
+		1px rgba(0, 0, 0, 0.5);
 }
+
 .noto-sans-kr-main {
-  font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 900;
-  font-style: normal;
+	font-family: "Noto Sans KR", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 900;
+	font-style: normal;
 }
 
-a, p, span, h1, h2, h3 {
-  font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
+a, p, span, h1, h2, h3, label {
+	font-family: "Noto Sans KR", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 500;
+	font-style: normal;
 }
 
-li{
+li {
 	display: inline-block;
 }
+
 .dropdown-content {
-    position: absolute;
-    background-color: #f9f9f9;
-    margin-top: 40px;
-    min-width: 50px;
-    margin-right : 16px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	background-color: #f9f9f9;
+	margin-top: 40px;
+	min-width: 50px;
+	margin-right: 16px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
 
 .dropdown-content a {
-    color: black;
-    text-decoration: none;
-    display: block;
-    padding: 10px 15px; /* 위아래 10px, 좌우 15px */
+	color: black;
+	text-decoration: none;
+	display: block;
+	padding: 10px 15px; /* 위
+    아래 10px, 좌우 15px */
 }
 
 .dropdown-content {
-    display: none;
+	display: none;
 }
+
 .dropdown:hover .dropdown-content {
-    display: block;
+	display: block;
 }
