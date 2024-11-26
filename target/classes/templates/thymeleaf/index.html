@@ -32,18 +32,6 @@
 			})
 		})
 
-		$("#goodsWrite").click(function() {
-			$.ajax({
-				url : "/goods/goodsWrite",
-				dataType : "html",
-				success : function(result) {
-					$("#wholeContent").html(result);
-				},
-				error : function() {
-					alert("오류가 발생했습니다.");
-				}
-			})
-		})
 		$("#employeeList").click(function() {
 			$.ajax({
 				url : "/employee/employeeList",
@@ -92,6 +80,42 @@
 				}
 			})
 		})
+		$("#login").click(function() {
+			$.ajax({
+				url : "/login/loginForm",
+				dataType : "html",
+				success : function(result) {
+					$("#wholeContent").html(result);
+				},
+				error : function() {
+					alert("오류가 발생했습니다.");
+				}
+			})
+		})
+		$("#goodsList").click(function() {
+			$.ajax({
+				url : "/goods/goodsList",
+				dataType : "html",
+				success : function(result) {
+					$("#wholeContent").html(result);
+				},
+				error : function() {
+					alert("오류가 발생했습니다.");
+				}
+			})
+		})
+		$("#goodsWrite").click(function() {
+			$.ajax({
+				url : "/goods/goodsWrite",
+				dataType : "html",
+				success : function(result) {
+					$("#wholeContent").html(result);
+				},
+				error : function() {
+					alert("오류가 발생했습니다.");
+				}
+			})
+		})
 	});
 </script>
 </head>
@@ -104,15 +128,40 @@
 				<!-- Float links to the right. Hide them on small screens -->
 				<div class="w3-right w3-hide-small">
 					<a id="shopBtn" class="w3-bar-item w3-button">상점</a> 
-					<a id="memberWrite"class="w3-bar-item w3-button">회원가입</a> 
-					<a id="goodsWrite"class="w3-bar-item w3-button">상품 등록</a>
-					<a id="memberList" class="w3-bar-item w3-button">회원 관리</a>
-					<li class="dropdown"><a class="w3-bar-item w3-button">직원
-							관리</a>
-						<div class="dropdown-content">
-							<a id="employeeList" class="w3-bar-item w3-button">직원 목록</a> <a
-								id="employeeWrite" class="w3-bar-item w3-button">직원 가입</a>
-						</div></li>
+					<th:block th:if = "${session.auth == null}">
+						<a id="memberWrite"class="w3-bar-item w3-button">회원가입</a> 
+						<a id="login" class="w3-bar-item w3-button">로그인</a>
+					</th:block>
+					<th:block th:if = "${session.auth != null}">
+						<th:block th:if = "${session.auth.grade == 'emp'}">
+						
+						<li class="dropdown">
+							<a class="w3-bar-item w3-button">상품 관리</a>
+							<div class="dropdown-content">
+									<a id="goodsList" class="w3-bar-item w3-button">상품 목록</a> 
+									<a id="goodsWrite" class="w3-bar-item w3-button">상품 등록</a> 
+									<a id="goodsIpgo" class="w3-bar-item w3-button">상품 입고</a>
+							</div>
+						</li>
+						
+						<li class="dropdown">
+							<a class="w3-bar-item w3-button">회원 관리</a>
+							<div class="dropdown-content">
+								<a id="memberList"class="w3-bar-item w3-button">회원 목록</a> 
+								<a id="memberWrite"class="w3-bar-item w3-button">회원가입</a> 
+							</div>
+						</li>
+						
+						<li class="dropdown">
+							<a class="w3-bar-item w3-button">직원 관리</a>
+							<div class="dropdown-content">
+								<a id="employeeList" class="w3-bar-item w3-button">직원 목록</a> 
+								<a id="employeeWrite" class="w3-bar-item w3-button">직원 가입</a>
+							</div>
+						</li>
+					</th:block>
+						<a href = "/login/logout" class="w3-bar-item w3-right  w3-button">로그아웃</a>
+					</th:block>
 				</div>
 			</ul>
 		</div>
@@ -291,14 +340,6 @@
 				<!-- End page content -->
 			</div>
 		</div>
-
-		<!-- Footer -->
-		<footer class="w3-center w3-black w3-padding-16">
-			<p>
-				Powered by <a href="https://www.w3schools.com/w3css/default.asp"
-					title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
-			</p>
-		</footer>
 	</div>
 </body>
 </html>

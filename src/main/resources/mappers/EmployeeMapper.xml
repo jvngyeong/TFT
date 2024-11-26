@@ -33,4 +33,8 @@
 	<delete id="employeeDelete">
 		delete from employees where emp_num = #{empNum}
 	</delete>
+	
+	<select id="getEmpNum">
+		select emp_num from employees where emp_id = #{userId}
+	</select>
 </mapper>

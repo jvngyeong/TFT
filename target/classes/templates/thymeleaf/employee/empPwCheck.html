@@ -13,36 +13,39 @@
 				$.ajax({
 					type : "post",
 					url : "employee/empPwCheck",
-					data : {"empPw" : $("#empPw").val(), "encodedPw" : '[[${dto.empPw}]]'},
-					success : function(result){
-						if(result == "200"){
-							if(task == "Delete"){
+					data : {
+						"empPw" : $("#empPw").val(),
+						"encodedPw" : '[[${dto.empPw}]]'
+					},
+					success : function(result) {
+						if (result == "200") {
+							if (task == "Delete") {
 								conf = confirm("정말 탈퇴하시겠습니까?");
 							}
-							if(conf == true){
+							if (conf == true) {
 								$.ajax({
-									url : "employee/employee"+task,
-									data : {"empNum" : "[[${empNum}]]"},
+									url : "employee/employee" + task,
+									data : {
+										"empNum" : "[[${empNum}]]"
+									},
 									dataType : "html",
-									success : function(result2){
-										if(task == "Update"){
+									success : function(result2) {
+										if (task == "Update") {
 											$("#wholeContent").html(result2);
-										}
-										else{
+										} else {
 											location.href = "/";
 										}
 									},
-									error : function(){
+									error : function() {
 										alert("오류가 발생했습니다.");
 									}
 								})
 							}
-						}
-						else{
+						} else {
 							alert("비밀번호가 일치하지 않습니다.");
 						}
 					},
-					error : function(result){
+					error : function(result) {
 						alert("오류가 발생했습니다.");
 					}
 				})
@@ -52,8 +55,8 @@
 </script>
 </head>
 <body>
-	<input type = "hidden" th:value = "${task}" id = "task"/>
-	<input type = "hidden" th:value = "${task}" id = "task"/>
+	<input type="hidden" th:value="${task}" id="task" />
+	<input type="hidden" th:value="${task}" id="task" />
 	<div id="wholeContent">
 		<!-- Page content -->
 		<div id="pageContent">
@@ -75,13 +78,6 @@
 			</div>
 		</div>
 
-		<!-- Footer -->
-		<footer class="w3-center w3-black w3-padding-16">
-			<p>
-				Powered by <a href="https://www.w3schools.com/w3css/default.asp"
-					title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
-			</p>
-		</footer>
 	</div>
 </body>
 </html>

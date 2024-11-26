@@ -17,4 +17,6 @@ public interface EmployeeMapper {
 	public void employeeUpdate(EmployeeDTO dto);
 
 	public void employeeDelete(String empNum);
+
+	public String getEmpNum(String userId);
 }

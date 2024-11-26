@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="/static/css/employeeInfo.css">
+</head>
+<body>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" id="contact">
+					<br />
+					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">님의 상세정보입니다.</h3>
+					<table border = '1'>
+						<tr>
+							<td>상품 번호</td>
+							<td>
+								[[${dto.goodsNum}]]
+							</td>
+						</tr>
+						
+						<tr>
+							<td>상품명</td>
+							<td>
+								[[${dto.goodsName}]]
+							</td>
+						</tr>
+						<tr>
+							<td>가격</td>
+							<td>
+								[[${#numbers.formatCurrency(dto.goodsPrice)}]]
+							</td>
+						</tr>
+						<tr>
+							<td>상품 설명</td>
+							<td>
+								[[${dto.goodsContents}]]
+							</td>
+						</tr>
+						<tr>
+							<td>조회수</td>
+							<td>
+								[[${dto.visitCount}]]회
+							</td>
+						</tr>
+						<tr>
+							<td>
+								메인 이미지
+							</td>
+							<td>
+								<img alt="메인이미지" width = "100%" th:src="|/static/upload/${dto.goodsMainStoreImage}|">
+							</td>
+						</tr>
+						<tr>
+							<td>상세 이미지</td>
+							<td>
+								<th:block th:each = "image : ${#strings.arraySplit(dto.goodsDetailStoreImage, '/')}">
+									<img width = "100%" th:src = "|/static/upload/${image}|" />
+								</th:block>									
+							</td>
+						</tr>
+						<tr>
+							<td>등록한 사원</td>
+							<td>
+								[[${dto.empNum}]]
+							</td>
+						</tr>
+						<tr>
+							<td>등록일</td>
+							<td>
+								[[${#dates.format(dto.goodsRegist, 'yyyy-MM-dd')}]]
+							</td>
+						</tr>
+						<tr>
+							<td>마지막으로 <br/>수정한 사원</td>
+							<td>
+								[[${dto.updateEmpNum}]]
+							</td>
+						</tr>
+						<tr>
+							<td>마지막 수정일</td>
+							<td>
+								[[${#dates.format(dto.goodsUpdateDate, 'yyyy-MM-dd')}]]
+							</td>
+						</tr>
+					</table>
+
+					<input class="w3-button w3-black w3-section" type="button" value = "상품 수정">
+					<input class="w3-button w3-black w3-section" type="button" value = "상품 삭제">
+				</div>	
+				<!-- End page content -->
+			</div>
+		</div>
+	</div>
+</body>
+</html>

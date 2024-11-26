@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="TFT.mapper.GoodsMapper">
+	<sql id="goodsColumns">
+		GOODS_NUM, GOODS_NAME, GOODS_PRICE, GOODS_CONTENTS, VISIT_COUNT, 
+		GOODS_MAIN_IMAGE, GOODS_MAIN_STORE_IMAGE, GOODS_DETAIL_IMAGE, GOODS_DETAIL_STORE_IMAGE,
+		EMP_NUM, GOODS_REGIST, UPDATE_EMP_NUM, GOODS_UPDATE_DATE
+		
+	</sql>
+	
+	<insert id="goodsInsert" parameterType="goodsDTO">
+		insert into goods(<include refid="goodsColumns"></include>)
+		values(#{goodsNum}, #{goodsName}, #{goodsPrice}, #{goodsContents}, 0, #{goodsMainImage},
+		#{goodsMainStoreImage}, #{goodsDetailImage}, #{goodsDetailStoreImage}, #{empNum}, 
+		sysdate, #{empNum}, sysdate)
+	</insert>
+	
+	<select id="goodsSelectList" resultType="goodsDTO">
+		select <include refid="goodsColumns"></include>
+		from goods
+	</select>
+	
+	<select id="goodsSelectOne">
+		select <include refid="goodsColumns"></include>
+		from goods where goods_num = #{goodsNum}
+	</select>
+</mapper>

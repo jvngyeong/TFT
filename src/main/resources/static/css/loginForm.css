@@ -1,0 +1,172 @@
+@charset "UTF-8";
+
+html {
+  height: 100%;
+}
+
+.login-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  padding: 40px;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, .5);
+  box-sizing: border-box;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
+  border-radius: 10px;
+}
+
+.login-box h2 {
+  margin: 0 0 30px;
+  padding: 0;
+  color: #fff;
+  text-align: center;
+}
+
+.login-box .user-box {
+  position: relative;
+}
+
+.login-box .user-box input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  background: transparent;
+}
+
+.login-box .user-box label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.login-box .user-box input:focus ~ label,
+.login-box .user-box input:valid ~ label {
+  top: -20px;
+  left: 0;
+  color: #03e9f4;
+  font-size: 12px;
+}
+
+.login-box form a {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  color: #03e9f4;
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: .5s;
+  margin-top: 40px;
+  letter-spacing: 4px;
+}
+
+.button {
+  background: #2B2D2F;
+  height: 80px;
+  width: 200px;
+  text-align: center;
+  position: absolute;
+  top: 100%;
+  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.text {
+  font: bold 1.25rem/1 poppins;
+  color: #71DFBE;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-52%);
+  left: 0;
+  right: 0;
+}
+
+#loginOption {
+  display: flex; /* 수평으로 배치 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  gap: 30px; /* 항목 간 간격 조정 */
+}
+
+.toggle-wrapper {
+  display: flex; /* 수평으로 배치 */
+  align-items: center; /* 세로 중앙 정렬 */
+}
+
+.toggle-wrapper h6 {
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  color: white;
+  margin: 0 10px 40px 0; /* 오른쪽에 여백을 추가하여 toggle과의 간격을 조정 */
+  display : inline-block;
+}
+
+.toggle-item {
+  width: 2.5em;
+  background: #af4c4c;
+  height: 1em;
+  display: inline-block;
+  border-radius: 50px;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  top : 0.1em;
+}
+
+label.toggle-item:before {
+  display: block;
+  transition: all 0.2s ease;
+  width: 1em;
+  height: 1em;
+  top: 0em;
+  left: 0em;
+  border-radius: 2em;
+  background: #fff;
+  content: '';
+  position: absolute;
+  box-shadow: inset 0.5px -1px 1px rgba(0, 0, 0, 0.35);
+}
+
+input[type="checkbox"] {
+  opacity: 0; /* 체크박스를 숨기고 라벨로 대체 */
+  position: absolute; /* 위치 제거 */
+  top: 0;
+  left: 0;
+}
+
+#autoLogin:checked + label,
+#idStore:checked + label {
+  background: #4caf50;
+}
+
+#autoLogin:checked + label:before,
+#idStore:checked + label:before {
+  left: 23px; /* 이동 거리 조정 */
+}
+
+.toggle.normal input {
+  height: 40px;
+  left: 0;
+  opacity: 0; /* 체크박스를 보이지 않게 만듦 */
+  position: absolute; /* 화면에서 위치 제거 */
+  width: 40px;
+}

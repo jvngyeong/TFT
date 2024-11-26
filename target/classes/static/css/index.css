@@ -30,31 +30,48 @@ a, p, span, h1, h2, h3, label {
 	font-style: normal;
 }
 
-li {
-	display: inline-block;
+.dropdown {
+    position: relative;
+    z-index: 1;
 }
 
 .dropdown-content {
-	position: absolute;
-	background-color: #f9f9f9;
-	margin-top: 40px;
-	min-width: 50px;
-	margin-right: 16px;
-	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 999;
+    width : 100%;
 }
 
 .dropdown-content a {
-	color: black;
-	text-decoration: none;
-	display: block;
-	padding: 10px 15px; /* 위
-    아래 10px, 좌우 15px */
+    color: black;
+    text-decoration: none;
+    display: block;
+    padding: 10px 15px;
+    width: 100% !important;
 }
 
-.dropdown-content {
-	display: none;
-}
 
 .dropdown:hover .dropdown-content {
-	display: block;
+    display: block;
+}
+
+/* 상위 요소의 z-index 문제 해결 */
+.w3-bar {
+	height : 61px;
+    position: relative; /* 최상위 요소도 position 설정 */
+    z-index: 0; /* 드롭다운보다 낮게 설정 */
+    overflow: visible; /* 드롭다운이 잘리지 않도록 설정 */
+}
+
+/* 기본 li 항목들은 수평 배치 */
+li {
+    display: inline-block;  /* 기본적으로 inline-block으로 설정 */
+}
+
+header{
+	padding-top : 30px;
 }

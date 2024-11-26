@@ -10,6 +10,15 @@ input:not([type="submit"]):not([type="radio"]) {
 	font-size: 10px;
 }
 
+.errMsg{
+	font-family: 'Noto Sans KR', 'Noto Sans Korean', "Nanum Gothic", sans-serif !important;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    border: 0;
+    outline: none;
+    font-size: 15px;
+}
+
 input::placeholder {
 	color: #d9d9d9;
 }
