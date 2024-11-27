@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="TFT.mapper.CartMapper">
+	<resultMap type="goodsDTO" id="goodsResultMap">
+	    <id column="goods_num" 						jdbcType="VARCHAR" property="goodsNum"/>
+	    <result column="goods_price" 				jdbcType="BIGINT"  property="goodsPrice"/>
+	    <result column="goods_contents" 			jdbcType="VARCHAR" property="goodsContents"/>
+	    <result column="visit_count" 				jdbcType="BIGINT"  property="visitCount"/>
+	    <result column="goods_main_image"			jdbcType="VARCHAR" property="goodsMainImage"/>
+	    <result column="goods_update_date"			jdbcType="DATE"    property="goodsUpdateDate"/>
+	    <result column="goods_detail_image" 		jdbcType="VARCHAR" property="goodsDetailImage"/>
+	    <result column="goods_detail_store_image" 	jdbcType="VARCHAR" property="goodsDetailStoreImage"/>
+	    <result column="emp_num" 					jdbcType="BIGINT"  property="empNum"/>
+	    <result column="goods_regist" 				jdbcType="DATE"    property="goodsRegist"/>
+	    <result column="update_emp_num" 			jdbcType="BIGINT"  property="updateEmpNum"/>
+	    <result column="goods_name" 				jdbcType="VARCHAR" property="goodsName"/>
+	    <result column="goods_main_store_image" 	jdbcType="VARCHAR" property="goodsMainStoreImage"/>
+	</resultMap>
+
+	<resultMap type="cartDTO" id="cartResultMap">
+		<id column="goods_num" jdbcType = "VARCHAR" property = "goodsNum"/>
+		<id column="member_num" jdbcType="VARCHAR" property = "memberNum"/>
+		<result column="cart_num" jdbcType = "BIGINT" property="cartNum"/>
+		<result column="cart_date" jdbcType = "DATE" property="cartDate"/>
+		<result column="cart_qty" jdbcType="BIGINT" property="cartQty"/>
+	</resultMap>
+
+	<resultMap id="goodsCartDTO" type="GoodsCartDTO">
+	    <result property="cartDTO.cartQty" column="cart_qty" />
+	    <result property="goodsDTO.goodsNum" column="goods_num" />
+	    <result property="goodsDTO.goodsName" column="goods_name" />
+	    <result property="goodsDTO.goodsPrice" column="goods_price" />
+	    <result property="goodsDTO.goodsMainStoreImage" column="goods_main_store_image" />
+	</resultMap>
+	
+	<insert id="cartMerge">
+		merge into cart c
+		using goods g
+			on (c.goods_num = g.goods_num and c.member_num = #{memberNum})
+		when matched then
+			update set c.cart_qty = c.cart_qty + #{cartQty}, cart_date = sysdate
+		when not matched then
+			insert (member_num, goods_num, cart_date, cart_qty)
+			values (#{memberNum}, #{goodsNum}, sysdate, #{cartQty})
+	</insert>
+	
+	<select id="cartSelectList" resultMap="goodsCartDTO">
+		select c.goods_num, c.cart_qty, g.goods_name, g.goods_price, g.goods_main_store_image
+		from cart c join goods g
+		on c.goods_num = g.goods_num
+		where member_num = #{memberNum}
+	</select>
+</mapper>

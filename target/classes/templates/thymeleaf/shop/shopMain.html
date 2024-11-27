@@ -2,9 +2,42 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
+<script type="text/javascript">
+	$(function(){
+		$.ajax({
+			url : "/shop/shopList",
+			dataType : "html",
+			success : function(result){
+				$("#pageContent").html(result);
+			},
+			error : function(){
+				alert("오류가 발생했습니다.");
+			}
+		})
+	});
+</script>
 </head>
 <body>
-	
+	<div id="wholeContent">
+		<div id="headerContent">
+			<!-- Header -->
+			<header class="w3-display-container w3-content w3-wide"
+				style="background-color: black; max-width: 1500px; position: relative; text-align: center;"
+				id="home">
+				<img src="/static/img/shopMainImage.jpg" alt="Architecture"
+					style="width: 70%; height: 70%; display: inline-block;">
+				<div class="w3-display-middle w3-margin-top w3-center">
+					<h1 class="w3-xxlarge w3-text-white">
+						<span class="w3-padding w3-black w3-opacity-min"><b
+							class="noto-sans-kr-main">상점</b></span> 	
+					</h1>
+				</div>
+			</header>
+		</div>
+		<!-- Page content -->
+		<div id="pageContent">
+			
+		</div>
+	</div>
 </body>
 </html>

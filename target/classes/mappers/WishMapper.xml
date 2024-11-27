@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="TFT.mapper.WishMapper">
+	<insert id="wishMerge">
+		merge into wish w
+		using goods g
+			on (w.goods_num = g.goods_num)
+		when matched then
+			update set w.wish_date = sysdate
+			delete where w.goods_num = #{goodsNum} and w.member_num = #{memberNum}
+		when not matched then
+			insert (member_num, goods_num, wish_date)
+			values (#{memberNum}, #{goodsNum}, sysdate)
+	</insert>
+	
+	<select id="wishCheck">
+		select '200' from wish where goods_num = #{goodsNum} and member_num = #{memberNum}
+	</select>
+</mapper>

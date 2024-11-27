@@ -116,6 +116,20 @@
 				}
 			})
 		})
+		$("#cartList").click(function() {
+			var memberId = $(".memberId").val();
+			$.ajax({
+				url : "/cart/cartList",
+				dataType : "html",
+				data : {"memberId" : memberId},
+				success : function(result) {
+					$("#wholeContent").html(result);
+				},
+				error : function() {
+					alert("오류가 발생했습니다.");
+				}
+			})
+		})
 	});
 </script>
 </head>
@@ -134,7 +148,6 @@
 					</th:block>
 					<th:block th:if = "${session.auth != null}">
 						<th:block th:if = "${session.auth.grade == 'emp'}">
-						
 						<li class="dropdown">
 							<a class="w3-bar-item w3-button">상품 관리</a>
 							<div class="dropdown-content">
@@ -160,6 +173,11 @@
 							</div>
 						</li>
 					</th:block>
+					<th:block th:if = "${session.auth.grade == 'mem'}">
+						<input type = "hidden" class = "memberId" th:value = "${session.auth.userId}"/>
+						<a id = "wishList" class="w3-bar-item w3-button">찜 목록</a>
+						<a id = "cartList" class="w3-bar-item w3-button">장바구니</a>
+					</th:block>
 						<a href = "/login/logout" class="w3-bar-item w3-right  w3-button">로그아웃</a>
 					</th:block>
 				</div>
@@ -172,8 +190,8 @@
 			<header class="w3-display-container w3-content w3-wide"
 				style="background-color: black; max-width: 1500px; position: relative; text-align: center;"
 				id="home">
-				<img src="/static/img/mainImage2.jpg" alt="Architecture"
-					style="width: 60%; height: 60%; display: inline-block;">
+				<img src="/static/img/mainImage.jpg" alt="Architecture"
+					style="width: 70%; height: 70%; display: inline-block;">
 				<div class="w3-display-middle w3-margin-top w3-center">
 					<h1 class="w3-xxlarge w3-text-white">
 						<span class="w3-padding w3-black w3-opacity-min"><b

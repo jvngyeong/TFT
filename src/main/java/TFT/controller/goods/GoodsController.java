@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import TFT.command.GoodsCommand;
+import TFT.service.goods.GoodsDeleteService;
 import TFT.service.goods.GoodsDetailService;
 import TFT.service.goods.GoodsListService;
+import TFT.service.goods.GoodsUpdateService;
 import TFT.service.goods.GoodsWriteService;
 import jakarta.servlet.http.HttpSession;
 
@@ -32,6 +34,12 @@ public class GoodsController {
 	
 	@Autowired
 	GoodsDetailService goodsDetailService;
+	
+	@Autowired
+	GoodsUpdateService goodsUpdateService;
+	
+	@Autowired
+	GoodsDeleteService goodsDeleteService;
 	
 	@GetMapping("goodsList")
 	public String goodsList(Model model) {
@@ -67,5 +75,38 @@ public class GoodsController {
 	public String goodsDetail(String goodsNum, Model model) {
 		goodsDetailService.execute(goodsNum, model);
 		return "thymeleaf/goods/goodsDetail";
+	}
+	
+	@GetMapping("goodsUpdate")
+	public String goodsUpdate(String goodsNum, Model model) {
+		goodsDetailService.execute(goodsNum, model);
+		return "thymeleaf/goods/goodsUpdate";
+	}
+	
+	@PostMapping("goodsUpdate")
+	public @ResponseBody ResponseEntity<Map<String, String>> goodsUpdate(@Validated GoodsCommand goodsCommand, BindingResult result, 
+			HttpSession session) {
+		Map<String, String> errors = new HashMap<>();
+		if(result.hasErrors()) {
+			for(FieldError error : result.getFieldErrors()) {
+				if(error.getField().equals("goodsPrice") && error.isBindingFailure()) {
+					errors.put(error.getField(), "* 상품 가격에는 문자를 입력할 수 없습니다.");
+				}
+				else if(!error.getField().equals("goodsMainImage") && !error.getField().equals("goodsDetailImage")){
+					errors.put(error.getField(), error.getDefaultMessage());
+				}
+			}
+		}
+		else {
+			goodsUpdateService.execute(goodsCommand, session);
+		}
+		return ResponseEntity.ok().body(errors);
+	}
+	
+	@RequestMapping("goodsDelete")
+	public String goodsDelete(String goodsNum, Model model) {
+		goodsDeleteService.execute(goodsNum);
+		goodsListService.execute(model);
+		return "thymeleaf/goods/goodsList";
 	}
 }

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="/static/css/goodsForm.css">
+	<script type="text/javascript">
+		$(function(){
+			$("#goodsForm").submit(function(event){
+				let fileInput = $("input[name = 'goodsMainImage']");
+				if(fileInput.length > 0 && !fileInput[0].files.length){
+					event.preventDefault(); // 폼 제출 중지
+					return false;
+				}
+				event.preventDefault();
+				var formData = new FormData(this);
+				$.ajax({
+					url : "/goods/goodsUpdate",
+					type : "post",
+					data : formData,
+					dataType : "json",
+					contentType: false, 
+					processData: false,
+					success : function(result){
+						if(JSON.stringify(result) == '{}'){
+							location.href = "/";
+						}
+						else{
+			            	$(".errMsg").css("color", "none");
+			            	$(".errMsg").text("");
+							for (let field in result) {
+					            const errorMessage = result[field]; // 각 필드의 에러 메시지
+					            if(errorMessage != ''){
+					            	$("#"+field).text(errorMessage);
+					            	$("#"+field).css("color", "red");
+					            	$("input[name='" + field + "']").focus();
+					            }
+					        }
+						}
+					},
+					error : function(){
+						alert("오류가 발생했습니다.");
+					}
+				});
+			});
+		})
+		function fileDel(btn, orgFile, storeFile, kind){
+			$.ajax({
+				type : "post",
+				url : "/file/fileDel",
+				data : {"orgFile" : orgFile, "storeFile" : storeFile},
+				dataType : "text",
+				success : function(result){
+					if(result == 1){
+						$(btn).text("삭제 취소");
+						if(kind == "main"){
+							$("#main").css("display", "none");
+							$("#mainFile").html("<input type = 'file' name = 'goodsMainImage' />");
+						}
+						else{
+							$(kind).val("");
+						}
+					}
+					else{
+						if(kind == "main"){
+							$("#main").css("display", "");
+							$("#mainFile").html("");
+						}
+						else{
+							$(kind).val(orgFile);
+						}
+						$(btn).text("삭제");
+					}
+				},
+				error : function(){
+					alert("서버 오류입니다;;");
+				}
+			});
+		}
+	</script>
+</head>
+<body>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" id="contact">
+					<br />
+					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">상품 수정</h3>
+					<p>상품의 정보를 수정해주세요.</p>
+					<form id = "goodsForm" method = "post" enctype="multipart/form-data" onsubmit = "return fileChk(event);">
+						<div class = "dust-class">
+							<label for ="goodsNum"><span>* </span>상품 번호</label>
+							<input class="txt-input" type="text" placeholder="상품 이름" name="goodsNum" th:value = "${dto.goodsNum}" readonly="readonly">
+							<div id = "goodsNum" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="goodsName"><span>* </span>상품 이름</label>
+							<input class="txt-input" type="text" placeholder="상품 이름" name="goodsName" th:value = "${dto.goodsName}">
+							<div id = "goodsName" class = "errMsg"></div>
+						</div>
+						<div class = "dust-class">
+							<label for ="goodsPrice"><span>* </span>상품 가격</label>
+							<input class="txt-input" type="text" placeholder="상품 가격" name="goodsPrice" th:value = "${dto.goodsPrice}">
+							<div id = "goodsPrice" class = "errMsg"></div>
+						</div>
+
+						<div class = "dust-class">
+							<label for ="goodsContents"><span>* </span>상품 설명</label>
+							<textarea placeholder = "상품에 대한 설명을 적어주세요." class="txt-textarea" rows="5" cols="60" name = "goodsContents">[[${dto.goodsContents}]]</textarea>
+							<div id = "goodsContents" class = "errMsg"></div>
+						</div>
+						
+						<div class = "dust-class">
+							<label for ="visitCount"><span>* </span>조회수</label>
+							<input class="txt-input" type="text" placeholder="조회수" name="visitCount" th:value = "${dto.visitCount}">
+						</div>
+						
+						<div class = "dust-class">
+							<label for ="empNum"><span>* </span>등록한 직원</label>
+							<input class="txt-input" type="text" placeholder="등록한 직원" name="empNum" th:value = "${dto.empNum}">
+						</div>
+						
+						<div class = "dust-class">
+							<label for ="goodsRegist"><span>* </span>등록일</label>
+							<input class="txt-input" type="date" placeholder="등록일" name="goodsRegist"
+								th:value = "${#dates.format(dto.goodsRegist, 'yyyy-MM-dd')}">
+						</div>
+						
+						<div class = "dust-class">
+							<label for ="updateEmpNum"><span>* </span>마지막으로 수정한 직원</label>
+							<input class="txt-input" type="text" placeholder="마지막으로 수정한 직원" name="updateEmpNum" th:value = "${dto.updateEmpNum}" readonly="readonly">
+						</div>
+						
+						<div class = "dust-class">
+							<label for ="goodsUpdateDate"><span>* </span>마지막 수정일</label>
+							<input class="txt-input" type="text" placeholder="마지막 수정일" name="goodsUpdateDate"
+								th:value = "${#dates.format(dto.goodsUpdateDate, 'yyyy-MM-dd')}" readonly="readonly">
+						</div>
+						
+						<div class = "dust-class">
+						<label for ="goodsMainImage" name = "goodsMainImage"><span>* </span>상품 메인 이미지</label>
+							<span id = "mainFile"></span>
+							<input class="txt-input" id = "main" type="text" th:value = "${dto.goodsMainImage}" readonly="readonly">
+							<button class="w3-button w3-black w3-section" type = "button" th:attr = "onclick=|javascript:fileDel(this, '${dto.goodsMainImage}', '${dto.goodsMainStoreImage}', 'main');|">삭제</button>
+							<div id = "goodsMainImage" class = "errMsg"></div>
+						</div>
+						
+						<div class = "dust-class">
+							<th:block th:each="image, idx : ${#strings.arraySplit(dto.goodsDetailImage, '/')}">
+								<label for ="goodsDetailImage"><span>* </span>상품 상세 이미지</label>
+								<input style = "display:inline-block !important; width : 500px;" class="txt-input" th:id="|detail${idx.index}|" type="text" th:value = "${image}" readonly="readonly">
+								<button class="w3-button w3-black w3-section" type = "button" th:attr = "onclick=|javascript:fileDel(this, '${image}', '${#strings.arraySplit(dto.goodsDetailStoreImage, '[`/]')[idx.index]}', '#detail${idx.index}');|">삭제</button>
+								<br> 
+							</th:block>
+							<input type="file" id = "detailFile" name="goodsDetailImage" multiple="multiple"/>
+							<div id = "goodsDetailImage" class = "errMsg"></div>
+						</div>
+						
+						
+						
+						
+						<div class = "dust-class">
+							<input class="w3-button w3-black w3-section" type="submit" value = "수정하기">
+						</div>
+					</form>
+				</div>
+				</div>	
+				<!-- End page content -->
+			</div>
+		</div>
+	</div>
+</body>
+</html>

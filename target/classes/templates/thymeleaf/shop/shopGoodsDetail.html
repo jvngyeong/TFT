@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/css/employeeInfo.css">
+<link rel="stylesheet" href="/static/css/shopGoodsDetail.css">
+<script type="text/javascript">
+	$(function(){
+		wishCheck();
+		$(".wishBtn").click(function(){
+			wishMerge();
+		});
+		$(".cartBtn").click(function(){
+			cartMerge();
+		});
+		$(".buyBtn").click(function(){
+			buy();
+		});
+	});
+	
+	function cartMerge(){
+		var memberId = sessionCheck("cartMerge");
+		alert(memberId);
+		if(memberId != null){
+			$.ajax({
+				url : "/cart/cartMerge",
+				type : "post",
+				data : {"goodsNum" : '[[${dto.goodsNum}]]', "memberId" : memberId, "cartQty" : $("#cartQty").val()},
+				success : function(memberId){
+					var con = confirm("장바구니로 이동하시겠습니까?");
+					if(con){
+						$.ajax({
+							url : "/cart/cartList",
+							dataType : "html",
+							data : {"memberId" : memberId},
+							success : function(result){
+								$("#wholeContent").html(result);
+							},
+							error : function(result){
+								
+							}
+						});
+					}
+				},
+				error: function (xhr, status, error) {
+				    alert("오류가 발생했습니다.");
+				}
+			})
+		}
+	}
+	
+	function wishMerge(){
+		var memberId = sessionCheck("wishMerge");
+		if(memberId != null){
+			$.ajax({
+				url : "/wish/wishMerge",
+				data : {"goodsNum" : '[[${dto.goodsNum}]]', "memberId" : memberId},
+				success : function(result){
+					if(result == "200"){
+						$(".wishBtn").css("background-color", "red");
+						$(".wishBtn").css("color", "white");
+					}
+					else{
+						$(".wishBtn").css("background-color", "white");
+						$(".wishBtn").css("color", "black");
+					}
+				},
+				error: function (xhr, status, error) {
+				    alert("오류가 발생했습니다.");
+				}
+			})
+		}
+	}
+	
+	function wishCheck(){
+		var memberId = sessionCheck("wishCheck");
+		if(memberId != null){
+			$.ajax({
+				url : "/wish/wishCheck",
+				data : {"goodsNum" : '[[${dto.goodsNum}]]', "memberId" : memberId},
+				success : function(result){
+					if(result == "200"){
+						$(".wishBtn").css("background-color", "red");
+						$(".wishBtn").css("color", "white");
+					}
+					else{
+						$(".wishBtn").css("background-color", "white");
+						$(".wishBtn").css("color", "black");
+					}
+				},
+				error: function (xhr, status, error) {
+				    alert("오류가 발생했습니다.");
+				}
+			})
+		}
+	}
+	
+	function sessionCheck(method){
+		var memberId = null;
+		$.ajax({
+			url : "/shop/sessionCheck",
+			async: false,
+			success : function(result){
+				if(result == "000"){
+					if(method != "wishCheck"){
+						alert("로그인이 필요한 서비스입니다.");
+						$.ajax({
+							url : "/login/loginForm",
+							dataType : "html",
+							success : function(result){
+								$("#wholeContent").html(result);
+							},
+							error : function(){
+								alert("오류가 발생했습니다.");
+							}
+						})
+					}
+				}
+				else if(result == "900"){
+					alert("직원은 이용할 수 없는 서비스입니다.");
+				}
+				else{
+					memberId = result;
+				}
+			},
+			error : function(){
+				alert("오류가 발생했습니다.");
+			}
+		});
+		return memberId;
+	}
+</script>
+</head>
+<body>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="card-wrapper">
+				<div class="card">
+					<!-- card left -->
+					<div class="product-imgs">
+						<div class="img-display">
+							<div class="img-showcase">
+								<img
+									th:src="|/static/upload/${dto.goodsMainStoreImage}|"
+									alt="shoe image">
+							</div>
+						</div>
+					</div>
+					<!-- card right -->
+					<div class="product-content">
+						<h2 class="product-title">[[${dto.goodsName}]]</h2>
+
+						<div class="product-price">
+							<h3 class="new-price">
+								<span>[[${#numbers.formatCurrency(dto.goodsPrice)}]]원</span>
+							</h3>
+						</div>
+
+						<div class="product-detail">
+							<h3>상품 설명 :</h3>
+							<p>[[${dto.goodsContents}]]</p>
+							<ul>
+								<li>Available: <span>in stock</span></li>
+							</ul>
+						</div>
+
+						<div class="purchase-info">
+							<input type="number" min="0" value="1" id = "cartQty">
+							<button type="button" class="cartBtn">
+								장바구니 <i class="fas fa-shopping-cart"></i>
+							</button>
+							<button type="button" class="buyBtn">구매하기</button>
+							<button type="button" class="wishBtn">찜하기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

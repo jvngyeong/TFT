@@ -13,4 +13,8 @@ public interface GoodsMapper {
 	public List<GoodsDTO> goodsSelectList();
 
 	public GoodsDTO goodsSelectOne(String goodsNum);
+
+	public int goodsUpdate(GoodsDTO dto);
+
+	public void goodsDelete(String goodsNum);
 }

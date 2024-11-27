@@ -27,4 +27,22 @@
 		select <include refid="goodsColumns"></include>
 		from goods where goods_num = #{goodsNum}
 	</select>
+	
+	<update id="goodsUpdate" parameterType="goodsDTO">
+		update goods 
+		<trim prefix="set" suffixOverrides=",">
+			GOODS_PRICE = #{goodsPrice}, 
+			GOODS_CONTENTS = #{goodsContents}, VISIT_COUNT = #{visitCount}, 
+			GOODS_UPDATE_DATE = sysdate, EMP_NUM = #{empNum}, 
+			GOODS_REGIST = #{goodsRegist}, 
+			UPDATE_EMP_NUM = #{updateEmpNum}, GOODS_NAME = #{goodsName}
+			<if test = "goodsMainImage != null">, goods_main_image = #{goodsMainImage}, goods_main_store_image = #{goodsMainStoreImage}</if>
+			<if test = "goodsDetailImage != null">, goods_detail_image = #{goodsDetailImage}, goods_detail_store_image = #{goodsDetailStoreImage}</if>
+			</trim>
+			where goods_num = #{goodsNum}
+	</update>
+	
+	<delete id="goodsDelete">
+		delete from goods where goods_num = #{goodsNum}
+	</delete>
 </mapper>
