@@ -18,7 +18,7 @@ public class GoodsDeleteService {
 	public void execute(String goodsNum) {
 		GoodsDTO dto = goodsMapper.goodsSelectOne(goodsNum);
 		URL resource = getClass().getClassLoader().getResource("static/upload");
-		String fileDir = "C:\\Users\\jun gyeong\\Real_Time_Data_Process\\eclipse-workspace\\TFT\\target\\classes\\static\\upload";
+		String fileDir = "C:\\Real_Time_Data_Process\\eclipse-workspace\\TFT\\target\\classes\\static\\upload";
 		File file = new File(fileDir + "/" + dto.getGoodsMainStoreImage());
 		if (file.exists())
 			file.delete();

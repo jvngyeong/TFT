@@ -21,5 +21,6 @@ public class EmployeeDTO {
 	String empJumin; // EMP_JUMIN: 주민등록번호
 	String empEmail; // EMP_EMAIL: 이메일
 	Date empHireDate; // EMP_HIRE_DATE: 입사일
-	MultipartFile empImage; // EMP_IMAGE: 직원 사진 경로
+	String empImage; // EMP_IMAGE: 직원 사진 경로
+	String empStoreImage; // EMP_IMAGE: 직원 사진 경로
 }

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">	
+	function goodsIpgoDetail(ipgoNum){
+		$.ajax({
+			url : "/goodsIpgo/goodsIpgoDetail",
+			data : {"ipgoNum" : ipgoNum},
+			dataType : "html",
+			success : function(result){
+				$("#wholeContent").html(result);
+			},
+			error : function(){
+				alert("오류가 발생했습니다.");
+			}
+		});
+	}
+</script>
+</head>
+<body>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" style="padding-bottom: 0 !important;" id="contact">
+					<br />
+					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">입고 목록</h3>
+					<p>상품의 입고 목록입니다.</p>
+				</div>
+				<div class="w3-row-padding w3-grayscale">
+					<th:block th:each = "list : ${list}">
+						<div class="w3-col l3 m6 w3-margin-bottom">
+							<h3>[[${list.IpgoNum}]]</h3>
+							<p class="w3-opacity">[[${list.goodsNum}]]</p>
+							<p>
+								입고일 : [[${#dates.format(list.ipgoDate, 'yyyy-MM-dd')}]]
+							</p>
+							<p></p>
+							<p>
+								<button class="w3-button w3-light-grey w3-block" th:attr = "onclick=|goodsIpgoDetail('${list.ipgoNum}')|">상세 보기</button>
+							</p>
+						</div>
+					</th:block>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

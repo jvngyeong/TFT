@@ -19,4 +19,8 @@
 	<select id="wishCheck">
 		select '200' from wish where goods_num = #{goodsNum} and member_num = #{memberNum}
 	</select>
+	
+	<select id="wishSelectList">
+		select member_num, goods_num, wish_date from wish where member_num = #{memberNum}
+	</select>
 </mapper>

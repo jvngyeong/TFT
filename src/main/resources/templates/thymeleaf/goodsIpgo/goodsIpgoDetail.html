@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="/static/css/employeeInfo.css">
+	<script type="text/javascript">
+		function goodsIpgoUpdate(ipgoNum){
+			$.ajax({
+				url : "/goodsIpgo/goodsIpgoUpdate",
+				data : {"ipgoNum" : ipgoNum},
+				dataType : "html",
+				success : function(result){
+					$("#wholeContent").html(result);
+				},
+				error : function(result){
+					alert("오류가 발생했습니다.");
+				}
+			})
+		}
+		
+		function goodsIpgoDelete(ipgoNum){
+			var con = confirm("입고 정보를 삭제하시겠습니까?");
+			if(con){
+				$.ajax({
+					url : "/goodsIpgo/goodsIpgoDelete",
+					data : {"ipgoNum" : ipgoNum},
+					dataType : "html",
+					success : function(result){
+						$("#wholeContent").html(result);
+					},
+					error : function(result){
+						alert("오류가 발생했습니다.");
+					}
+				})
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" id="contact">
+					<br />
+					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">입고번호 : [[${dto.ipgoNum}]]의 상세정보입니다.</h3>
+					<table border = '1'>
+						<tr>
+							<td class = "txt">상품 번호</td>
+							<td>
+								[[${dto.goodsNum}]]
+							</td>
+						</tr>
+						
+						<tr>
+							<td class = "txt">입고 수량</td>
+							<td>
+								[[${dto.ipgoQty}]]
+							</td>
+						</tr>
+						<tr>
+							<td class = "txt">입고 날짜</td>
+							<td class = "content">
+								[[${#dates.format(dto.ipgoDate, 'yyyy-MM-dd')}]]
+							</td>
+						</tr>
+						<tr>
+							<td class = "txt">제조일</td>
+							<td class = "content">
+								[[${#dates.format(dto.madeDate, 'yyyy-MM-dd')}]]
+							</td>
+						</tr>
+						<tr>
+							<td class = "txt">입고 가격</td>
+							<td>
+								[[${#numbers.formatCurrency(dto.ipgoPrice)}]]
+							</td>
+						</tr>
+						<tr>
+						<tr>
+							<td class = "txt">등록한 사원</td>
+							<td>
+								[[${dto.empNum}]]
+							</td>
+						</tr>
+					</table>
+
+					<input class="w3-button w3-black w3-section" type="button" value = "입고 수정" th:attr="onclick=|goodsIpgoUpdate('${dto.ipgoNum}')|">
+					<input class="w3-button w3-black w3-section" type="button" value = "입고 삭제" th:attr="onclick=|goodsIpgoDelete('${dto.ipgoNum}')|">
+				</div>	
+				<!-- End page content -->
+			</div>
+		</div>
+	</div>
+</body>
+</html>

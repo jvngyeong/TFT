@@ -45,4 +45,11 @@
 	<delete id="goodsDelete">
 		delete from goods where goods_num = #{goodsNum}
 	</delete>
+	
+	<select id="goodsWishListSelect">
+		select <include refid="goodsColumns"></include> from goods where goods_num in 
+		<foreach collection="goodsNums" open="(" close=")" index="index" item="goodsNum" separator=",">
+		#{goodsNum}
+		</foreach>
+	</select>
 </mapper>

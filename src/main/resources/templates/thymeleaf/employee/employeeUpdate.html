@@ -9,6 +9,12 @@
 			});
 			
 		    $('#empUpdateForm').submit(function(event) {
+		    	let fileInput = $("input[name = 'empImage']");
+				if(fileInput.length > 0 && !fileInput[0].files.length){
+					alert("사진을 등록해주세요.");
+					event.preventDefault(); // 폼 제출 중지
+					return false;
+				}
 		        event.preventDefault(); // 기본 폼 제출 방지
 		        
 		        // FormData 객체를 사용하여 폼 데이터 준비
@@ -43,6 +49,39 @@
 				});
 			});
 		});
+		function fileDel(btn, orgFile, storeFile, kind){
+			$.ajax({
+				type : "post",
+				url : "/file/fileDel",
+				data : {"orgFile" : orgFile, "storeFile" : storeFile},
+				dataType : "text",
+				success : function(result){
+					if(result == 1){
+						$(btn).text("삭제 취소");
+						if(kind == "main"){
+							$("#main").css("display", "none");
+							$("#mainFile").html("<input type = 'file' name = 'empImage' />");
+						}
+						else{
+							$(kind).val("");
+						}
+					}
+					else{
+						if(kind == "main"){
+							$("#main").css("display", "");
+							$("#mainFile").html("");
+						}
+						else{
+							$(kind).val(orgFile);
+						}
+						$(btn).text("삭제");
+					}
+				},
+				error : function(){
+					alert("서버 오류입니다;;");
+				}
+			});
+		}
 	</script>
 </head>
 <body>
@@ -108,11 +147,18 @@
 							<input class="txt-input" type="email" placeholder="이메일" name="empEmail" th:value = "${dto.empEmail}">
 							<div id = "empEmail" class = "errMsg"></div>
 						</div>
+						
+						
 						<div class = "dust-class">
 						<label for ="empImage" name = "empImage"><span>* </span>직원 사진</label>
-							<input class="txt-input" type="file" name="empImage">
+							<span id = "mainFile"></span>
+							<input class="txt-input" id = "main" type="text" th:value = "${dto.empImage}" readonly="readonly">
+							<button class="w3-button w3-black w3-section" type = "button" th:attr = "onclick=|javascript:fileDel(this, '${dto.empImage}', '${dto.empStoreImage}', 'main');|">삭제</button>
 							<div id = "empImage" class = "errMsg"></div>
 						</div>
+						
+						
+						
 					<input class="w3-button w3-black w3-section" type="submit" value = "정보 수정">
 					</form>
 				</div>	

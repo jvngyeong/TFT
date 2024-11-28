@@ -22,6 +22,7 @@ import TFT.service.employee.EmployeeListService;
 import TFT.service.employee.EmployeePwConService;
 import TFT.service.employee.EmployeeUpdateService;
 import TFT.service.employee.EmployeeWriteService;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("employee")
@@ -104,15 +105,14 @@ public class EmployeeController {
 	}
 	
 	@PostMapping("employeeUpdate")
-	public @ResponseBody ResponseEntity<?> employeeUpdate(@Validated EmployeeCommand employeeCommand, BindingResult result, Model model) {
-		System.out.println(result);
+	public @ResponseBody ResponseEntity<?> employeeUpdate(@Validated EmployeeCommand employeeCommand, BindingResult result, Model model, HttpSession session) {
 		Map<String, String> errors = new HashMap<>();
 		if(!result.hasErrors()) {
 			if(!employeeCommand.getEmpPw().equals(employeeCommand.getEmpPwCon())) {
 				errors.put("empPwCon", "비밀번호 확인 : 비밀번호와 동일하게 입력해주세요.");
 				return ResponseEntity.ok().body(errors);
 			}
-			employeeUpdateService.execute(employeeCommand);
+			employeeUpdateService.execute(employeeCommand, session);
 			return ResponseEntity.ok().body(errors);
 		}
 		else {

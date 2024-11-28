@@ -7,6 +7,7 @@
 			$("#goodsForm").submit(function(event){
 				let fileInput = $("input[name = 'goodsMainImage']");
 				if(fileInput.length > 0 && !fileInput[0].files.length){
+					alert("사진을 등록해주세요.");
 					event.preventDefault(); // 폼 제출 중지
 					return false;
 				}
@@ -155,9 +156,6 @@
 							<input type="file" id = "detailFile" name="goodsDetailImage" multiple="multiple"/>
 							<div id = "goodsDetailImage" class = "errMsg"></div>
 						</div>
-						
-						
-						
 						
 						<div class = "dust-class">
 							<input class="w3-button w3-black w3-section" type="submit" value = "수정하기">

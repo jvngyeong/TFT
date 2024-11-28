@@ -1,10 +1,15 @@
 .product-image {
 	float: left;
 	width: 20%;
+	
 }
 img{
 	height : 100%;
 	width : 100%;
+}
+
+.qty{
+	width:50px !important;
 }
 
 .product-details {
@@ -49,13 +54,6 @@ img{
 	zoom: 1;
 }
 
-/* Apply clearfix in a few places */
-/* Apply dollar signs */
-.product .product-price:before, .product .product-line-price:before,
-	.totals-value:before {
-	content: "$";
-}
-
 /* Body/Header stuff */
 body {
 	font-weight: 100;
@@ -81,10 +79,6 @@ label {
 	border-bottom: 1px solid #eee;
 }
 
-.column-labels .product-image, .column-labels .product-details,
-	.column-labels .product-removal {
-	text-indent: -9999px;
-}
 
 /* Product entries */
 .product {
@@ -94,7 +88,11 @@ label {
 }
 
 .product .product-image {
-	text-align: center;
+	text-align: center !important;
+}
+
+.product-image{
+	text-align: center !important;
 }
 
 .product .product-image img {

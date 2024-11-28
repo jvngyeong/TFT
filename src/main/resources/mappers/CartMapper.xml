@@ -53,4 +53,12 @@
 		on c.goods_num = g.goods_num
 		where member_num = #{memberNum}
 	</select>
+	
+	<delete id="cartGoodsRemove">
+		delete from cart where goods_num = #{goodsNum} and member_num = #{memberNum}
+	</delete>
+	
+	<update id="cartQtyUpdate">
+		update cart set cart_qty = #{cartQty} where goods_num = #{goodsNum} and member_num = #{memberNum}
+	</update>
 </mapper>

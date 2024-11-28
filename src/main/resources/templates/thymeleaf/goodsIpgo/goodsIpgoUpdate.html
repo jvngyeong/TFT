@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/css/goodsForm.css">
+<script type="text/javascript">
+	$(function() {
+		$("#ipgoForm").submit(function(event) {
+			event.preventDefault();
+			var formData = new FormData(this);
+			$.ajax({
+				url : "/goodsIpgo/goodsIpgoUpdate",
+				type : "post",
+				data : formData,
+				dataType : "json",
+				contentType : false,
+				processData : false,
+				success : function(result) {
+					if (JSON.stringify(result) == '{}') {
+						location.href = "/";
+					} else {
+						$(".errMsg").css("color", "none");
+						$(".errMsg").text("");
+						for ( let field in result) {
+							const errorMessage = result[field]; // 각 필드의 에러 메시지
+							if (errorMessage != '') {
+								$("#" + field).text(errorMessage);
+								$("#" + field).css("color", "red");
+								$("input[name='" + field + "']").focus();
+							}
+						}
+					}
+				},
+				error : function() {
+					alert("오류가 발생했습니다.");
+				}
+			});
+		});
+	})
+</script>
+</head>
+<body>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" id="contact">
+					<br />
+					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">입고
+						수정</h3>
+					<p>입고 정보를 수정해주세요.</p>
+					<form id="ipgoForm" method="post">
+						<div class="dust-class">
+							<label for="ipgoNum"><span>* </span>입고 번호</label> <input
+								class="txt-input" type="text" placeholder="입고 번호" name="ipgoNum"
+								th:value="${dto.ipgoNum}" readonly="readonly">
+							<div id="ipgoNum" class="errMsg"></div>
+						</div>
+						<div class="dust-class">
+							<label for="goodsNum"><span>* </span>상품 번호</label> <input
+								class="txt-input" type="text" placeholder="상품 이름"
+								name="goodsNum" th:value="${dto.goodsNum}" readonly="readonly">
+							<div id="goodsNum" class="errMsg"></div>
+						</div>
+						<div class="dust-class">
+							<label for="ipgoQty"><span>* </span>입고 수량</label> <input
+								class="txt-input" type="number" placeholder="입고 수량"
+								name="ipgoQty" th:value="${dto.ipgoQty}">
+							<div id="ipgoQty" class="errMsg"></div>
+						</div>
+
+						<div class="dust-class">
+							<label for="ipgoDate"><span>* </span>입고 날짜</label> <input
+								class="txt-input" type="text" placeholder="입고 날짜"
+								name="ipgoDate"
+								th:value="${#dates.format(dto.ipgoDate, 'yyyy-MM-dd')}" readonly="readonly">
+						</div>
+
+						<div class="dust-class">
+							<label for="madeDate"><span>* </span>제조일</label> <input
+								class="txt-input" type="date" placeholder="제조일" name="madeDate"
+								th:value="${#dates.format(dto.madeDate, 'yyyy-MM-dd')}">
+						</div>
+
+						<div class="dust-class">
+							<label for="ipgoPrice"><span>* </span>입고 가격</label> <input
+								class="txt-input" type="text" placeholder="입고 가격"
+								name="ipgoPrice" th:value="${dto.ipgoPrice}">
+							<div id="ipgoPrice" class="errMsg"></div>
+						</div>
+
+						<div class="dust-class">
+							<label for="empNum"><span>* </span>등록한 직원</label> <input
+								class="txt-input" type="text" placeholder="등록한 직원" name="empNum"
+								th:value="${dto.empNum}">
+						</div>
+
+
+						<input class="w3-button w3-black w3-section" type="submit"
+							value="수정하기">
+
+					</form>
+				</div>
+			</div>
+			<!-- End page content -->
+		</div>
+	</div>
+</body>
+</html>

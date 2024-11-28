@@ -116,6 +116,30 @@
 				}
 			})
 		})
+		$("#goodsIpgoList").click(function() {
+			$.ajax({
+				url : "/goodsIpgo/goodsIpgoList",
+				dataType : "html",
+				success : function(result) {
+					$("#wholeContent").html(result);
+				},
+				error : function() {
+					alert("오류가 발생했습니다.");
+				}
+			})
+		})
+		$("#goodsIpgoWrite").click(function() {
+			$.ajax({
+				url : "/goodsIpgo/goodsIpgoWrite",
+				dataType : "html",
+				success : function(result) {
+					$("#wholeContent").html(result);
+				},
+				error : function() {
+					alert("오류가 발생했습니다.");
+				}
+			})
+		})
 		$("#cartList").click(function() {
 			var memberId = $(".memberId").val();
 			$.ajax({
@@ -129,6 +153,51 @@
 					alert("오류가 발생했습니다.");
 				}
 			})
+		})
+		$("#wishList").click(function() {
+			var memberId = $(".memberId").val();
+			$.ajax({
+				url : "/wish/wishList",
+				dataType : "html",
+				data : {"memberId" : memberId},
+				success : function(result) {
+					$("#wholeContent").html(result);
+				},
+				error : function() {
+					alert("오류가 발생했습니다.");
+				}
+			})
+		})
+		$("#myPage").click(function() {
+			if($(".memberId").val() == null){
+				var userId = $(".empId").val();
+				$.ajax({
+					url : "/myPage/empMyPage",
+					dataType : "html",
+					data : {"empId" : userId},
+					success : function(result) {
+						$("#wholeContent").html(result);
+					},
+					error : function() {
+						alert("오류가 발생했습니다.");
+					}
+				})
+			}
+			if($(".empId").val() == null){
+				var userId = $(".memberId").val();
+				$.ajax({
+					url : "/myPage/memMyPage",
+					dataType : "html",
+					data : {"memberId" : userId},
+					success : function(result) {
+						$("#wholeContent").html(result);
+					},
+					error : function() {
+						alert("오류가 발생했습니다.");
+					}
+				})
+			}
+			
 		})
 	});
 </script>
@@ -148,12 +217,19 @@
 					</th:block>
 					<th:block th:if = "${session.auth != null}">
 						<th:block th:if = "${session.auth.grade == 'emp'}">
+						<input type = "hidden" class = "empId" th:value = "${session.auth.userId}"/>
 						<li class="dropdown">
 							<a class="w3-bar-item w3-button">상품 관리</a>
 							<div class="dropdown-content">
 									<a id="goodsList" class="w3-bar-item w3-button">상품 목록</a> 
-									<a id="goodsWrite" class="w3-bar-item w3-button">상품 등록</a> 
-									<a id="goodsIpgo" class="w3-bar-item w3-button">상품 입고</a>
+									<a id="goodsWrite" class="w3-bar-item w3-button">상품 등록</a>
+							</div>
+						</li>
+						<li class="dropdown">
+							<a class="w3-bar-item w3-button">입고 관리</a>
+							<div class="dropdown-content">
+									<a id="goodsIpgoList" class="w3-bar-item w3-button">입고 목록</a> 
+									<a id="goodsIpgoWrite" class="w3-bar-item w3-button">입고 등록</a>
 							</div>
 						</li>
 						
@@ -178,6 +254,7 @@
 						<a id = "wishList" class="w3-bar-item w3-button">찜 목록</a>
 						<a id = "cartList" class="w3-bar-item w3-button">장바구니</a>
 					</th:block>
+						<a id = "myPage" class="w3-bar-item w3-button">마이페이지</a>
 						<a href = "/login/logout" class="w3-bar-item w3-right  w3-button">로그아웃</a>
 					</th:block>
 				</div>

@@ -24,7 +24,9 @@ public class CartListService {
 	public void execute(String memberId, Model model) {
 		String memberNum = memberMapper.getMemberNum(memberId);
 		List<GoodsCartDTO> list = cartMapper.cartSelectList(memberNum);
-		
+		for(GoodsCartDTO dto : list) {
+			dto.setTotal(dto.getCartDTO().getCartQty() * dto.getGoodsDTO().getGoodsPrice());
+		}
 		model.addAttribute("list", list);
 	}
 }

@@ -7,27 +7,27 @@
 	<insert id="employeeRegist">
 		insert into employees
 		(emp_num, emp_id, emp_pw, emp_name, emp_addr, emp_addr_detail, emp_post, emp_phone, emp_jumin, 
-		emp_email, emp_hire_date, emp_image)
+		emp_email, emp_hire_date, emp_image, emp_store_image)
 		values
 		(#{empNum}, #{empId}, #{empPw}, #{empName}, #{empAddr}, #{empAddrDetail}, #{empPost}, #{empPhone}, #{empJumin}, 
-		#{empEmail}, sysdate, null)
+		#{empEmail}, sysdate, #{empImage}, #{empStoreImage})
 	</insert>
 	
 	<select id="employeeSelectList" resultType = "employeeDTO">
 		select emp_num, emp_id, emp_pw, emp_name, emp_addr, emp_addr_detail, emp_post, emp_phone,
-		emp_jumin, emp_email, emp_hire_date, emp_image from employees
+		emp_jumin, emp_email, emp_hire_date, emp_image, emp_store_image from employees
 	</select>
 	
 	<select id="employeeSelectOne" resultType = "employeeDTO">
 		select emp_id, emp_pw, emp_name, emp_addr, emp_addr_detail, emp_post, emp_phone,
-		emp_jumin, emp_email, emp_hire_date, emp_image from employees
+		emp_jumin, emp_email, emp_hire_date, emp_image, emp_store_image from employees
 		where emp_num = #{empNum}	
 	</select>
 	
 	<update id="employeeUpdate">
 		update employees set emp_id = #{empId}, emp_name = #{empName}, emp_addr = #{empAddr}, 
 		emp_addr_detail = #{empAddrDetail}, emp_post = #{empPost}, emp_phone = #{empPhone}, emp_jumin = #{empJumin},
-		emp_email = #{empEmail}, emp_image = null where emp_num = #{empNum}
+		emp_email = #{empEmail}, emp_image = #{empImage}, emp_store_image = #{empStoreImage} where emp_num = #{empNum}
 	</update>
 	
 	<delete id="employeeDelete">

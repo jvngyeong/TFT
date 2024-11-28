@@ -19,13 +19,12 @@
 	
 	function cartMerge(){
 		var memberId = sessionCheck("cartMerge");
-		alert(memberId);
 		if(memberId != null){
 			$.ajax({
 				url : "/cart/cartMerge",
 				type : "post",
 				data : {"goodsNum" : '[[${dto.goodsNum}]]', "memberId" : memberId, "cartQty" : $("#cartQty").val()},
-				success : function(memberId){
+				success : function(result){
 					var con = confirm("장바구니로 이동하시겠습니까?");
 					if(con){
 						$.ajax({
@@ -116,7 +115,9 @@
 					}
 				}
 				else if(result == "900"){
-					alert("직원은 이용할 수 없는 서비스입니다.");
+					if(method != "wishCheck"){
+						alert("직원은 이용할 수 없는 서비스입니다.");
+					}
 				}
 				else{
 					memberId = result;
@@ -176,6 +177,14 @@
 				</div>
 			</div>
 		</div>
+		<div style="margin-top: 0 !important;" class="w3-container w3-padding-32" id="contact">
+    <div style="display: flex; justify-content: space-between; text-align: center;">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16" style="flex: 1; background-color:black; color:white">상품 상세정보</h3>
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16" style="flex: 1; background-color:lightgray;">문의</h3>
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16" style="flex: 1; background-color:lightgray;">리뷰</h3>
+    </div>
+</div>
+
 	</div>
 </body>
 </html>

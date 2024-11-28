@@ -25,6 +25,11 @@ input[name = 'goodsNum'] {
     color: #fff;
 }
 
+input[name = 'ipgoNum'] {
+    background-color: #d9d9d9;
+    color: #fff;
+}
+
 .dust-class {
     width: 50%;
     box-sizing: border-box;

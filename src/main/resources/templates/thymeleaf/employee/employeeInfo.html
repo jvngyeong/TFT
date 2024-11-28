@@ -30,64 +30,64 @@
 					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">[[${dto.empName}]]님의 상세정보입니다.</h3>
 					<table border = '1'>
 						<tr>
-							<td>직원 번호</td>
+							<td class = "txt">직원 번호</td>
 							<td>
 								[[${empNum}]]
 							</td>
 						</tr>
 						
 						<tr>
-							<td>아이디</td>
+							<td class = "txt">아이디</td>
 							<td>
 								[[${dto.empId}]]
 							</td>
 						</tr>
 						<tr>
-							<td>이름</td>
+							<td class = "txt">이름</td>
 							<td>
 								[[${dto.empName}]]
 							</td>
 						</tr>
 						<tr>
-							<td>주소</td>
+							<td class = "txt">주소</td>
 							<td>
 								[[${dto.empAddr}]]
 							</td>
 						</tr>
 						<tr>
-							<td>상세 주소</td>
+							<td class = "txt">상세 주소</td>
 							<td>
 								[[${dto.empAddrDetail}]]
 							</td>
 						</tr>
 						<tr>
-							<td>우편 번호</td>
+							<td class = "txt">우편 번호</td>
 							<td>
 								[[${dto.empPost}]]
 							</td>
 						</tr>
 						<tr>
-							<td>전화번호</td>
+							<td class = "txt">전화번호</td>
 							<td>
 								[[${dto.empPhone}]]
 							</td>
 						</tr>
 						<tr>
-							<td>주민등록번호</td>
+							<td class = "txt">주민등록번호</td>
 							<td>
 								[[${dto.empJumin}]]
 							</td>
 						</tr>
 						<tr>
-							<td>이메일</td>
+							<td class = "txt">이메일</td>
 							<td>
 								[[${dto.empEmail}]]
 							</td>
 						</tr>
 						<tr>
-							<td>이미지</td>
+							<td class = "txt">이미지</td>
 							<td>
-								[[${dto.empImage}]]
+								<img class = "img" alt="이미지" th:src="|/static/upload/${dto.empStoreImage}|">
 							</td>
 						</tr>
 					</table>

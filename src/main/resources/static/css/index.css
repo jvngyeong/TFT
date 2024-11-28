@@ -22,7 +22,9 @@
 	font-weight: 900;
 	font-style: normal;
 }
-
+input:button{
+	font-family: "Noto Sans KR", sans-serif !important;
+}
 a, p, span, h1, h2, h3, label {
 	font-family: "Noto Sans KR", sans-serif;
 	font-optical-sizing: auto;
