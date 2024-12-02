@@ -4,33 +4,40 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/static/css/loginForm.css">
-
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
 <script type="text/javascript">
-	$(function(){
-		$("#submitBtn").click(function(){
-			$("#loginForm").submit(); 
-		})
-		$("#loginForm").submit(function(event){
-			event.preventDefault();
-			$.ajax({
-				url : "/login/loginCheck",
-				type : "post",
-				data : {"id" : $("#id").val(), "password" : $("#password").val(), 
-					"isAutoLogin" : $("#autoLogin").prop("checked"), "isIdStore" : $("#idStore").prop("checked")},
-				success : function(result){
-					if(result == '200'){
-						location.href = "/";
-					}
-					else{
-						alert(result);
-					}
-				},
-				error : function(){
-					alert("오류가 발생했습니다.")
-				}
-			})
-		})
-	})
+$(function() {
+    $("#submitBtn").click(function() {
+    	const params = new URLSearchParams(window.location.search);
+    	const popupValue = params.get('popup');
+        $.ajax({
+            url: "/login/loginCheck?popup="+popupValue,
+            type: "post",
+            data: {
+                "id": $("#id").val(),
+                "password": $("#password").val(),
+                "isAutoLogin": $("#autoLogin").prop("checked"),
+                "isIdStore": $("#idStore").prop("checked")
+            },
+            success: function(result) {
+                if(result == '200') {
+                    location.href = "/";
+                } 
+                else if(result == "201"){
+                	window.opener.location.reload();
+                	window.close();
+                }
+                else {
+                    alert(result);
+                }
+            },
+            error: function() {
+                alert("오류가 발생했습니다.");
+            }
+        });
+    });
+});
 </script>
 </head>
 <body>
@@ -71,7 +78,7 @@
 							<input type="password" name="password" required="required" id = "password"> <label>비밀번호</label>
 						</div>
 						<div class="button" id = "submitBtn">
-							<div class="text">Submit</div>
+							<div class="text">로그인</div>
 						</div>
 					</form>
 				</div>

@@ -29,4 +29,9 @@
 	<delete id="goodsIpgoDelete">
 		delete from goods_ipgo where ipgo_num = #{ipgoNum} 
 	</delete>
+	
+	<select id="goodsIpgoStockSelect">
+		select <include refid="goodsIpgoColumns"></include> from goods_ipgo
+		where goods_num = #{goodsNum}	
+	</select>
 </mapper>

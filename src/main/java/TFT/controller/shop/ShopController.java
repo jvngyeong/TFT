@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import TFT.domain.AuthInfoDTO;
 import TFT.service.goods.GoodsDetailService;
 import TFT.service.goods.GoodsListService;
+import TFT.service.goodsIpgo.GoodsIpgoStockService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -20,6 +22,9 @@ public class ShopController {
 	
 	@Autowired
 	GoodsDetailService goodsDetailService;
+	
+	@Autowired
+	GoodsIpgoStockService goodsIpgoStockService;
 	
 	@GetMapping("shopMain")
 	public String shopMain() {
@@ -34,6 +39,7 @@ public class ShopController {
 	
 	@GetMapping("goodsDetail")
 	public String shopGoodsDetail(String goodsNum, Model model) {
+		goodsIpgoStockService.execute(goodsNum, model);
 		goodsDetailService.execute(goodsNum, model);
 		return "thymeleaf/shop/shopGoodsDetail";
 	}
@@ -52,5 +58,11 @@ public class ShopController {
 				return auth.getUserId();
 			}
 		}
+	}
+	
+	@PostMapping("shopGoodsInfo")
+	public String shopGoodsInfo(String goodsNum, Model model) {
+		goodsDetailService.execute(goodsNum, model);
+		return "thymeleaf/shop/shopGoodsInfo";
 	}
 }

@@ -4,126 +4,227 @@
 <link rel="stylesheet" href="/static/css/employeeInfo.css">
 <link rel="stylesheet" href="/static/css/shopGoodsDetail.css">
 <script type="text/javascript">
-	$(function(){
+	$(function() {
 		wishCheck();
-		$(".wishBtn").click(function(){
+		shopGoodsInfo();
+		$(".wishBtn").click(function() {
 			wishMerge();
 		});
-		$(".cartBtn").click(function(){
+		$(".cartBtn").click(function() {
 			cartMerge();
 		});
-		$(".buyBtn").click(function(){
+		$(".buyBtn").click(function() {
 			buy();
 		});
+
+		$("#shopGoodsInfo").click(function() {
+			shopGoodsInfo();
+		});
+		
+		$("#goodsInquire").click(function(){
+			inquire();
+		})
+		
+		$("#goodsReview").click(function(){
+			review();
+		})
 	});
 	
-	function cartMerge(){
+	function buy(){
+		$.ajax({
+			url : "/purchase/goodsOrder",
+			type : "get",
+			dataType : "html",
+			data : {
+				"purchaseQty" : $("#cartQty").val(),
+				"goodsNum" : '[[${dto.goodsNum}]]',
+				"goodsUnitPrice" : '[[${dto.goodsPrice}]]'
+				},
+			success : function(result){
+				$("#wholeContent").html();
+			},
+			error : function(){
+				alert("오류가 발생했습니다.");
+			}
+		})
+	}
+	
+	function review(){
+		$.ajax({
+			url : "/review/reviewList",
+			type : "get",
+			dataType : "html",
+			data : {"goodsNum" : '[[${dto.goodsNum}]]'},
+			success : function(result){
+				$("#content").html(result);
+				$("#goodsReview").css("background-color", "black");
+				$("#goodsReview").css("color", "white");
+				$("#goodsInquire").css("background-color", "lightgray");
+				$("#goodsInquire").css("color", "black");
+				$("#shopGoodsInfo").css("background-color", "lightgray");
+				$("#shopGoodsInfo").css("color", "black");
+			},
+			error : function(){
+				alert("오류가 발생했습니다.");
+			}
+		})
+	}
+	function inquire(){
+		$.ajax({
+			url : "/inquire/goodsInquire?popup=true",
+			type : "post",
+			dataType : "html",
+			data : {"goodsNum" : '[[${dto.goodsNum}]]'},
+			success : function(result){
+				$("#content").html(result);
+				$("#goodsInquire").css("background-color", "black");
+				$("#goodsInquire").css("color", "white");
+				$("#shopGoodsInfo").css("background-color", "lightgray");
+				$("#shopGoodsInfo").css("color", "black");
+				$("#goodsReview").css("background-color", "lightgray");;
+				$("#goodsReview").css("color", "black");
+			},
+			error : function(){
+				alert("오류가 발생했습니다.");
+			}
+		})
+	}
+	function shopGoodsInfo(){
+		$.ajax({
+			url : "/shop/shopGoodsInfo",
+			type : "post",
+			dataType : "html",
+			data : {"goodsNum" : '[[${dto.goodsNum}]]'},
+			success : function(result){
+				$("#content").html(result);
+				$("#shopGoodsInfo").css("background-color", "black");
+				$("#shopGoodsInfo").css("color", "white");
+				$("#goodsInquire").css("background-color", "lightgray");
+				$("#goodsInquire").css("color", "black");
+				$("#goodsReview").css("background-color", "lightgray");;
+				$("#goodsReview").css("color", "black");
+			},
+			error : function(){
+				alert("오류가 발생했습니다.");
+			}
+		})
+	}
+
+	function cartMerge() {
 		var memberId = sessionCheck("cartMerge");
-		if(memberId != null){
+		if (memberId != null) {
 			$.ajax({
 				url : "/cart/cartMerge",
 				type : "post",
-				data : {"goodsNum" : '[[${dto.goodsNum}]]', "memberId" : memberId, "cartQty" : $("#cartQty").val()},
-				success : function(result){
+				data : {
+					"goodsNum" : '[[${dto.goodsNum}]]',
+					"memberId" : memberId,
+					"cartQty" : $("#cartQty").val()
+				},
+				success : function(result) {
 					var con = confirm("장바구니로 이동하시겠습니까?");
-					if(con){
+					if (con) {
 						$.ajax({
 							url : "/cart/cartList",
 							dataType : "html",
-							data : {"memberId" : memberId},
-							success : function(result){
+							data : {
+								"memberId" : memberId
+							},
+							success : function(result) {
 								$("#wholeContent").html(result);
 							},
-							error : function(result){
-								
+							error : function(result) {
+								alert("오류가 발생했습니다.");
 							}
 						});
 					}
 				},
-				error: function (xhr, status, error) {
-				    alert("오류가 발생했습니다.");
+				error : function(xhr, status, error) {
+					alert("오류가 발생했습니다.");
 				}
 			})
 		}
 	}
-	
-	function wishMerge(){
+
+	function wishMerge() {
 		var memberId = sessionCheck("wishMerge");
-		if(memberId != null){
+		if (memberId != null) {
 			$.ajax({
 				url : "/wish/wishMerge",
-				data : {"goodsNum" : '[[${dto.goodsNum}]]', "memberId" : memberId},
-				success : function(result){
-					if(result == "200"){
+				data : {
+					"goodsNum" : '[[${dto.goodsNum}]]',
+					"memberId" : memberId
+				},
+				success : function(result) {
+					if (result == "200") {
 						$(".wishBtn").css("background-color", "red");
 						$(".wishBtn").css("color", "white");
-					}
-					else{
+					} else {
 						$(".wishBtn").css("background-color", "white");
 						$(".wishBtn").css("color", "black");
 					}
 				},
-				error: function (xhr, status, error) {
-				    alert("오류가 발생했습니다.");
+				error : function(xhr, status, error) {
+					alert("오류가 발생했습니다.");
 				}
 			})
 		}
 	}
-	
-	function wishCheck(){
+
+	function wishCheck() {
 		var memberId = sessionCheck("wishCheck");
-		if(memberId != null){
+		if (memberId != null) {
 			$.ajax({
 				url : "/wish/wishCheck",
-				data : {"goodsNum" : '[[${dto.goodsNum}]]', "memberId" : memberId},
-				success : function(result){
-					if(result == "200"){
+				data : {
+					"goodsNum" : '[[${dto.goodsNum}]]',
+					"memberId" : memberId
+				},
+				success : function(result) {
+					if (result == "200") {
 						$(".wishBtn").css("background-color", "red");
 						$(".wishBtn").css("color", "white");
-					}
-					else{
+					} else {
 						$(".wishBtn").css("background-color", "white");
 						$(".wishBtn").css("color", "black");
 					}
 				},
-				error: function (xhr, status, error) {
-				    alert("오류가 발생했습니다.");
+				error : function(xhr, status, error) {
+					alert("오류가 발생했습니다.");
 				}
 			})
 		}
 	}
-	
-	function sessionCheck(method){
+
+	function sessionCheck(method) {
 		var memberId = null;
 		$.ajax({
 			url : "/shop/sessionCheck",
-			async: false,
-			success : function(result){
-				if(result == "000"){
-					if(method != "wishCheck"){
+			async : false,
+			success : function(result) {
+				if (result == "000") {
+					if (method != "wishCheck" && method != "inquireWrite") {
 						alert("로그인이 필요한 서비스입니다.");
 						$.ajax({
 							url : "/login/loginForm",
 							dataType : "html",
-							success : function(result){
+							success : function(result) {
 								$("#wholeContent").html(result);
 							},
-							error : function(){
+							error : function() {
 								alert("오류가 발생했습니다.");
 							}
 						})
 					}
-				}
-				else if(result == "900"){
-					if(method != "wishCheck"){
+				} else if (result == "900") {
+					if (method != "wishCheck") {
 						alert("직원은 이용할 수 없는 서비스입니다.");
 					}
-				}
-				else{
+				} else {
 					memberId = result;
 				}
 			},
-			error : function(){
+			error : function() {
 				alert("오류가 발생했습니다.");
 			}
 		});
@@ -141,9 +242,7 @@
 					<div class="product-imgs">
 						<div class="img-display">
 							<div class="img-showcase">
-								<img
-									th:src="|/static/upload/${dto.goodsMainStoreImage}|"
-									alt="shoe image">
+								<img th:src="|/static/upload/${dto.goodsMainStoreImage}|">
 							</div>
 						</div>
 					</div>
@@ -161,30 +260,46 @@
 							<h3>상품 설명 :</h3>
 							<p>[[${dto.goodsContents}]]</p>
 							<ul>
-								<li>Available: <span>in stock</span></li>
+								<th:block th:if = "${ipgoDTO != null}">
+									<li class = "available">Available: <span>in stock</span></li>
+								</th:block>
+								<th:block th:if = "${ipgoDTO == null}">
+									<li class="unavailable">Unavailable: <span>Out of stock</span></li>
+								</th:block>
 							</ul>
 						</div>
 
 						<div class="purchase-info">
-							<input type="number" min="0" value="1" id = "cartQty">
-							<button type="button" class="cartBtn">
-								장바구니 <i class="fas fa-shopping-cart"></i>
-							</button>
-							<button type="button" class="buyBtn">구매하기</button>
+							<th:block th:if = "${ipgoDTO != null}">
+								<input type="number" min="1" value="1" th:max = "${ipgoDTO.ipgoQty}" id="cartQty">
+								<button type="button" class="cartBtn">
+									장바구니 <i class="fas fa-shopping-cart"></i>
+								</button>
+								<button type="button" class="buyBtn">구매하기</button>
+							</th:block>
 							<button type="button" class="wishBtn">찜하기</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div style="margin-top: 0 !important;" class="w3-container w3-padding-32" id="contact">
-    <div style="display: flex; justify-content: space-between; text-align: center;">
-        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16" style="flex: 1; background-color:black; color:white">상품 상세정보</h3>
-        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16" style="flex: 1; background-color:lightgray;">문의</h3>
-        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16" style="flex: 1; background-color:lightgray;">리뷰</h3>
-    </div>
-</div>
-
+		<div style="margin-top: 0 !important;"
+			class="w3-container" id="contact">
+			<div
+				style="display: flex; justify-content: space-between; text-align: center;">
+				<h3 id="shopGoodsInfo"
+					class="w3-border-bottom w3-border-light-grey w3-padding-16"
+					style="flex: 1; background-color: black; color: white">상품 상세정보</h3>
+				<h3 id="goodsInquire"
+					class="w3-border-bottom w3-border-light-grey w3-padding-16"
+					style="flex: 1; background-color: lightgray;">문의</h3>
+				<h3 id="goodsReview"
+					class="w3-border-bottom w3-border-light-grey w3-padding-16"
+					style="flex: 1; background-color: lightgray;">리뷰</h3>
+			</div>
+		</div>
+		<div id = "content">
+		</div>
 	</div>
 </body>
 </html>

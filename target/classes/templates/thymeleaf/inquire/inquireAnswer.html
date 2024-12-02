@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/static/css/goodsForm.css">
+<link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" id="contact">
+					<form action = "/inquire/inquireAnswer" id="inquireForm" method="post" enctype="multipart/form-data">
+						<div class="dust-class">
+							<label for="inquireNum"><span>* </span>문의 번호</label> 
+							<input id="inquireNum" type="text" name="inquireNum" th:value = "${dto.inquireNum}" readonly="readonly"/>
+						</div>
+						
+						<div class="dust-class">
+							<label for="memberNum"><span>* </span>문의한 회원</label> 
+							<input id="memberNum" type="text" name="memberNum" th:value = "${dto.memberNum}" readonly="readonly"/>
+						</div>
+						
+						<div class="dust-class">
+							<label for="goodsNum"><span>* </span>상품 번호</label> 
+							<input id="goodsNum" type="text" name="goodsNum" th:value = "${dto.goodsNum}" readonly="readonly"/>
+						</div>
+						
+						<div class="dust-class">
+							<label for="inquireKind"><span>* </span>종류</label> 
+							<input id="inquireKind" type="text" name="inquireSubject" th:value = "${dto.inquireKind}" readonly="readonly"/>
+						</div>
+
+						<div class="dust-class">
+							<label for="inquireSubject"><span>* </span>제목</label> 
+							<input id="inquireSubject" type="text" name="inquireSubject" th:value = "${dto.inquireSubject}"/>
+						</div>
+
+						<div class="dust-class">
+							<label for="inquireContents"><span>* </span>내용</label>
+							<textarea id="inquireContents" rows="10" cols="50" class="txt-textarea" name="inquireContents">[[${dto.inquireContents}]]</textarea>
+						</div>
+						
+						<div class="dust-class">
+							<label for="inquireDate"><span>* </span>질문일</label>
+							<input id="inquireDate" type="date" name="inquireDate" th:value = "${#dates.format(dto.inquireDate, 'yyyy-MM-dd')}"/>
+						</div>
+						
+						<div class="dust-class">
+							<label for="inquireAnswer"><span>* </span>답변</label>
+							<input id="inquireAnswer" type="text" name="inquireAnswer" th:value = "${dto.inquireAnswer}"/>
+						</div>
+						
+						<div class="dust-class">
+							<label for="inquireAnswerDate"><span>* </span>답변일</label>
+							<input id="inquireAnswerDate" type="date" name="inquireAnswerDate" th:value = "${#dates.format(dto.inquireAnswerDate, 'yyyy-MM-dd')}" readonly="readonly"/>
+						</div>
+						
+						<div class="dust-class">
+							<label for="empNum"><span>* </span>답변한 직원</label>
+							<input id="empNum" type="text" name="empNum" th:value = "${dto.empNum}" readonly="readonly"/>
+						</div>
+						
+						<div class="dust-class">
+							<input class="w3-button w3-black w3-section" type="submit" value="등록하기">
+						</div>
+					</form>
+				</div>
+			</div>
+			<!-- End page content -->
+		</div>
+	</div>
+	</div>
+</body>
+</html>

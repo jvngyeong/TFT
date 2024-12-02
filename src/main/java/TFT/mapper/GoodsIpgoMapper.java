@@ -17,4 +17,6 @@ public interface GoodsIpgoMapper {
 	public void goodsIpgoUpdate(GoodsIpgoDTO dto);
 
 	public void goodsIpgoDelete(String ipgoNum);
+
+	public GoodsIpgoDTO goodsIpgoStockSelect(String goodsNum);
 }

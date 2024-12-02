@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px; padding-top: 0 !important; padding-bottom: 0 !important;">
+			    <div style = "padding-left: 16px !important; padding-right: 16px !important;">
+				    <div class="w3-container w3-padding-32" 
+					     style="padding: 0 !important;" 
+					     id="contact">
+					    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">상품 상세정보</h3>
+				    	<th:block th:each = "image : ${#strings.arraySplit(dto.goodsDetailStoreImage, '/')}">
+							<img class = "detailImage" th:src = "|/static/upload/${image}|" />
+						</th:block>	
+					</div>			    	
+			    </div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

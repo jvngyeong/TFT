@@ -9,6 +9,7 @@ import TFT.domain.AuthInfoDTO;
 import TFT.domain.LoginDTO;
 import TFT.mapper.LoginMapper;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
@@ -19,7 +20,7 @@ public class LoginCheckService {
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
-	public String execute(LoginCommand loginCommand, HttpSession session, HttpServletResponse response) {
+	public String execute(LoginCommand loginCommand, HttpSession session, HttpServletResponse response, String popup) {
 		LoginDTO dto = new LoginDTO();
 		dto = loginMapper.loginIdCheck(loginCommand.getId());
 		if(dto == null) {
@@ -48,9 +49,8 @@ public class LoginCheckService {
 			}
 			if(loginCommand.isIdStore()) {
 				Cookie cookie = new Cookie("isIdStore", auth.getUserId());
-				cookie.setPath("/");
+				cookie.setPath("/");  // 경로 설정
 				cookie.setMaxAge(60 * 60 * 24 * 30);
-				// 웹 브라우저로 전달
 				response.addCookie(cookie);
 			}
 			else {
@@ -59,6 +59,9 @@ public class LoginCheckService {
 				cookie.setMaxAge(0);
 				// 웹 브라우저로 전달
 				response.addCookie(cookie);
+			}
+			if(popup.equals("true")) {
+				return "201";
 			}
 			return "200";
 		}

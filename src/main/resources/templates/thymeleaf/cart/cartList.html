@@ -4,6 +4,21 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/static/css/cartList.css">
 <script type="text/javascript">
+	function buy(){
+		var goodsNums = $(".goodsNum").val();
+		$.ajax({
+			url : "/purchase/goodsOrder",
+			type : "get",
+			dataType : "html",
+			data : {"goodsNums" : $(".goodsNum").val()},
+			success : function(result){
+				$("#wholeContent").html();
+			},
+			error : function(){
+				alert("오류가 발생했습니다.");
+			}
+		})
+	}
 	$(function(){
 		let totalPrice = 0;
 		$(".totalPrice").each(function(){
@@ -97,11 +112,11 @@
 
   <div class="totals">
     <div class="totals-item totals-item-total">
-      <label>Grand Total</label>
+      <label>총 금액</label>
       <div class="totals-value" id="cart-total"></div>
     </div>
   </div>
-      <button class="checkout">Checkout</button>
+      <button class="checkout" onclick = "buy()">결제</button>
 </div>
 </body>
 </html>

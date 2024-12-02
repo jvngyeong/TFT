@@ -19,6 +19,26 @@ img{
     width: 100%;
     display: block;
 }
+#content {
+    display: flex;
+    flex-direction: column; /* 요소를 세로로 정렬 */
+}
+#content .detailImage {
+    width: 60%; /* 너비를 60%로 유지 */
+    margin: 0 auto; /* 가로 중앙 정렬 */
+    margin-bottom: 10px; /* 요소 간 간격 */
+}
+table {
+    width: 1000px;
+    border-collapse: collapse;
+}
+
+
+th {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
 .img-display{
     overflow: hidden;
 }
@@ -108,12 +128,17 @@ img{
 .product-detail ul li{
     margin: 0;
     list-style: none;
-    background: url(https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/checked.png) left center no-repeat;
     background-size: 18px;
     padding-left: 1.7rem;
     margin: 0.4rem 0;
     font-weight: 600;
     opacity: 0.9;
+}
+.available{
+	background: url(https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/checked.png) left center no-repeat;
+}
+.unavailable{
+	background: url("/static/img/unchecked.png") left center no-repeat;
 }
 .product-detail ul li span{
     font-weight: 400;

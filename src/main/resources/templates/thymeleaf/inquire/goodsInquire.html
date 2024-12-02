@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript">
+	$(function(){
+		$(".inqAnswer").css("display", "none");
+		$("#inquireWrite").click(function(){
+			var session = sessionCheck("inquireWrite");
+			if(session != null){
+				let popupWindow = window.open("/inquire/inquireWrite?popup=true&goodsNum="+$("#goodsNum").val(), "", "width=700, height=650, top=100, left=100");
+				let popupCheckInterval = setInterval(function(){
+					if(popupWindow.closed){
+						clearInterval(popupCheckInterval);
+						inquire();
+					}
+				}, 500);
+			}
+		});
+	})
+	
+	function inquireOpen(inquireNum){
+		$("#inq_"+inquireNum).toggle();
+	}
+</script>
+</head>
+<body>
+<input type = "hidden" id = "goodsNum" th:value = "${goodsNum}" />
+<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px; padding-top: 0 !important; padding-bottom: 0 !important;">
+			    <div style = "padding-left: 16px !important; padding-right: 16px !important;">
+				    <div class="w3-container w3-padding-32" 
+					     style="padding: 0 !important;" 
+					     id="contact">
+					    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">문의 목록</h3>
+					</div>
+			    	<input id = "inquireWrite" class="w3-button w3-black w3-section" type="button" value="문의 작성">
+			    	<table style = "width : 80%">
+					    <thead>
+					        <tr>
+					            <th width = "20%">답변 상태</th>
+					            <th width = "30%">제목</th>
+					            <th>작성자</th>
+					            <th>작성일</th>
+					        </tr>
+					    </thead>
+					    <tbody>
+					    	<th:block th:each = "list : ${list}">
+					    		<tr th:attr = "onclick=|inquireOpen('${list.inquireNum}')|">
+						    		<td>
+						    			<th:block th:if = "${list.inquireAnswer == null}">
+						    				답변 대기
+						    			</th:block>
+						    			<th:block th:if = "${list.inquireAnswer != null}">
+						    				답변 완료
+						    			</th:block>
+						    		</td>
+						    		<td>[[${list.inquireSubject}]]</td>
+						    		<td>[[${list.memberNum}]]</td>
+						    		<td>[[${#dates.format(list.inquireDate, 'yyyy-MM-dd')}]]</td>
+								</tr>
+								<th:block th:if = "${list.inquireAnswer != null}">
+									<tr th:id = "${'inq_'+list.inquireNum}" class = "inqAnswer" style = "height : 100px !important;">
+										<td colspan = '2'>[[${list.inquireAnswer}]]</td>
+										<td>[[${list.empNum}]]</td>
+										<td>[[${#dates.format(list.inquireAnswerDate, 'yyyy-MM-dd')}]]</td>
+									</tr>
+								</th:block>
+					    	</th:block>
+					    </tbody>
+					</table>
+			    </div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

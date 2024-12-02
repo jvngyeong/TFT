@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/static/css/goodsForm.css">
+<link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" id="contact">
+					<form action = "/inquire/inquireWrite" id="inquireForm" method="post" enctype="multipart/form-data">
+						<input name = "goodsNum" type = "hidden" th:value = "${goodsNum}" />
+						<div class="dust-class">
+							<label for="inquireKind"><span>* </span>종류</label> <select
+								id="inquireKind" name="inquireKind">
+								<option value="상품">상품(성능 / 사이즈)</option>
+								<option>배송</option>
+								<option>교환</option>
+								<option>반품 / 취소 / 환불</option>
+								<option>기타</option>
+							</select>
+						</div>
+
+						<div class="dust-class">
+							<label for="inquireSubject"><span>* </span>제목</label> <input
+								id="inquireSubject" type="text" name="inquireSubject" />
+							</td>
+						</div>
+
+						<div class="dust-class">
+							<label for="inquireContents"><span>* </span>내용</label>
+							<textarea id="inquireContents" rows="10" cols="50"
+								class="txt-textarea" name="inquireContents"></textarea>
+						</div>
+						<div class="dust-class">
+							<input class="w3-button w3-black w3-section" type="submit"
+								value="등록하기">
+						</div>
+					</form>
+				</div>
+			</div>
+			<!-- End page content -->
+		</div>
+	</div>
+	</div>
+</body>
+</html>

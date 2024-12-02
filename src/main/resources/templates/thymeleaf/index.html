@@ -15,10 +15,22 @@
 	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/static/js/daumAddressScript.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
 <script type="text/javascript">
+	function inquireList(){
+		$.ajax({
+			url : "/inquire/inquireList",
+			dataType : "html",
+			success : function(result) {
+				$("#wholeContent").html(result);
+			},
+			error : function() {
+				alert("오류가 발생했습니다.");
+			}
+		})
+	}
 	$(function() {
+		console.log(document.cookie);  // 쿠키를 확인
 		$("#shopBtn").click(function() {
 			$.ajax({
 				url : "/shop/shopMain",
@@ -168,6 +180,9 @@
 				}
 			})
 		})
+		$("#inquireList").click(function() {
+			inquireList();
+		})
 		$("#myPage").click(function() {
 			if($(".memberId").val() == null){
 				var userId = $(".empId").val();
@@ -255,6 +270,7 @@
 						<a id = "cartList" class="w3-bar-item w3-button">장바구니</a>
 					</th:block>
 						<a id = "myPage" class="w3-bar-item w3-button">마이페이지</a>
+						<a id = "inquireList" class="w3-bar-item w3-button">문의 목록</a>
 						<a href = "/login/logout" class="w3-bar-item w3-right  w3-button">로그아웃</a>
 					</th:block>
 				</div>
@@ -296,27 +312,27 @@
 						<div class="w3-display-container">
 							<div class="w3-display-topleft w3-black w3-padding">Summer
 								House</div>
-							<img src="/w3images/house5.jpg" alt="House" style="width: 100%">
+							<img src="" alt="House" style="width: 100%">
 						</div>
 					</div>
 					<div class="w3-col l3 m6 w3-margin-bottom">
 						<div class="w3-display-container">
 							<div class="w3-display-topleft w3-black w3-padding">Brick
 								House</div>
-							<img src="/w3images/house2.jpg" alt="House" style="width: 100%">
+							<img src="" alt="House" style="width: 100%">
 						</div>
 					</div>
 					<div class="w3-col l3 m6 w3-margin-bottom">
 						<div class="w3-display-container">
 							<div class="w3-display-topleft w3-black w3-padding">Renovated</div>
-							<img src="/w3images/house3.jpg" alt="House" style="width: 100%">
+							<img src="" alt="House" style="width: 100%">
 						</div>
 					</div>
 					<div class="w3-col l3 m6 w3-margin-bottom">
 						<div class="w3-display-container">
 							<div class="w3-display-topleft w3-black w3-padding">Barn
 								House</div>
-							<img src="/w3images/house4.jpg" alt="House" style="width: 100%">
+							<img src="" alt="House" style="width: 100%">
 						</div>
 					</div>
 				</div>
@@ -326,27 +342,27 @@
 						<div class="w3-display-container">
 							<div class="w3-display-topleft w3-black w3-padding">Summer
 								House</div>
-							<img src="/w3images/house2.jpg" alt="House" style="width: 99%">
+							<img src="" alt="House" style="width: 99%">
 						</div>
 					</div>
 					<div class="w3-col l3 m6 w3-margin-bottom">
 						<div class="w3-display-container">
 							<div class="w3-display-topleft w3-black w3-padding">Brick
 								House</div>
-							<img src="/w3images/house5.jpg" alt="House" style="width: 99%">
+							<img src="" alt="House" style="width: 99%">
 						</div>
 					</div>
 					<div class="w3-col l3 m6 w3-margin-bottom">
 						<div class="w3-display-container">
 							<div class="w3-display-topleft w3-black w3-padding">Renovated</div>
-							<img src="/w3images/house4.jpg" alt="House" style="width: 99%">
+							<img src="" alt="House" style="width: 99%">
 						</div>
 					</div>
 					<div class="w3-col l3 m6 w3-margin-bottom">
 						<div class="w3-display-container">
 							<div class="w3-display-topleft w3-black w3-padding">Barn
 								House</div>
-							<img src="/w3images/house3.jpg" alt="House" style="width: 99%">
+							<img src="" alt="House" style="width: 99%">
 						</div>
 					</div>
 				</div>
@@ -367,7 +383,7 @@
 
 				<div class="w3-row-padding w3-grayscale">
 					<div class="w3-col l3 m6 w3-margin-bottom">
-						<img src="/w3images/team2.jpg" alt="John" style="width: 100%">
+						<img src="" alt="John" style="width: 100%">
 						<h3>John Doe</h3>
 						<p class="w3-opacity">CEO & Founder</p>
 						<p>Phasellus eget enim eu lectus faucibus vestibulum.
@@ -377,7 +393,7 @@
 						</p>
 					</div>
 					<div class="w3-col l3 m6 w3-margin-bottom">
-						<img src="/w3images/team1.jpg" alt="Jane" style="width: 100%">
+						<img src="" alt="Jane" style="width: 100%">
 						<h3>Jane Doe</h3>
 						<p class="w3-opacity">Architect</p>
 						<p>Phasellus eget enim eu lectus faucibus vestibulum.
@@ -387,7 +403,7 @@
 						</p>
 					</div>
 					<div class="w3-col l3 m6 w3-margin-bottom">
-						<img src="/w3images/team3.jpg" alt="Mike" style="width: 100%">
+						<img src="" alt="Mike" style="width: 100%">
 						<h3>Mike Ross</h3>
 						<p class="w3-opacity">Architect</p>
 						<p>Phasellus eget enim eu lectus faucibus vestibulum.
@@ -397,7 +413,7 @@
 						</p>
 					</div>
 					<div class="w3-col l3 m6 w3-margin-bottom">
-						<img src="/w3images/team4.jpg" alt="Dan" style="width: 100%">
+						<img src="" alt="Dan" style="width: 100%">
 						<h3>Dan Star</h3>
 						<p class="w3-opacity">Architect</p>
 						<p>Phasellus eget enim eu lectus faucibus vestibulum.
@@ -412,7 +428,7 @@
 				<div class="w3-container w3-padding-32" id="contact">
 					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Contact</h3>
 					<p>Lets get in touch and talk about your next project.</p>
-					<form action="/action_page.php" target="_blank">
+					<form action="" target="_blank">
 						<input class="w3-input w3-border" type="text" placeholder="Name"
 							required name="Name"> <input
 							class="w3-input w3-section w3-border" type="text"
@@ -429,7 +445,7 @@
 
 				<!-- Image of location/map -->
 				<div class="w3-container">
-					<img src="/w3images/map.jpg" class="w3-image" style="width: 100%">
+					<img src="" class="w3-image" style="width: 100%">
 				</div>
 
 				<!-- End page content -->

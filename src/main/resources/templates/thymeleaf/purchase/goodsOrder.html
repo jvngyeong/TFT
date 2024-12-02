@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>thymeleaf/purchase/goodsOrder.html</title>
+<script type = "text/javascript" src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type = "text/javascript" src = "/static/js/daumAddressScript.js"></script>
+</head>
+<body>
+	<table width="700" align="center">
+		<caption>주문서</caption>
+		<tr>
+			<td><hr />1. 주문 상품<br /></td>
+		</tr>
+	</table>
+
+	<table width="700" align="center" border = '1'>
+		<tr>
+			<td>상품 대표 이미지</td>
+			<td>주문 상품 정보</td>
+			<td>수량 / 상품금액</td>
+			<td>금액</td>
+		</tr>
+		<tr th:each = "dto : ${list}">
+			<td><img th:src = "|/static/upload/${dto.goodsDTO.goodsMainStoreImage}|" width = "200"></td>
+			<td>[[${dto.goodsDTO.goodsName}]]</td>
+			<td>[[${#numbers.formatInteger(dto.cartDTO.cartQty, '1', 'COMMA')}]] / [[${#numbers.formatCurrency(dto.goodsDTO.goodsPrice)}]]</td>
+			<td>[[${#numbers.formatCurrency(dto.cartDTO.cartQty * dto.goodsDTO.goodsPrice)}]]</td>
+		</tr>
+	</table>
+	<form action="goodsOrder" method="post">
+		<input type = "hidden" th:value = "${goodsNums}" name = "goodsNums" />
+		<input type = "hidden" th:value = "${sumPrice + sumDeliveryCost}" name = "totalPaymentPrice" />
+		<input type = "hidden" th:value = "${list[0].goodsDTO.goodsName + '외 ' + (list.size() - 1) + '개'}" name = "purchaseName" />
+		<table width="700" align="center" border = '1'>
+			<tr>
+				<td>
+					<table width="350">
+						<tr>
+							<td colspan=2>2. 배송 정보</td>
+						</tr>
+						<tr>
+							<td>받는 사람</td>
+							<td><input type="text" name="deliveryName" /></td>
+						</tr>
+						<tr>
+							<td>받는 사람 주소</td>
+							<td><input type="text" name="deliveryAddr" onclick="execDaumPostcode();" id = "sample4_roadAddress" readonly="readonly"/></td>
+						</tr>
+						<tr>
+							<td>받는 사람 상세 주소</td>
+							<td><input type="text" name="deliveryAddrDetail"  /></td>
+						</tr>
+						<tr>
+							<td>받는 사람 우편번호</td>
+							<td><input type="text" name="deliveryPost" readonly="readonly" id = "sample4_postcode"/></td>
+						</tr>
+						<tr>
+							<td>받는 사람 연락처</td>
+							<td><input type="tel" name="deliveryPhone" /></td>
+						</tr>
+						<tr>
+							<td>배송 메시지</td>
+							<td><input type="text" name="message" /></td>
+						</tr>
+					</table>
+			</td>
+			<td align="right">
+				<table width="350">
+					<tr>
+						<td colspan=2>3. 결제 정보</td>
+					</tr>
+					<tr>
+						<td>총 금액</td>
+						<td>[[${#numbers.formatCurrency(sumPrice)}]]원</td>
+					</tr>
+					<tr>
+						<td>총 배송비</td>
+						<th:block th:if = "${sumDeliveryCost != 0}">
+							<td>[[${#numbers.formatCurrency(sumDeliveryCost)}]]원</td>
+						</th:block>
+						<th:block th:if = "${sumDeliveryCost == 0}">
+							<td>무료 배송</td>
+						</th:block>
+					</tr>
+					<tr>
+						<td>총 결제 금액</td>
+						<td>[[${#numbers.formatCurrency(sumPrice + sumDeliveryCost)}]]원</td>
+					</tr>
+					<tr>
+						<td align="center" colspan=2><input type="submit"
+							value="구매하기" /></td>
+					</tr>
+				</table>
+			</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

@@ -38,8 +38,8 @@
 	
 	<insert id="cartMerge">
 		merge into cart c
-		using goods g
-			on (c.goods_num = g.goods_num and c.member_num = #{memberNum})
+		using (select goods_num from goods where goods_num = #{goodsNum}) g
+			on (c.goods_num = #{goodsNum} and c.member_num = #{memberNum})
 		when matched then
 			update set c.cart_qty = c.cart_qty + #{cartQty}, cart_date = sysdate
 		when not matched then

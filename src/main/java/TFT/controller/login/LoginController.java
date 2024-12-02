@@ -32,7 +32,8 @@ public class LoginController {
 	public String loginForm(LoginCommand loginCommand, HttpServletRequest request, HttpSession session, Model model) {
 		Cookie[] cookies = request.getCookies();
 		for(Cookie cookie : cookies) {
-			System.out.println(cookie.getName() + "존재");
+			System.out.println("로그인창에 존재하는 쿠키 !" + cookie.getName());
+			System.out.println("쿠키 생명 시간 = " + cookie.getValue());
 			if(cookie.getName().equals("isAutoLogin")) {
 				LoginDTO dto = loginMapper.loginIdCheck(cookie.getValue());
 				dto.setPassword(loginMapper.getLoginPw(dto));
@@ -52,23 +53,27 @@ public class LoginController {
 	}
 	
 	@PostMapping("loginCheck")
-	public @ResponseBody String loginCheck(@RequestParam Boolean isAutoLogin, @RequestParam Boolean isIdStore, 
-			LoginCommand loginCommand, HttpSession session, HttpServletResponse response) {
+	public @ResponseBody String loginCheck(@RequestParam boolean isAutoLogin, @RequestParam boolean isIdStore, 
+			LoginCommand loginCommand, HttpSession session, HttpServletResponse response, HttpServletRequest request) {
+		String popup = request.getParameter("popup");
 		loginCommand.setAutoLogin(isAutoLogin);
 		loginCommand.setIdStore(isIdStore);
-		return loginCheckService.execute(loginCommand, session, response);
+		System.out.println("로그인 할 때 isAutoLogin 값은 ? = "+isAutoLogin);
+		System.out.println("로그인 할 때 isIdStore 값은 ? = "+isIdStore);
+		return loginCheckService.execute(loginCommand, session, response, popup);
 	}
 	
 	@GetMapping("logout")
 	public String logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		Cookie[] cookies = request.getCookies();
 		for(Cookie cookie : cookies) {
+			System.out.println(cookie.getName()+"의 maxage = " +cookie.getValue());
 			if(cookie.getName().equals("isAutoLogin")) {
 				cookie.setPath("/");
 				cookie.setMaxAge(0);	
 			}
 			response.addCookie(cookie);
-			System.out.println(cookie.getName());
+			System.out.println("로그아웃 할 때 삭제한 쿠키 = " + cookie.getName());
 		}
 		session.invalidate();
 		return "redirect:/";

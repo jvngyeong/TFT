@@ -22,10 +22,6 @@ public class TFTApplication {
 	
 	@GetMapping("/")
 	public String index(HttpServletRequest request) {
-		Cookie[] cookies = request.getCookies();
-		for(Cookie c : cookies) {
-			System.out.println(c.getName());
-		}
 		return "thymeleaf/index";
 	}
 	
