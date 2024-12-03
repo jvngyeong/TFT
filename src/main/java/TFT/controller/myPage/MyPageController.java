@@ -11,6 +11,7 @@ import TFT.mapper.EmployeeMapper;
 import TFT.mapper.MemberMapper;
 import TFT.service.employee.EmployeeInfoService;
 import TFT.service.member.MemberInfoService;
+import TFT.service.purchase.PurchaseInfoService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -28,9 +29,11 @@ public class MyPageController {
 	@Autowired
 	EmployeeMapper employeeMapper;
 	
+	@Autowired
+	PurchaseInfoService purchaseInfoService;
+	
 	@GetMapping("memMyPage")
 	public String memMyPage(String memberId, HttpSession session, Model model) {
-		AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
 		String memberNum = memberMapper.getMemberNum(memberId);
 		memberInfoService.execute(memberNum, model);
 		return "thymeleaf/myPage/memMyPage";
@@ -42,5 +45,17 @@ public class MyPageController {
 		String empNum = employeeMapper.getEmpNum(auth.getUserId());
 		employeeInfoService.execute(empNum, model);
 		return "thymeleaf/myPage/empMyPage";
+	}
+	
+	@GetMapping("paymentList")
+	public String paymentList(HttpSession session, Model model) {
+		AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+		String memberNum = null;
+		if(auth.getGrade().equals("mem")) {
+			memberNum = memberMapper.getMemberNum(auth.getUserId());
+			memberInfoService.execute(memberNum, model);
+		}
+		purchaseInfoService.execute(memberNum, model);
+		return "thymeleaf/myPage/paymentList";
 	}
 }

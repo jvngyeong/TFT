@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="TFT.mapper.DeliveryMapper">
+<resultMap id="deliveryInfoDTO" type="DeliveryInfoDTO">
+    <!-- purchaseDTO 매핑 -->
+    <association property="purchaseDTO" javaType="PurchaseDTO">
+        <result property="purchaseNum" column="purchase_num"/>
+        <result property="purchaseDate" column="purchase_date"/>
+        <result property="purchasePrice" column="purchase_price"/>
+        <result property="deliveryAddr" column="delivery_addr"/>
+        <result property="deliveryAddrDetail" column="delivery_addr_detail"/>
+        <result property="deliveryPost" column="delivery_post"/>
+        <result property="deliveryPhone" column="delivery_phone"/>
+        <result property="message" column="message"/>
+        <result property="purchaseStatus" column="purchase_status"/>
+        <result property="memberNum" column="member_num"/>
+        <result property="deliveryName" column="delivery_name"/>
+        <result property="purchaseName" column="purchase_name"/>
+    </association>
+
+    <!-- paymentDTO 매핑 -->
+    <association property="paymentDTO" javaType="PaymentDTO">
+        <result property="purchaseNum" column="purchase_num"/>
+        <result property="confirmnumber" column="confirmnumber"/>
+        <result property="cardnum" column="cardnum"/>
+        <result property="tid" column="tid"/>
+        <result property="totalprice" column="totalprice"/>
+        <result property="resultmessage" column="resultmessage"/>
+        <result property="paymethod" column="paymethod"/>
+        <result property="appldate" column="appldate"/>
+        <result property="apptime" column="apptime"/>
+        <result property="purchaseName" column="purchase_name"/>
+    </association>
+
+    <!-- deliveryDTO 매핑 -->
+    <association property="deliveryDTO" javaType="DeliveryDTO">
+        <result property="purchaseNum" column="purchase_num"/>
+        <result property="deliveryNum" column="delivery_num"/>
+        <result property="deliveryDate" column="delivery_date"/>
+        <result property="deliveryStatus" column="delivery_status"/>
+    </association>
+
+    <!-- GoodsPLDTOs 리스트 매핑 -->
+    <association property="goodsPLDTO" javaType="GoodsPLDTO">
+        <!-- purchaseListDTO 매핑 -->
+        <association property="purchaseListDTO" javaType="PurchaseListDTO">
+            <result property="purchaseNum" column="purchase_num"/>
+            <result property="goodsNum" column="goods_num"/>
+            <result property="purchaseQty" column="purchase_qty"/>
+            <result property="goodsUnitPrice" column="goods_unit_price"/>
+        </association>
+        
+        <!-- goodsDTO 매핑 -->
+        <association property="goodsDTO" javaType="GoodsDTO">
+            <result property="goodsNum" column="goods_num"/>
+            <result property="goodsPrice" column="goods_price"/>
+            <result property="goodsContents" column="goods_contents"/>
+            <result property="visitCount" column="visit_count"/>
+            <result property="goodsUpdateDate" column="goods_update_date"/>
+            <result property="empNum" column="emp_num"/>
+            <result property="goodsRegist" column="goods_regist"/>
+            <result property="updateEmpNum" column="update_emp_num"/>
+            <result property="goodsName" column="goods_name"/>
+            <result property="goodsMainImage" column="goods_main_image"/>
+            <result property="goodsMainStoreImage" column="goods_main_store_image"/>
+            <result property="goodsDetailImage" column="goods_detail_image"/>
+            <result property="goodsDetailStoreImage" column="goods_detail_store_image"/>
+        </association>
+    </association>
+</resultMap>
+
+
+	<select id="deliveryInfoSelect" resultMap="deliveryInfoDTO">
+		select pl.purchase_num, pl.goods_unit_price, pl.purchase_qty,
+			   p.purchase_date, p.purchase_price, p.delivery_addr, p.delivery_phone, p.member_num, p.message,
+			   g.goods_name, g.goods_main_store_image,
+			   pm.confirmnumber, pm.cardnum, pm.totalprice, pm.appldate
+			from purchase_list pl join purchase p
+			on pl.purchase_num = p.purchase_num
+			join goods g on pl.goods_num = g.goods_num
+			join payment pm on pm.purchase_num = pl.purchase_num
+			where pl.purchase_num = #{purchaseNum}
+	</select>
+</mapper>

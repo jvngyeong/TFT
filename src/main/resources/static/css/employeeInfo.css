@@ -1,5 +1,4 @@
 @charset "UTF-8";
-
 table {
 	font-family: "Noto Sans KR", sans-serif;
 	font-optical-sizing: auto;
@@ -37,7 +36,7 @@ th {
 }
 
 /* 테이블 올렸을 때 */
-tbody tr:hover {
+tbody tr:hover:not([class="insideTable"]) {
 	background-color: #d3d3d3;
 	opacity: 0.9;
 	cursor: pointer;

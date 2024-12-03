@@ -36,12 +36,11 @@
 			type : "get",
 			dataType : "html",
 			data : {
-				"purchaseQty" : $("#cartQty").val(),
-				"goodsNum" : '[[${dto.goodsNum}]]',
-				"goodsUnitPrice" : '[[${dto.goodsPrice}]]'
+				"cartQties" : $("#cartQty").val(),
+				"goodsNums" : '[[${dto.goodsNum}]]',
 				},
 			success : function(result){
-				$("#wholeContent").html();
+				$("#wholeContent").html(result);
 			},
 			error : function(){
 				alert("오류가 발생했습니다.");

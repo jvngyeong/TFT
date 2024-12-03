@@ -44,6 +44,6 @@ public class SpringBootConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sessionInterceptor)
                 .addPathPatterns("/**") // 모든 요청에 적용
-                .excludePathPatterns("/", "/login/**", "/member/memberWrite", "/shop/**", "/static/**", "/inquire/goodsInquire", "/review/**"); // 제외 경로 수정
+                .excludePathPatterns("/", "/login/**", "/member/memberWrite", "/shop/**", "/static/**", "/inquire/goodsInquire", "/review/**", "/payment/**"); // 제외 경로 수정
     }
 }

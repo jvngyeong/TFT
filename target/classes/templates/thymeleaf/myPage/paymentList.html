@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="/static/css/employeeInfo.css">
+	
+	<script type="text/javascript">
+		function memberPwCheck(memberNum, task){
+			$.ajax({
+				url : "member/memberPwCheck",
+				data : {"memberNum" : memberNum, "task" : task},
+				dataType : "html",
+				success: function(result){
+					$("#wholeContent").html(result);
+				},
+				error : function(){
+					alert("오류가 발생했습니다.");
+				}
+			})
+		}
+		
+		function deliveryWrite(purchaseNum){
+			let popupWindow = window.open("/delivery/deliveryWrite?purchaseNum="+purchaseNum, "", "width=1200, height=800, top=100, left=100");
+			let popupCheckInterval = setInterval(function(){
+				if(popupWindow.closed){
+					clearInterval(popupCheckInterval);
+					paymentList();
+				}
+			}, 500);
+		}
+	</script>
+</head>
+<body>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" id="contact">
+					<br />
+					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">
+						<th:block th:if = "${dto != null}">[[${dto.memberName}]]님의 주문 목록입니다.</th:block>
+						<th:block th:if = "${dto == null}">전체 회원의 주문 목록입니다.</th:block>
+					</h3>
+					<table border = '1' style = "width:1300px;">
+						<tr>
+							<th>구매 번호</th>
+							<th>구매일</th>
+							<th>가격</th>
+							<th>배송지</th>
+							<th>배송지 상세 주소</th>
+							<th>배송지 우편번호</th>
+							<th>전화번호</th>
+							<th>메시지</th>
+							<th>현재 상태</th>
+						</tr>
+						<tr th:each = "list : ${list}">
+							<td>[[${list.purchaseNum}]]</td>
+							<td>[[${#dates.format(list.purchaseDate, 'yyyy-MM-dd')}]]</td>
+							<td>[[${#numbers.formatCurrency(list.purchasePrice)}]]</td>
+							<td>[[${list.deliveryAddr}]]</td>
+							<td>[[${list.deliveryAddrDetail}]]</td>
+							<td>[[${list.deliveryPost}]]</td>
+							<td>[[${list.deliveryPhone}]]</td>
+							<td>[[${list.message}]]</td>
+							<td>
+								<th:block th:if = "${dto != null}">
+								[[${list.purchaseStatus}]]
+								</th:block>
+								<th:block th:if = "${dto == null}">
+									<th:block th:if = "${list.purchaseStatus == '결제 대기중'}">
+										[[${list.purchaseStatus}]]
+									</th:block>
+									<th:block th:if = "${list.purchaseStatus == '결제 완료'}">
+										<a th:attr="onclick=|deliveryWrite('${list.purchaseNum}')|" style = "text-decoration : underline">배송 정보 입력</a>
+									</th:block>
+								</th:block>
+								
+							</td>
+						</tr>
+					</table>
+				</div>	
+				<!-- End page content -->
+			</div>
+		</div>
+	</div>
+</body>
+</html>

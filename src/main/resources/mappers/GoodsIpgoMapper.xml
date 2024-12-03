@@ -31,7 +31,7 @@
 	</delete>
 	
 	<select id="goodsIpgoStockSelect">
-		select <include refid="goodsIpgoColumns"></include> from goods_ipgo
+		select sum(ipgo_qty) as ipgoQty from goods_ipgo
 		where goods_num = #{goodsNum}	
 	</select>
 </mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace = "TFT.mapper.PurchaseMapper">
+	<sql id="purchaseColumns">
+		PURCHASE_NUM, PURCHASE_DATE, PURCHASE_PRICE, DELIVERY_ADDR, DELIVERY_ADDR_DETAIL, 
+		DELIVERY_POST, DELIVERY_PHONE, MESSAGE, PURCHASE_STATUS, MEMBER_NUM, DELIVERY_NAME, PURCHASE_NAME
+	</sql>
+	<select id="selectPurchaseNum">
+		select concat(to_char(sysdate, 'yyyyMMdd'), coalesce(max(to_number(substr(purchase_num, 9))), 0) + 1)
+		from purchase
+		where substr(purchase_num, 1, 8) = to_char(sysdate, 'yyyyMMdd')
+	</select>
+	
+	<insert id="purchaseInsert">
+		insert into purchase(<include refid="purchaseColumns"></include>)
+		values(#{purchaseNum}, sysdate, #{purchasePrice}, #{deliveryAddr}, #{deliveryAddrDetail},
+			   #{deliveryPost}, #{deliveryPhone}, #{message}, '결제 대기중', #{memberNum}, #{deliveryName}, #{purchaseName})
+	</insert>
+	
+	<select id="purchaseSelectOne">
+		select <include refid="purchaseColumns"></include> from purchase where purchase_num = #{purchaseNum}
+	</select>
+	
+	<insert id="paymentInsert">
+		insert into payment(purchase_num, confirmnumber, cardnum, tid, totalprice, resultmessage, 
+					paymethod, appldate, apptime)
+			values(#{purchaseNum}, #{confirmnumber}, #{cardnum}, #{tid}, #{totalprice}, #{resultmessage},
+					#{paymethod}, #{appldate}, #{apptime})
+	</insert>
+	
+	<update id = "purchaseStatusUpdate">
+		update purchase set purchase_status = '결제 완료' where purchase_num = #{purchaseNum}
+	</update>
+	
+	<select id="purchaseSelectList">
+	select <include refid="purchaseColumns"></include> from purchase
+	<if test="memberNum != null">
+	where member_num = #{memberNum}
+	</if> 
+	</select>
+	
+	<insert id="purchaseListInsert">
+	        insert all
+	        <foreach collection="goodsNums" item="goodsNum" index="index">
+	        into purchase_list(goods_num, purchase_num, purchase_qty, goods_unit_price)
+	        values (#{goodsNum}, #{purchaseNum}, #{cartQties[${index}]}, (select goods_price from goods where goods_num = #{goodsNum}))
+	   		</foreach>
+	   		select * from dual
+	</insert>
+</mapper>

@@ -5,14 +5,22 @@
 <link rel="stylesheet" href="/static/css/cartList.css">
 <script type="text/javascript">
 	function buy(){
-		var goodsNums = $(".goodsNum").val();
+		var goodsNums = [];
+		$(".goodsNum").each(function(){
+			goodsNums.push($(this).val());
+		});
+		
+		var cartQties = [];
+		$(".qty").each(function(){
+			cartQties.push($(this).val());
+		});
 		$.ajax({
 			url : "/purchase/goodsOrder",
 			type : "get",
 			dataType : "html",
-			data : {"goodsNums" : $(".goodsNum").val()},
+			data : {"goodsNums" : goodsNums, "cartQties" : cartQties},
 			success : function(result){
-				$("#wholeContent").html();
+				$("#wholeContent").html(result);
 			},
 			error : function(){
 				alert("오류가 발생했습니다.");
@@ -22,7 +30,7 @@
 	$(function(){
 		let totalPrice = 0;
 		$(".totalPrice").each(function(){
-			totalPrice += parseInt($(".totalPrice").val());
+			totalPrice += parseInt($(this).val());
 		})
 		$("#cart-total").html("₩"+totalPrice.toLocaleString('ko-KR'));
 		
@@ -86,7 +94,7 @@
 
 <th:block th:each = "list : ${list}">
   <div class="product">
-  	<input type = "hidden" id = "goodsNum" th:value = "${list.goodsDTO.goodsNum}">
+  	<input type = "hidden" class = "goodsNum" id = "goodsNum" th:value = "${list.goodsDTO.goodsNum}">
     <div class="product-image">
       <img th:src="|/static/upload/${list.goodsDTO.goodsMainStoreImage}|">
     </div>

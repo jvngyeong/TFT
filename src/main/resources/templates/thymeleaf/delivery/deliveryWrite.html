@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/css/employeeInfo.css">
+<link rel="stylesheet" href="/static/css/shopGoodsDetail.css">
+</head>
+<body>
+	구매상품 정보<br/>
+	<table width = "800" align = "center" border = '1'>
+		<th:block th:each = "list : ${list}">
+				<tr>
+					<th>
+						<img th:src = "|/static/upload/${list.goodsPLDTO.goodsDTO.goodsMainStoreImage}|"/>
+					</th>
+					<th>
+						제품명 :  [[${list.goodsPLDTO.goodsDTO.goodsName}]]| 제품 가격 : [[${list.goodsPLDTO.purchaseListDTO.goodsUnitPrice}]]| 주문수량 : [[${list.goodsPLDTO.purchaseListDTO.purchaseQty}]]
+					</th>
+				</tr>
+					
+				<tr>
+					<th colspan = '2'>
+						상품 설명<br />
+						<span></span>
+					</th>
+				</tr>
+		</th:block>
+		<tr>
+			<td width = "400">
+				<h2 align = "center">주문내용</h2>
+				주문 번호 : [[${list[0].purchaseDTO.purchaseNum}]] <br />
+				주문 날짜 : [[${list[0].purchaseDTO.purchaseDate}]]<br />
+				주문 금액 : [[${list[0].purchaseDTO.purchasePrice}]]<br />
+				배송지 : [[${list[0].purchaseDTO.deliveryAddr}]]<br />
+				연락처 : [[${list[0].purchaseDTO.deliveryPhone}]]<br />
+				받는 사람 : [[${list[0].purchaseDTO.memberNum}]]<br />
+				주문 메시지 : [[${list[0].purchaseDTO.message}]]<br />
+			</td>
+			<td width = "400">
+				<h2 align = "center">결제내용</h2>
+				<span th:if = "${list[0].paymentDTO.confirmnumber != null}">
+				결제 번호 
+				</span>
+				<span th:if = "${list[0].paymentDTO.confirmnumber == null}">
+					현금 결제
+				</span><br />
+				결제 금액 : [[${list[0].paymentDTO.totalprice}]]<br />
+				결제일 : [[${list[0].paymentDTO.appldate}]]<br />
+				<span th:if = "${list[0].paymentDTO.confirmnumber != null}">
+				카드 번호 : [[${list[0].paymentDTO.cardnum}]]<br />
+				</span>
+			</td>
+		</tr>
+	</table>
+	
+	<form action = "/delivery/deliveryDelete" method = "post">
+		<table width = "800" align = "center" border = '1'>
+			<tr>
+				<td colspan = '2'><h2>배송정보</h2></td>
+			</tr>
+			<tr>
+				<td>송장번호</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td colspan = '2'>
+					<input type = "hidden" name = "purchaseNum"/>
+					<input type = "hidden" name = "deliveryNum"/>
+					<input type = "submit" value = "배송정보 삭제" />
+				</td>
+			</tr>
+		</table>
+	</form>
+	<form action = "/delivery/deliveryRegist" method = "post">
+		<input type = "hidden" name = "purchaseNum"/>
+		<table width = "800" align = "center" border = '1'>
+			<tr>
+				<td colspan = '2'>배송정보 입력</td>
+			</tr>
+			<tr>
+				<td>송장번호</td>
+				<td>
+					<input type = "text" name = "deliveryNum" required="required" />
+				</td>
+			</tr>
+			<tr>
+				<th colspan = '2'>
+					<input type = "submit" value = "배송정보 등록" />
+				</th>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>
