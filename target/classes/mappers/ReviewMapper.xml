@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="TFT.mapper.ReviewMapper">
+	<resultMap type="PurchaseListReviewDTO" id="purchaseListReviewDTO">
+		<association property="purchaseListDTO">
+			<id property="purchaseNum" column="purchase_num"/>
+		    <result property="goodsNum" column="goods_num"/>
+		    <result property="purchaseQty" column="purchase_qty"/>
+		    <result property="goodsUnitPrice" column="goods_unit_price"/>
+		</association>
+		
+		<association property="reviewDTO">
+			<id property="reviewNum" column="review_num"/>
+		    <result property="goodsNum" column="goods_Num"/>
+		    <result property="purchaseNum" column="purchase_Num"/>
+		    <result property="reviewDate" column="review_Date"/>
+		    <result property="reviewContents" column="review_Contents"/>
+		    <result property="memberId" column="member_Id"/>
+		</association>
+		<association property="goodsDTO" javaType="GoodsDTO">
+            <result property="goodsNum" column="goods_num"/>
+            <result property="goodsPrice" column="goods_price"/>
+            <result property="goodsContents" column="goods_contents"/>
+            <result property="visitCount" column="visit_count"/>
+            <result property="goodsUpdateDate" column="goods_update_date"/>
+            <result property="empNum" column="emp_num"/>
+            <result property="goodsRegist" column="goods_regist"/>
+            <result property="updateEmpNum" column="update_emp_num"/>
+            <result property="goodsName" column="goods_name"/>
+            <result property="goodsMainImage" column="goods_main_image"/>
+            <result property="goodsMainStoreImage" column="goods_main_store_image"/>
+            <result property="goodsDetailImage" column="goods_detail_image"/>
+            <result property="goodsDetailStoreImage" column="goods_detail_store_image"/>
+        </association>
+	</resultMap>
+
+	<update id="reviewMerge">
+		merge into reviews r
+		using (select goods_num from purchase_list where goods_num = #{goodsNum}) pl
+		on (r.goods_num = #{goodsNum})
+		when matched then
+			update set review_date = sysdate, review_contents = #{reviewContents}
+		when not matched then
+			insert (review_num, goods_num, purchase_num, review_date, review_contents, member_id)
+			values(review_seq.nextval, #{goodsNum} , #{purchaseNum}, sysdate, #{reviewContents}, #{memberId})
+	</update>
+	
+	<select id="reviewInfo" resultMap="purchaseListReviewDTO">
+		SELECT review_num, review_contents, pl.goods_num, g.goods_name
+		FROM reviews r
+		right outer JOIN purchase_list pl ON r.purchase_num = pl.purchase_num and r.goods_num = pl.goods_num
+		JOIN goods g ON pl.goods_num = g.goods_num
+	   where pl.purchase_num = #{purchaseNum}
+	</select>
+	
+	<select id="reviewSelectList">
+		select review_num, goods_num, purchase_num, review_date, review_contents, member_id from reviews
+		where goods_num = #{goods_num}
+	</select>
+</mapper>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/css/goodsForm.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/index.css">
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#goodsName").change(function(){
+			var selectedIndex = $(this)[0].selectedIndex;
+			$("#reviewContents").val($("#reviewHidden"+selectedIndex).val());
+		})
+	});
+</script>
+</head>
+<body>
+	<th:block th:each = "list, idx : ${plrList}">
+		<input type = "hidden" th:value = ${list.reviewDTO.reviewContents} th:id = "reviewHidden+${idx.index}" />
+	</th:block>
+	<div id="wholeContent">
+		<!-- Page content -->
+		<div id="pageContent">
+			<div class="w3-content w3-padding" style="max-width: 1564px">
+				<!-- Contact Section -->
+				<div class="w3-container w3-padding-32" id="contact">
+					<h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">
+						리뷰 작성
+					</h3>
+					<form action = "/review/reviewWrite" id="reivewForm" method="post">
+						<input type = "hidden" th:value = ${purchaseNum} name = "purchaseNum"/>
+						<div class="dust-class">
+							<label for="goodsName"><span>* </span>상품 선택</label> <select style = "margin-top : 10px;"
+								id="goodsName" name="goodsNum">
+								<th:block th:each = "list : ${plrList}">
+									<option class = "nameOption" th:value="${list.goodsDTO.goodsNum}">[[${list.goodsDTO.goodsName}]]</option>
+								</th:block>
+							</select>
+						</div>
+						
+						<div class="dust-class">
+							<label for="reviewContents"><span>* </span>내용</label>
+							<textarea style = "margin-top : 10px;" id="reviewContents" rows="10" cols="50" class="txt-textarea" name="reviewContents">[[${plrList[0].reviewDTO.reviewContents}]]</textarea>
+						</div>
+						<div class="dust-class">
+							<input class="w3-button w3-black w3-section" type="submit"
+								value="등록하기">
+						</div>
+					</form>
+				</div>
+			</div>
+			<!-- End page content -->
+		</div>
+	</div>
+</body>
+</html>

@@ -13,6 +13,8 @@ public class SessionInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Object user = request.getSession().getAttribute("auth");
         String popup = request.getParameter("popup");
+        String requestURI = request.getRequestURI();
+        System.out.println("요청받은 URL은 = " + requestURI);
         if (user == null) {
             response.sendRedirect("/login/loginForm?popup="+popup);
             return false;

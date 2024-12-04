@@ -27,6 +27,32 @@
 				}
 			}, 500);
 		}
+		
+		function reviewWrite(purchaseNum){
+			let popupWindow = window.open("/review/reviewWrite?purchaseNum="+purchaseNum, "", "width=600, height=700, top=100, left=200");
+			let popupCheckInterval = setInterval(function(){
+				if(popupWindow.closed){
+					clearInterval(popupCheckInterval);
+					paymentList();
+				}
+			}, 500);
+		}
+		
+		function deliveryUpdate(purchaseNum){
+			$.ajax({
+				url : "/delivery/deliveryUpdate",
+				data : {"purchaseNum" : purchaseNum},
+				success : function(){
+					paymentList();
+				},
+				error: function (xhr, status, error) {
+			        alert("Status: " + status); // 상태 정보 ("error", "timeout" 등)
+			        alert("Error: " + error); // 에러 메시지 (텍스트)
+			        alert("Response Text: " + xhr.responseText); // 서버 응답 내용
+			        alert("HTTP Status Code: " + xhr.status); // HTTP 상태 코드 (404, 500 등)
+			    }
+			})
+		}
 	</script>
 </head>
 <body>
@@ -54,27 +80,46 @@
 							<th>현재 상태</th>
 						</tr>
 						<tr th:each = "list : ${list}">
-							<td>[[${list.purchaseNum}]]</td>
-							<td>[[${#dates.format(list.purchaseDate, 'yyyy-MM-dd')}]]</td>
-							<td>[[${#numbers.formatCurrency(list.purchasePrice)}]]</td>
-							<td>[[${list.deliveryAddr}]]</td>
-							<td>[[${list.deliveryAddrDetail}]]</td>
-							<td>[[${list.deliveryPost}]]</td>
-							<td>[[${list.deliveryPhone}]]</td>
-							<td>[[${list.message}]]</td>
+							<td>[[${list.purchaseDTO.purchaseNum}]]</td>
+							<td>[[${#dates.format(list.purchaseDTO.purchaseDate, 'yyyy-MM-dd')}]]</td>
+							<td>[[${#numbers.formatCurrency(list.purchaseDTO.purchasePrice)}]]</td>
+							<td>[[${list.purchaseDTO.deliveryAddr}]]</td>
+							<td>[[${list.purchaseDTO.deliveryAddrDetail}]]</td>
+							<td>[[${list.purchaseDTO.deliveryPost}]]</td>
+							<td>[[${list.purchaseDTO.deliveryPhone}]]</td>
+							<td>[[${list.purchaseDTO.message}]]</td>
 							<td>
-								<th:block th:if = "${dto != null}">
-								[[${list.purchaseStatus}]]
+								<th:block th:if = "${list.purchaseDTO.purchaseStatus == '결제 대기중'}">
+									[[${list.purchaseDTO.purchaseStatus}]]
 								</th:block>
-								<th:block th:if = "${dto == null}">
-									<th:block th:if = "${list.purchaseStatus == '결제 대기중'}">
-										[[${list.purchaseStatus}]]
+								<th:block th:if = "${list.purchaseDTO.purchaseStatus == '결제 완료'}">
+									<th:block th:if = "${list.deliveryDTO.deliveryStatus == null}">
+										<th:block th:if = "${dto != null}">
+										[[${list.purchaseDTO.purchaseStatus}]]
+										</th:block>
+										<th:block th:if = "${dto == null}">
+										<a th:attr="onclick=|deliveryWrite('${list.purchaseDTO.purchaseNum}')|" style = "text-decoration : underline">배송 정보 입력</a>
+										</th:block>
 									</th:block>
-									<th:block th:if = "${list.purchaseStatus == '결제 완료'}">
-										<a th:attr="onclick=|deliveryWrite('${list.purchaseNum}')|" style = "text-decoration : underline">배송 정보 입력</a>
+									<th:block th:if = "${list.deliveryDTO.deliveryStatus != null}">
+										<th:block th:if = "${list.deliveryDTO.deliveryStatus != '배송 완료'}">
+											<th:block th:if = "${dto != null}">
+											[[${list.deliveryDTO.deliveryStatus}]]
+											</th:block>
+											<th:block th:if = "${dto == null}">
+											<a th:attr="onclick=|deliveryUpdate('${list.purchaseDTO.purchaseNum}')|" style = "text-decoration : underline">[[${list.deliveryDTO.deliveryStatus}]]</a>
+											</th:block>
+										</th:block>
+										<th:block th:if = "${list.deliveryDTO.deliveryStatus == '배송 완료'}">
+											<th:block th:if = "${dto != null}">
+											배송 완료 | <a th:attr="onclick=|reviewWrite('${list.purchaseDTO.purchaseNum}')|" style = "text-decoration : underline">리뷰 작성</a>
+											</th:block>
+											<th:block th:if = "${dto == null}">
+											<a th:attr="onclick=|deliveryWrite('${list.purchaseDTO.purchaseNum}')|" style = "text-decoration : underline">[[${list.deliveryDTO.deliveryStatus}]]</a>
+											</th:block>
+										</th:block>									
 									</th:block>
-								</th:block>
-								
+								</th:block>								
 							</td>
 						</tr>
 					</table>

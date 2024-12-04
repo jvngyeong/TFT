@@ -52,4 +52,5 @@
 		#{goodsNum}
 		</foreach>
 	</select>
+	
 </mapper>

@@ -3,9 +3,13 @@
 <head>
 <link rel="stylesheet" href="/static/css/employeeInfo.css">
 <link rel="stylesheet" href="/static/css/shopGoodsDetail.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-	구매상품 정보<br/>
 	<table width = "800" align = "center" border = '1'>
 		<th:block th:each = "list : ${list}">
 				<tr>
@@ -52,39 +56,39 @@
 		</tr>
 	</table>
 	
-	<form action = "/delivery/deliveryDelete" method = "post">
+	<form action = "/delivery/deliveryDelete" method = "post" th:if = "${list[0].deliveryDTO.deliveryNum != null}">
 		<table width = "800" align = "center" border = '1'>
 			<tr>
 				<td colspan = '2'><h2>배송정보</h2></td>
 			</tr>
 			<tr>
 				<td>송장번호</td>
-				<td></td>
+				<td>[[${list[0].deliveryDTO.deliveryNum}]]</td>
 			</tr>
 			<tr>
 				<td colspan = '2'>
-					<input type = "hidden" name = "purchaseNum"/>
-					<input type = "hidden" name = "deliveryNum"/>
-					<input type = "submit" value = "배송정보 삭제" />
+					<input type = "hidden" name = "purchaseNum" th:value = "${list[0].purchaseDTO.purchaseNum}"/>
+					<input type = "hidden" name = "deliveryNum" th:value = "${list[0].deliveryDTO.deliveryNum}"/>
+					<input type = "submit" class="w3-button w3-black w3-section" value = "배송정보 삭제" />
 				</td>
 			</tr>
 		</table>
 	</form>
-	<form action = "/delivery/deliveryRegist" method = "post">
-		<input type = "hidden" name = "purchaseNum"/>
+	<form action = "/delivery/deliveryWrite" method = "post"  th:if = "${list[0].deliveryDTO.deliveryNum == null && list[0].paymentDTO.appldate != null}">
+		<input type = "hidden" name = "purchaseNum" th:value = "${list[0].purchaseDTO.purchaseNum}"/>
 		<table width = "800" align = "center" border = '1'>
 			<tr>
 				<td colspan = '2'>배송정보 입력</td>
 			</tr>
-			<tr>
+			<tr class = "inputTR">
 				<td>송장번호</td>
 				<td>
-					<input type = "text" name = "deliveryNum" required="required" />
+					<input type = "text" name = "deliveryNum" required="required" id = "deliveryInput"/>
 				</td>
 			</tr>
 			<tr>
 				<th colspan = '2'>
-					<input type = "submit" value = "배송정보 등록" />
+					<input type = "submit" class="w3-button w3-white w3-section"  value = "배송정보 등록" />
 				</th>
 			</tr>
 		</table>

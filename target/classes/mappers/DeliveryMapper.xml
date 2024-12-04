@@ -77,11 +77,32 @@
 		select pl.purchase_num, pl.goods_unit_price, pl.purchase_qty,
 			   p.purchase_date, p.purchase_price, p.delivery_addr, p.delivery_phone, p.member_num, p.message,
 			   g.goods_name, g.goods_main_store_image,
-			   pm.confirmnumber, pm.cardnum, pm.totalprice, pm.appldate
+			   pm.confirmnumber, pm.cardnum, pm.totalprice, pm.appldate,
+			   d.delivery_num, d.delivery_date, d.delivery_status
 			from purchase_list pl join purchase p
 			on pl.purchase_num = p.purchase_num
 			join goods g on pl.goods_num = g.goods_num
-			join payment pm on pm.purchase_num = pl.purchase_num
+			left outer join payment pm on pm.purchase_num = pl.purchase_num
+			left outer join delivery d on pl.purchase_num = d.purchase_num
+			<if test="purchaseNum != null">
 			where pl.purchase_num = #{purchaseNum}
+			</if>
 	</select>
+	
+	<insert id="deliveryWrite">
+		insert into delivery(purchase_num, delivery_num, delivery_date, delivery_status)
+		values(#{purchaseNum}, #{deliveryNum}, sysdate, '배송 중')
+	</insert>
+	
+	<select id="deliveryCheck">
+		select purchase_num, delivery_status from delivery where purchase_num = #{purchaseNum}
+	</select>
+	
+	<update id="deliveryUpdate">
+		update delivery set delivery_status = '배송 완료' where purchase_num = #{purchaseNum}
+	</update>
+	
+	<delete id="deliveryDelete">
+		delete from delivery where purchase_num = #{purchaseNum}
+	</delete>
 </mapper>

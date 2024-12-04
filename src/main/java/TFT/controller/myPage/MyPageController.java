@@ -1,5 +1,7 @@
 package TFT.controller.myPage;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,8 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import TFT.domain.AuthInfoDTO;
+import TFT.domain.DeliveryDTO;
+import TFT.mapper.DeliveryMapper;
 import TFT.mapper.EmployeeMapper;
 import TFT.mapper.MemberMapper;
+import TFT.service.delivery.DeliveryInfoService;
 import TFT.service.employee.EmployeeInfoService;
 import TFT.service.member.MemberInfoService;
 import TFT.service.purchase.PurchaseInfoService;
@@ -32,6 +37,11 @@ public class MyPageController {
 	@Autowired
 	PurchaseInfoService purchaseInfoService;
 	
+	@Autowired
+	DeliveryInfoService deliveryInfoService;
+	
+	@Autowired
+	DeliveryMapper deliveryMapper;
 	@GetMapping("memMyPage")
 	public String memMyPage(String memberId, HttpSession session, Model model) {
 		String memberNum = memberMapper.getMemberNum(memberId);
@@ -56,6 +66,7 @@ public class MyPageController {
 			memberInfoService.execute(memberNum, model);
 		}
 		purchaseInfoService.execute(memberNum, model);
+		
 		return "thymeleaf/myPage/paymentList";
 	}
 }
