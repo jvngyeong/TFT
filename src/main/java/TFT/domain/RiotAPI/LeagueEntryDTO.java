@@ -1,4 +1,4 @@
-package TFT.domain;
+package TFT.domain.RiotAPI;
 
 public class LeagueEntryDTO {
     public String puuid;           // Player Universal Unique Identifier

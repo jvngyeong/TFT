@@ -1,6 +1,9 @@
 package TFT.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -8,22 +11,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import TFT.domain.RiotAPI.SummonerDTO;
-
 @Service
-public class SummonerSearchService {
-
+public class GetMatchService {
     private final RestTemplate restTemplate;
 
     @Value("${riot.api.key}")
     private String riotApiKey;
 
-    public SummonerSearchService(RestTemplate restTemplate) {
+    public GetMatchService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
-    public SummonerDTO execute(String puuid) {
-    	// URL 생성
-        String url = "https://kr.api.riotgames.com/tft/summoner/v1/summoners/by-puuid/" + puuid + "?api_key=" + riotApiKey;
+
+    public List<String> execute(String puuid) {
+        // URL 생성
+        String url = "https://asia.api.riotgames.com/tft/match/v1/matches/by-puuid/"+puuid+"/ids?start=0&api_key="+riotApiKey;
         
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -34,9 +35,13 @@ public class SummonerSearchService {
 
         // HttpEntity 생성
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        
-        // API 호출 및 응답을 SummonerResponse 객체로 변환
-        ResponseEntity<SummonerDTO> response = restTemplate.exchange(url, HttpMethod.GET, entity, SummonerDTO.class);
+
+        ResponseEntity<List<String>> response = restTemplate.exchange(
+        	    url,
+        	    HttpMethod.GET,
+        	    entity,
+        	    new ParameterizedTypeReference<List<String>>() {}
+        	);
         return response.getBody();
     }
 }

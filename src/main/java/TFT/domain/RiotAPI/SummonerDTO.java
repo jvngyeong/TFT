@@ -1,4 +1,4 @@
-package TFT.domain;
+package TFT.domain.RiotAPI;
 
 public class SummonerDTO {
 	String accountId;

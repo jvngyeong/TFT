@@ -1,16 +1,20 @@
 package TFT.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import TFT.domain.AccountDTO;
-import TFT.domain.LeagueEntryDTO;
-import TFT.domain.SummonerDTO;
+import TFT.domain.RiotAPI.AccountDTO;
+import TFT.domain.RiotAPI.LeagueEntryDTO;
+import TFT.domain.RiotAPI.MatchDTO;
+import TFT.domain.RiotAPI.SummonerDTO;
 import TFT.service.AccountSearchService;
+import TFT.service.GetMatchService;
+import TFT.service.MatchInfoService;
 import TFT.service.SummonerInfoService;
 import TFT.service.SummonerSearchService;
 
@@ -25,14 +29,23 @@ public class SearchController {
 	@Autowired
 	SummonerInfoService summonerInfoService;
 	
-	@PostMapping("search")
+	@Autowired
+	GetMatchService getMatchService;
+	
+	@Autowired
+	MatchInfoService matchInfoService;
+	
+	@RequestMapping("search")
 	public String search(String sumName, Model model) {
 		AccountDTO accountDTO = accountSearchService.execute(sumName);
 		SummonerDTO summonerDTO = summonerSearchService.execute(accountDTO.getPuuid());
+		List<String> matchList = getMatchService.execute(accountDTO.getPuuid());
+		matchInfoService.execute(matchList, model);
 		Set<LeagueEntryDTO> leagueEntryDTOs = summonerInfoService.execute(summonerDTO.getId());
 		model.addAttribute("leagueEntryDTOs", leagueEntryDTOs);
 		sumName = accountDTO.getGameName() + "#" + accountDTO.getTagLine();
 		model.addAttribute("sumName", sumName);
+		model.addAttribute("accountDTO", accountDTO);
 		model.addAttribute("summonerDTO", summonerDTO);
 		return "thymeleaf/user/userInfo";
 	}

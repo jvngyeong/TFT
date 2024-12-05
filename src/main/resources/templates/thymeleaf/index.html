@@ -44,7 +44,26 @@
 		})
 	}
 	$(function() {
-		console.log(document.cookie); // 쿠키를 확인
+		$("#searchForm").submit(function(event){
+			$("#loading-overlay").show();
+			event.preventDefault();
+			var sumName = $("#sumName").val();
+			$.ajax({
+				url : "/search",
+				method : "post",
+				data : {"sumName" : sumName},
+				dataType : "html",
+				async : "false",
+				success : function(result){
+					$("#loading-overlay").hide();
+					$("#wholeContent").html(result);
+				},
+				error : function() {
+					alert("오류가 발생했습니다.");
+				}
+			})
+		})
+		
 		$("#shopBtn").click(function() {
 			$.ajax({
 				url : "/shop/shopMain",
@@ -245,6 +264,11 @@
 </script>
 </head>
 <body>
+	<div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9999;">
+	    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white;">
+	        Loading...
+	    </div>
+	</div>
 	<!-- Navbar (sit on top) -->
 	<div class="w3-top">
 		<div class="w3-bar w3-white w3-wide w3-padding w3-card">
@@ -316,9 +340,9 @@
 						<span class="w3-padding w3-black w3-opacity-min"><b
 							class="noto-sans-kr-main">TFT 전적 검색</b></span> <span
 							class="w3-hide-small w3-text-light-grey"></span><br />
-						<form action="search" method="post">
+						<form id = "searchForm">
 							<input type="search" name="sumName" id="sumName"
-								placeholder="플레이어#KR1 전적검색" />
+								placeholder="플레이어#KR1 전적검색" required="required"/>
 						</form>
 					</h1>
 				</div>

@@ -1,7 +1,5 @@
 package TFT.service;
 
-import java.net.URLEncoder;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -10,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import TFT.domain.AccountDTO;
+import TFT.domain.RiotAPI.AccountDTO;
 
 @Service
 public class AccountSearchService {
@@ -38,11 +36,6 @@ public class AccountSearchService {
         String gameName = summonerName.substring(0, index);
         String tagLine = summonerName.substring(index + 1);
         try {
-            // 각각 인코딩
-//            gameName = URLEncoder.encode(gameName, "UTF-8");
-//            tagLine = URLEncoder.encode(tagLine, "UTF-8");
-//            System.out.println(gameName);
-//            System.out.println(tagLine);
         } catch (Exception e) {
             e.printStackTrace();
         }

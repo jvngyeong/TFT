@@ -4,37 +4,331 @@
 <link rel="stylesheet" href="/static/css/userInfo.css">
     <meta charset="UTF-8">
     <title>League Information</title>
+    <script src="/static/js/colorChange.js"></script>
+    <script>
+     $(function(){
+    	 $(".TraitItem").each(function() {
+    	        var $this = $(this);
+    	        var traitBgs = $this.find(".trait-bg"); // 자식 trait-bg 찾기
+    	        
+    	        // trait-bg의 개수에 따라 새로운 TraitRow 생성
+    	        var numBgs = traitBgs.length;
+    	        var rowCount = Math.ceil(numBgs / 5); // 5개마다 새로운 row
+
+    	        for (var i = 0; i < rowCount; i++) {
+    	            // 새로운 TraitRow 생성
+    	            var $newRow = $("<div class='TraitRow'></div>");
+    	            // 새로운 TraitItem 생성
+    	            for (var j = 0; j < 5; j++) {
+    	                var index = i * 5 + j;
+    	                if (index < numBgs) {
+    	                    var $newTraitItem = $("<div class='TraitItem'></div>");
+    	                    var $newTraitBg = $(traitBgs[index]).clone(); // 기존 trait-bg 복사
+    	                    $newTraitItem.append($newTraitBg);
+    	                    $newRow.append($newTraitItem);
+    	                }
+    	            }
+    	            // 새로운 TraitRow를 기존 요소에 추가
+    	            $this.after($newRow);
+    	        }
+
+    	        // 기존 TraitItem을 숨김
+    	        $this.hide();
+    	    });
+    	 
+    	 $(".TraitItem").each(function(){
+   		    var $this = $(this);
+   		    var traitBgs = $this.find(".trait-bg");
+   		    $this.css("width", 30 * traitBgs.length + "px");
+    	 })
+     })
+     
+     fetch("https://ddragon.leagueoflegends.com/cdn/14.23.1/data/en_US/tft-tactician.json")
+     .then(response => response.json())
+     .then(data => {
+         // 모든 .tacticianImg 요소를 찾음
+         const images = document.querySelectorAll('.tacticianImg');
+         
+         // 각 이미지를 순회하면서 ID에 맞는 이미지 URL을 설정
+         images.forEach(img => {
+             const tacticianId = img.getAttribute("data-id"); // 각 이미지에서 ID 가져오기
+             const tactician = data.data[tacticianId]; // ID에 해당하는 전설이 객체 찾기
+             if (tactician) {
+	             const imageUrl = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/tft-tactician/" + tactician.image.full; // 이미지 URL 만들기
+                 img.src = imageUrl;
+             }
+         });
+     });
+     
+     fetch("https://ddragon.leagueoflegends.com/cdn/14.23.1/data/en_US/tft-trait.json")
+     .then(response => response.json())
+     .then(data => {
+         // 모든 .tacticianImg 요소를 찾음
+         const images = document.querySelectorAll('.tft-trait');
+         
+         // 각 이미지를 순회하면서 ID에 맞는 이미지 URL을 설정
+         images.forEach(img => {
+             const tacticianId = img.getAttribute("data-id"); // 각 이미지에서 ID 가져오기
+             const tactician = data.data[tacticianId]; // ID에 해당하는 전설이 객체 찾기
+             if (tactician) {
+	             const imageUrl = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/tft-trait/" + tactician.image.full; // 이미지 URL 만들기
+                 img.src = imageUrl;
+             }
+         });
+     });
+    </script>
 </head>
 
 <body>
-	<div class="profile">
-	    <div class="avatar">
-	        <img style="width: 80px; height: 80px;" th:src="|https://ddragon.leagueoflegends.com/cdn/14.23.1/img/profileicon/${summonerDTO.profileIconId}.png|">
-	        <span>[[${summonerDTO.summonerLevel}]]</span>
-	    </div>
-	    <div class="info">
-	        <div class="name">
-	            <h2>[[${sumName}]]</h2>
-	        </div>
-	    </div>
-	    <div class="buttons">
-	        <button class="updateButton">
-	            <span>전적 갱신</span>
-	        </button>
-	    </div>
+	<div class = "wholeContent">
+		<div class="profile" style = "padding-top:80px;">
+		    <div class="avatar">
+		        <img style="width: 80px; height: 80px;" th:src="|https://ddragon.leagueoflegends.com/cdn/14.23.1/img/profileicon/${summonerDTO.profileIconId}.png|">
+		        <span>[[${summonerDTO.summonerLevel}]]</span>
+		    </div>
+		    <div class="info">
+		        <div class="name">
+		            <h2>[[${sumName}]]</h2>
+		        </div>
+		    </div>
+		    <div class="buttons">
+		        <button class="updateButton">
+		            <span>전적 갱신</span>
+		        </button>
+		    </div>
+		</div>
+		<div class = "LeagueInfo">
+			<div class="rank-container" th:each="entry : ${leagueEntryDTOs}">
+			    <img th:src="|/static/img/tier/Rank=${entry.tier}.png|" alt="티어 이미지">
+			    <span class="highlight">[[${entry.tier}]] [[${entry.rank}]]</span>
+			    <span>[[${entry.leaguePoints}]] LP</span>
+			    <hr>
+			    <span>승리 [[${(entry.wins + entry.losses)}]]</span>
+				<span>승률 [[${(entry.wins + entry.losses)}]]%</span>
+				<span>Top4 [[${entry.wins}]]</span>
+				<span>
+				    Top4 비율 
+				    [[${#numbers.formatDecimal((entry.wins * 100.0) / (entry.wins + entry.losses), 1, 1)}]]%
+				</span>
+				<span>평균 등수: #0.00</span>
+				<span>게임 수 [[${entry.wins + entry.losses}]]</span>
+			</div>
+			
+			<div class = "Match Statistics">
+				<div class = "top">
+					<h2>최근 20매치</h2>
+					<h2 style = "color:gray; margin-left:5px;">랭크 통계</h2>
+				</div>
+				<div class = "statistic-table-container">
+					<div class = "StatisticTable">
+						<span>챔피언 통계</span>
+						<div class = "header">
+							<div class = "label">챔피언</div>
+							<div class = "plays">게임 수</div>
+							<div class = "avg-rank">평균 등수</div>
+						</div>
+						<div class = "data">
+							<div class = "label">
+								<img alt = "챔피언이미지" />
+								챔피언이름
+							</div>
+							<div class = "plays">1</div>
+							<div class = "avg-rank">
+								#0.00
+							</div>
+						</div>
+						<div class = "data">
+							<div class = "label">
+								<img alt = "챔피언이미지" />
+								챔피언이름
+							</div>
+							<div class = "plays">1</div>
+							<div class = "avg-rank">
+								#0.00
+							</div>
+						</div>
+						<div class = "data">
+							<div class = "label">
+								<img alt = "챔피언이미지" />
+								챔피언이름
+							</div>
+							<div class = "plays">1</div>
+							<div class = "avg-rank">
+								#0.00
+							</div>
+						</div>
+						<div class = "data">
+							<div class = "label">
+								<img alt = "챔피언이미지" />
+								챔피언이름
+							</div>
+							<div class = "plays">1</div>
+							<div class = "avg-rank">
+								#0.00
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class = "statistic-table-container">
+					<div class = "StatisticTable" id = "center">
+						<span>시너지 통계</span>
+						<div class = "header">
+							<div class = "label">시너지</div>
+							<div class = "plays">게임 수</div>
+							<div class = "avg-rank">평균 등수</div>
+						</div>
+						<div class = "data">
+							<div class = "label">
+								<img alt = "챔피언이미지" />
+								챔피언이름
+							</div>
+							<div class = "plays">1</div>
+							<div class = "avg-rank">
+								#0.00
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class = "statistic-table-container">
+					<div class = "StatisticTable">
+						<span>아이템 통계</span>
+						<div class = "header">
+							<div class = "label">아이템</div>
+							<div class = "plays">게임 수</div>
+							<div class = "avg-rank">평균 등수</div>
+						</div>
+						<div class = "data">
+							<div class = "label">
+								<img alt = "챔피언이미지" />
+								챔피언이름
+							</div>
+							<div class = "plays">1</div>
+							<div class = "avg-rank">
+								#0.00
+							</div>
+						</div>
+						<div class = "data">
+							<div class = "label">
+								<img alt = "챔피언이미지" />
+								챔피언이름
+							</div>
+							<div class = "plays">1</div>
+							<div class = "avg-rank">
+								#0.00
+							</div>
+						</div>
+						<div class = "data">
+							<div class = "label">
+								<img alt = "챔피언이미지" />
+								챔피언이름
+							</div>
+							<div class = "plays">1</div>
+							<div class = "avg-rank">
+								#0.00
+							</div>
+						</div>
+						<div class = "data">
+							<div class = "label">
+								<img alt = "챔피언이미지" />
+								챔피언이름
+							</div>
+							<div class = "plays">1</div>
+							<div class = "avg-rank">
+								#0.00
+							</div>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class = "MatchHistory">
+			<th:block th:each = "matchDTO : ${matchDTOList}">
+				<section class = "match-total">
+					<div class = "match-content">
+						<div class = "match-namespace">
+							<th:block th:each = "participant : ${matchDTO.info.participants}">
+								<th:block th:if = "${participant.riotIdGameName == accountDTO.gameName}">
+									<h5>#[[${participant.placement}]]</h5>
+								</th:block>
+							</th:block>
+							<span class = "game-type">
+								<th:block th:each = "info : ${matchDTO.info}">
+									<th:block th:if="${info.queueId == 1090}">일반</th:block>
+									<th:block th:if="${info.queueId == 1100}">랭크</th:block>
+								</th:block>
+							</span>
+							<div class="divider">|</div>
+							<span class="game-length">
+								<th:block th:each = "participant : ${matchDTO.info.participants}">
+									<th:block th:if = "${participant.riotIdGameName == accountDTO.gameName}">
+										<h5>
+										    [[${#numbers.formatDecimal(participant.time_eliminated / 60, 2, 0)}]]:[[${#numbers.formatDecimal(participant.time_eliminated % 60, 2, 0)}]]
+										</h5>
+									</th:block>
+								</th:block>
+							</span>
+						</div>
+						
+						<div class="SummonerDetail">
+							<figure>
+								<th:block th:each = "participant : ${matchDTO.info.participants}">
+									<th:block th:if = "${participant.riotIdGameName == accountDTO.gameName}">
+										<img class = "tacticianImg" th:data-id = "${participant.companion.item_ID}" alt = "전설이사진" style = "height : 53px; width : 53px;"/>
+										<span class = "level">[[${participant.level}]]</span>
+									</th:block>
+								</th:block>
+							</figure>
+							
+							<div class = "icons">
+								<div class="Traits css-wpuqit e15omj1v0">
+									<div class = "TraitRow css-cfi6fh">
+										<div class = "TraitItem css-1jn6gvb eknup0z0">
+											<th:block th:each = "participant : ${matchDTO.info.participants}">
+												<th:block th:if = "${participant.riotIdGameName == accountDTO.gameName}">
+													<th:block th:each = "trait : ${participant.traits}">
+														<th:block th:if = "${trait.tier_current > 0}">
+															<div class="trait-bg" style="background: url(&quot;//cdn.dak.gg/tft/images2/tft/traits/background/gold.svg?3&quot;) center center / cover no-repeat;">
+																<img class = "tft-trait" th:data-id = "${trait.name}" alt="trait-icon">
+															</div>
+														</th:block>
+													</th:block>
+												</th:block>
+											</th:block>
+										</div>
+									</div>
+								</div>	
+							</div>
+							
+							<div class = "Champions">
+								<div class="Champion css-1yxvbbj e1ofjnsm0">
+									<div class="stars">
+										<img src="//cdn.dak.gg/tft/images2/tft/stars/cost1.svg" alt="">
+										<img src="//cdn.dak.gg/tft/images2/tft/stars/cost1.svg" alt="">
+									</div>
+									<div class="champion-portrait" style="border-color: rgb(132, 137, 153);">
+										<img src="//cdn.lolchess.gg/upload/images/champions/Morgana_1731058248-Morgana.png" alt="champion-portrait">
+									</div>
+									<div class="items">
+										<div class="item">
+											<img src="//ddragon.leagueoflegends.com/cdn/14.23.1/img/tft-item/TFT_Item_Moonstone.png" alt="item">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class = "openBtn">
+							<button class="open-btn open css-1kn89gq" style="background: rgb(32, 120, 197);">
+								<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M11.0638 4.07836L6.40266 8.81868C6.28064 8.92229 6.13422 9 5.9878 9C5.84138 9 5.69495 8.92229 5.59734 8.81868L0.9362 4.07836C0.692161 3.84523 0.692161 3.43077 0.911796 3.19764C1.13143 2.93861 1.49749 2.93861 1.74153 3.17174L6.0122 7.52351L10.2585 3.17174C10.4781 2.93861 10.8686 2.93861 11.0882 3.19764C11.3078 3.43077 11.3078 3.84523 11.0638 4.07836Z" fill="white"></path>
+								</svg>
+							</button>
+						</div>
+					</div>
+				</section>
+			</th:block>
+		</div>
 	</div>
-	<div class="rank-container" th:each="entry : ${leagueEntryDTOs}">
-	    <img th:src="|/static/img/tier/Rank=${entry.tier}.png|" alt="티어 이미지">
-	    <span class="highlight">Silver I</span>
-	    <span>52 LP</span>
-	    <hr>
-	    <span>승리: 0</span>
-	    <span>승률: 0%</span>
-	    <span>Top4: 10</span>
-	    <span>Top4 비율: 62.5%</span>
-	    <span>게임 수: 16</span>
-	    <span>평균 등수: #0.00</span>
-	</div>
-	
 </body>
 </html>

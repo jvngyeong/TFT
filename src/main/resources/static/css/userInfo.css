@@ -1,3 +1,12 @@
+*{
+	font-family: "Noto Sans KR", sans-serif	;
+}
+
+.wholeContent{
+	width: 80%; /* 페이지의 80%만 사용 */
+	margin: 0 auto; /* 가운데 정렬 */
+}
+
 .profile {
     display: flex;
     align-items: center;
@@ -6,8 +15,6 @@
     border-radius: 10px;
     color: white;
     font-family: Arial, sans-serif;
-    width: 80%; /* 페이지의 80%만 사용 */
-    margin: 0 auto; /* 가운데 정렬 */
 }
 
 .avatar {
@@ -75,27 +82,14 @@
     font-size: 12px; /* 텍스트 크기 조정 */
 }
 
-/* 전체 테이블 스타일 */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: Arial, sans-serif;
-}
-
-/* 테이블 헤더 스타일 */
-table th, table td {
-    padding: 10px;
-    text-align: center;
-    vertical-align: middle;
-}
-
 /* 랭크 게임 정보 상자 */
 .rank-container {
+	height : 400px;
+    min-width: 20%;
+	flex: 1;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 20px;
-    width: 300px;
-    margin: 20px auto;
     text-align: center;
     background-color: #f9f9f9;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -118,3 +112,328 @@ table th, table td {
     font-weight: bold;
     color: #333;
 }
+
+.LeagueInfo {
+    display: flex;
+    align-items: flex-start;
+    margin: 20px 0px;
+    gap: 20px;
+}
+
+/*-------------------------------------------------------------------------------------------------*/
+.Match.Statistics {
+    display: block;
+    height: 400px;
+    width: 78%;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.Match.Statistics .top {
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.Match.Statistics .top h2 {
+	display:inline-block;
+}
+
+.statistic-table-container {
+    display: table-cell; /* 가로 배치 */
+    margin-top: 20px;
+}
+
+#center {
+    margin-top: 20px;
+    margin-left: 18px;
+    margin-right: 18px;
+}
+.StatisticTable {
+    box-sizing: border-box; /* 패딩과 테두리를 포함한 크기 */
+    padding: 10px 15px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 290px; /* 최소 크기 설정 */
+}
+
+.StatisticTable span {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 10px;
+    padding-top : 5px;
+}
+
+.StatisticTable .header,
+.StatisticTable .data {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.StatisticTable .header {
+    font-size: 12px;
+    color: #888;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 8px;
+}
+
+.StatisticTable .header .label,
+.StatisticTable .data .label {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.StatisticTable .header .plays,
+.StatisticTable .data .plays,
+.StatisticTable .header .avg-rank,
+.StatisticTable .data .avg-rank {
+    flex: 1;
+    text-align: center;
+}
+
+.StatisticTable .data {
+    font-size: 14px;
+    color: #333;
+}
+
+.StatisticTable .data img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #ddd;
+}
+
+.StatisticTable .data .avg-rank {
+    color: #007bff;
+    font-weight: bold;
+}
+
+/*-----------------------------------------------------------------------------------------*/
+.MatchHistory {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.match-total {
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px 20px 0 20px;
+    gap: 15px;
+    width: 100%;
+}
+
+.match-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.match-namespace {
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.match-namespace h5 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    width: 6%;
+    text-align: left;
+}
+
+.game-type {
+    font-size: 14px;
+    color: #777;
+    width: 4%;
+}
+
+.divider {
+    align-self: baseline;
+}
+
+.game-length {
+    font-size: 16px;
+    color: #444;
+    margin-left: 18px;
+}
+
+.SummonerDetail {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+}
+
+.SummonerDetail figure {
+	position: relative;
+    margin: 0;
+}
+
+.SummonerDetail img {
+    width: 53px;
+    height: 53px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.SummonerDetail .level {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    display: flex;
+    width: 18px;
+    height: 18px;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    border-radius: 18px;
+    border: 2px solid rgb(202, 147, 114);
+    background: rgb(34, 34, 34);
+    color: rgb(202, 147, 114);
+    font-size: 11px;
+    line-height: 100%;
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 20px;
+    margin-right: 50px;
+}
+
+.css-11kehy3 .icons .Traits {
+    width: 128px;
+}
+
+.css-wpuqit {
+    display: flex;
+    flex-direction: column;
+}
+
+.css-cfi6fh {
+    width: 120px;
+    transform: none;
+}
+
+.css-1jn6gvb {
+    width: 30px; /* 아이콘 크기를 증가시켜 간격을 벌림 */
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.TraitRow {
+    display: inline-flex; /* inline-flex로 변경 */
+    flex-wrap: wrap; /* 아이콘이 많을 경우 줄바꿈 */
+    max-width: calc(30px * 5); /* 최대 너비를 5개 아이콘 너비로 설정 */
+    gap: 8px; /* 아이콘 간의 간격 */
+}
+
+.TraitItem {
+    display: flex; /* trait-bg들을 수평으로 정렬 */
+    height: 30px; /* 높이는 유지 */
+}
+
+.trait-bg {
+	background-color: black; /* 배경색을 검정색으로 설정 */
+    width: 30px; /* 각 trait-bg의 너비를 30px로 설정 */
+    height: 30px; /* 높이 유지 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.trait-bg img {
+    width: 20px;
+    height: 20px;
+    filter: invert(100%);
+}
+
+.Champions {
+    display: flex;
+    gap: 15px;
+}
+
+.Champion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 60px;
+}
+
+.stars img {
+    width: 16px;
+    height: 16px;
+}
+
+.champion-portrait {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.champion-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.items {
+    display: flex;
+    gap: 5px;
+}
+
+.items .item img {
+    width: 20px;
+    height: 20px;
+}
+
+.openBtn {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.open-btn {
+    background-color: #2078c5;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.open-btn svg {
+    fill: white;
+    width: 12px;
+    height: 12px;
+}
+
