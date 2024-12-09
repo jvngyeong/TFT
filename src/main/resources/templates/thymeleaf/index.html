@@ -43,25 +43,30 @@
 			}
 		})
 	}
+	
+	function userSearch(){
+		$("#loading-overlay").show();
+		event.preventDefault();
+		var sumName = $("#sumName").val();
+		$.ajax({
+			url : "/search",
+			method : "post",
+			data : {"sumName" : sumName},
+			dataType : "html",
+			async : "false",
+			success : function(result){
+				$("#loading-overlay").hide();
+				$("#wholeContent").html(result);
+			},
+			error : function() {
+				$("#loading-overlay").hide();
+				alert("오류가 발생했습니다.");
+			}
+		})
+	}
 	$(function() {
 		$("#searchForm").submit(function(event){
-			$("#loading-overlay").show();
-			event.preventDefault();
-			var sumName = $("#sumName").val();
-			$.ajax({
-				url : "/search",
-				method : "post",
-				data : {"sumName" : sumName},
-				dataType : "html",
-				async : "false",
-				success : function(result){
-					$("#loading-overlay").hide();
-					$("#wholeContent").html(result);
-				},
-				error : function() {
-					alert("오류가 발생했습니다.");
-				}
-			})
+			userSearch();
 		})
 		
 		$("#shopBtn").click(function() {

@@ -10,8 +10,9 @@ import lombok.Data;
 @Alias("unitDTO")
 public class UnitDTO {
 	List<Integer> items;
-    String characterId;
+    String character_id;
     String chosen;
+    String[] itemNames;
     String name;
     int rarity;
     int tier;

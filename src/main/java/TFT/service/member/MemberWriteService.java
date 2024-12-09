@@ -30,3 +30,9 @@ public class MemberWriteService {
 		memberMapper.memberRegist(dto);
 	}
 }
+
+
+
+
+
+

@@ -12,8 +12,10 @@
 
 	<insert id="memberRegist">
 		insert into members(<include refid="memberColumns"></include>)
-		values(#{memberNum}, #{memberName}, #{memberId}, #{memberPw}, #{memberAddr}, #{memberAddrDetail}, #{memberPost},
-		sysdate, #{gender}, #{memberPhone1}, #{memberPhone2}, #{memberEmail}, #{memberBirth}, 0, null)
+		values(#{memberNum}, #{memberName}, #{memberId}, #{memberPw}, 
+			   #{memberAddr}, #{memberAddrDetail}, #{memberPost},
+			   sysdate, #{gender}, #{memberPhone1}, #{memberPhone2}, 
+			   #{memberEmail}, #{memberBirth}, 0, null)
 	</insert>
 	
 	<select id="memberListSelect" resultType="memberDTO">

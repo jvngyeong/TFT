@@ -39,14 +39,16 @@ public class SearchController {
 	public String search(String sumName, Model model) {
 		AccountDTO accountDTO = accountSearchService.execute(sumName);
 		SummonerDTO summonerDTO = summonerSearchService.execute(accountDTO.getPuuid());
-		List<String> matchList = getMatchService.execute(accountDTO.getPuuid());
-		matchInfoService.execute(matchList, model);
+		//List<String> matchList = getMatchService.execute(accountDTO.getPuuid());
+		getMatchService.execute(accountDTO.getPuuid(), model, accountDTO.getGameName());
 		Set<LeagueEntryDTO> leagueEntryDTOs = summonerInfoService.execute(summonerDTO.getId());
 		model.addAttribute("leagueEntryDTOs", leagueEntryDTOs);
 		sumName = accountDTO.getGameName() + "#" + accountDTO.getTagLine();
 		model.addAttribute("sumName", sumName);
 		model.addAttribute("accountDTO", accountDTO);
 		model.addAttribute("summonerDTO", summonerDTO);
+		//matchInfoService.execute(matchList, model);
+		//matchInfoService.execute2(accountDTO.getPuuid(), model);
 		return "thymeleaf/user/userInfo";
 	}
 }

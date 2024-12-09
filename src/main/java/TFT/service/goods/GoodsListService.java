@@ -18,3 +18,7 @@ public class GoodsListService {
 		model.addAttribute("list", list);
 	}
 }
+
+
+
+

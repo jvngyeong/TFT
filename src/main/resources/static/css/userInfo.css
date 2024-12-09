@@ -66,12 +66,13 @@
 .updateButton {
     background-color: #18c683;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     color: white;
     font-weight: bold;
-    padding: 5px 10px; /* 버튼 크기 축소 */
-    font-size: 12px; /* 버튼 텍스트 크기 축소 */
+    padding: 15px 25px;
+    font-size: 12px;
     cursor: pointer;
+    margin-right: 20px;
 }
 
 .updateButton:hover {
@@ -79,20 +80,20 @@
 }
 
 .updateButton span {
-    font-size: 12px; /* 텍스트 크기 조정 */
+    font-size: 20px;
 }
 
 /* 랭크 게임 정보 상자 */
 .rank-container {
-	height : 400px;
     min-width: 20%;
-	flex: 1;
+    flex: 1;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 20px;
     text-align: center;
     background-color: #f9f9f9;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    height: 469.8px;
 }
 
 .rank-container img {
@@ -123,7 +124,7 @@
 /*-------------------------------------------------------------------------------------------------*/
 .Match.Statistics {
     display: block;
-    height: 400px;
+    height: auto;
     width: 78%;
     padding: 20px;
     border: 1px solid #ddd;
@@ -152,13 +153,13 @@
     margin-right: 18px;
 }
 .StatisticTable {
-    box-sizing: border-box; /* 패딩과 테두리를 포함한 크기 */
+    box-sizing: border-box;
     padding: 10px 15px;
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    min-width: 290px; /* 최소 크기 설정 */
+    min-width: 290px;
 }
 
 .StatisticTable span {
@@ -166,8 +167,7 @@
     font-size: 14px;
     font-weight: bold;
     color: #444;
-    margin-bottom: 10px;
-    padding-top : 5px;
+    padding: 1px;
 }
 
 .StatisticTable .header,
@@ -210,8 +210,11 @@
     height: 20px;
     border-radius: 50%;
     background-color: #ddd;
+    object-fit: cover;
 }
-
+.most-champion-img{
+	object-position: -18px;
+}
 .StatisticTable .data .avg-rank {
     color: #007bff;
     font-weight: bold;
@@ -287,8 +290,8 @@
 }
 
 .SummonerDetail img {
-    width: 53px;
-    height: 53px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -344,10 +347,10 @@
 
 
 .TraitRow {
-    display: inline-flex; /* inline-flex로 변경 */
-    flex-wrap: wrap; /* 아이콘이 많을 경우 줄바꿈 */
-    max-width: calc(30px * 5); /* 최대 너비를 5개 아이콘 너비로 설정 */
-    gap: 8px; /* 아이콘 간의 간격 */
+    display: inline-flex;
+    flex-wrap: wrap;
+    width: calc(38px* 5);
+    gap: 8px;
 }
 
 .TraitItem {
@@ -364,7 +367,10 @@
     justify-content: center;
 }
 
-
+.most-trait-img {
+    filter: invert(100%);
+    background-color: unset !important;
+}
 .trait-bg img {
     width: 20px;
     height: 20px;
@@ -373,14 +379,14 @@
 
 .Champions {
     display: flex;
-    gap: 15px;
+    gap: 7px;
 }
 
 .Champion {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 5px;    
     width: 60px;
 }
 
@@ -388,12 +394,16 @@
     width: 16px;
     height: 16px;
 }
+.stars{
+	padding-bottom: 3px;
+}
 
 .champion-portrait {
     width: 50px;
     height: 50px;
     border-radius: 4px;
     overflow: hidden;
+    box-shadow: 0 0 0 3px;
 }
 
 .champion-portrait img {
@@ -404,12 +414,14 @@
 
 .items {
     display: flex;
-    gap: 5px;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
 }
 
 .items .item img {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
 }
 
 .openBtn {

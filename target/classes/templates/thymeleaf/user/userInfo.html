@@ -6,42 +6,46 @@
     <title>League Information</title>
     <script src="/static/js/colorChange.js"></script>
     <script>
-     $(function(){
-    	 $(".TraitItem").each(function() {
-    	        var $this = $(this);
-    	        var traitBgs = $this.find(".trait-bg"); // 자식 trait-bg 찾기
-    	        
-    	        // trait-bg의 개수에 따라 새로운 TraitRow 생성
-    	        var numBgs = traitBgs.length;
-    	        var rowCount = Math.ceil(numBgs / 5); // 5개마다 새로운 row
+    function setStarColor(color, imgs){
+    	$(imgs).each(function(){
+    		var img = this;
+    		const starsContainer = $(img).closest(".stars");
+            starsContainer.find("img").each(function() {
+                $(this).attr("src", "//cdn.dak.gg/tft/images2/tft/stars/cost" + color + ".svg");
+            });
+        });
+    }
+    $(".TraitItem").each(function () {
+        var $this = $(this);
+        var $parent = $this.parent(); // 부모 요소 참조
+        var traitBgs = $this.find(".trait-bg"); // 자식 trait-bg 찾기
 
-    	        for (var i = 0; i < rowCount; i++) {
-    	            // 새로운 TraitRow 생성
-    	            var $newRow = $("<div class='TraitRow'></div>");
-    	            // 새로운 TraitItem 생성
-    	            for (var j = 0; j < 5; j++) {
-    	                var index = i * 5 + j;
-    	                if (index < numBgs) {
-    	                    var $newTraitItem = $("<div class='TraitItem'></div>");
-    	                    var $newTraitBg = $(traitBgs[index]).clone(); // 기존 trait-bg 복사
-    	                    $newTraitItem.append($newTraitBg);
-    	                    $newRow.append($newTraitItem);
-    	                }
-    	            }
-    	            // 새로운 TraitRow를 기존 요소에 추가
-    	            $this.after($newRow);
-    	        }
+        var numBgs = traitBgs.length;
+        if (numBgs === 0) return; // 자식 요소가 없으면 작업 중지
 
-    	        // 기존 TraitItem을 숨김
-    	        $this.hide();
-    	    });
-    	 
-    	 $(".TraitItem").each(function(){
-   		    var $this = $(this);
-   		    var traitBgs = $this.find(".trait-bg");
-   		    $this.css("width", 30 * traitBgs.length + "px");
-    	 })
-     })
+        var rowCount = Math.ceil(numBgs / 5); // 5개마다 새로운 row 생성
+
+        for (var i = 0; i < rowCount; i++) {
+            var $newRow = $("<div class='TraitRow'></div>");
+
+            for (var j = 0; j < 5; j++) {
+                var index = i * 5 + j;
+                if (index < numBgs) {
+                    var $newTraitBg = $(traitBgs[index]).clone();
+                    var $newTraitItem = $("<div class='TraitItem'></div>").append($newTraitBg);
+                    $newRow.append($newTraitItem);
+                }
+            }
+
+            // 부모 요소의 가장 끝 부분에 삽입
+            $parent.append($newRow);
+        }
+
+        // 기존 TraitItem 숨김
+        $this.hide();
+    });
+
+
      
      fetch("https://ddragon.leagueoflegends.com/cdn/14.23.1/data/en_US/tft-tactician.json")
      .then(response => response.json())
@@ -76,6 +80,215 @@
              }
          });
      });
+     
+     fetch("https://ddragon.leagueoflegends.com/cdn/14.23.1/data/en_US/tft-champion.json")
+     .then(response => response.json())
+     .then(data => {
+         const images = document.querySelectorAll('.tft-champion');
+         
+         var link = "Maps/Shipping/Map22/Sets/TFTSet13/Shop/";
+         images.forEach(img => {
+             const championId = img.getAttribute("data-id"); // 각 이미지에서 ID 가져오기
+             if(championId != "TFT13_Sion"){
+            	 const formattedChampionId = championId.slice(0, 7).toUpperCase() + championId.slice(7);
+                 var link = "Maps/Shipping/Map22/Sets/TFTSet13/Shop/";
+                 link += formattedChampionId;
+                 var champion = data.data[link]; // 대괄호 표기법으로 접근
+                 if (champion) {
+    	             const imageUrl = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/tft-champion/" + champion.image.full; // 이미지 URL 만들기
+                     img.src = imageUrl;
+    	             if(champion.tier == '1'){
+    	            	 color = "rgb(132, 137, 153)";
+    	             }
+    	             if(champion.tier == '2'){
+    	            	 color = "rgb(17, 178, 136)";
+    	             }
+    	             if(champion.tier == '3'){
+    	            	 color = "rgb(32, 122, 199)";
+    	             }
+    	             if(champion.tier == '4'){
+    	            	 color = "rgb(196, 64, 218)";
+    	             }
+    	             if(champion.tier == '5'){
+    	            	 color = "rgb(255, 185, 59)";
+    	             }
+    	             $(img).parent().css("box-shadow", `0 0 0 3px ${color}`);
+                 }
+             }
+             else{
+            	 const imageUrl = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/champion/Sion.png"; // 이미지 URL 만들기
+                 img.src = imageUrl;
+             }
+         });
+     });
+     
+     
+     fetch("https://ddragon.leagueoflegends.com/cdn/14.23.1/data/en_US/tft-champion.json")
+     .then(response => response.json())
+     .then(data => {
+         const stars = document.querySelectorAll('.stars');
+         
+         var link = "Maps/Shipping/Map22/Sets/TFTSet13/Shop/";
+         stars.forEach(img => {
+             const championId = img.getAttribute("data-id"); // 각 이미지에서 ID 가져오기
+             if(championId != "TFT13_Sion"){
+            	 const formattedChampionId = championId.slice(0, 7).toUpperCase() + championId.slice(7);
+                 var link = "Maps/Shipping/Map22/Sets/TFTSet13/Shop/";
+                 link += formattedChampionId;
+                 var champion = data.data[link]; // 대괄호 표기법으로 접근
+                 if (champion) {
+    	             setStarColor(champion.tier, img);
+                 }
+             }
+         });
+     });
+     
+     
+     
+     fetch("https://ddragon.leagueoflegends.com/cdn/14.23.1/data/en_US/tft-item.json")
+     .then(response => response.json())
+     .then(data => {
+         const images = document.querySelectorAll('.tft-item');
+         // 각 이미지를 순회하면서 ID에 맞는 이미지 URL을 설정
+         images.forEach(img => {
+			var itemId = img.getAttribute("data-id"); // 각 이미지에서 ID 가져오기
+			if(itemId.slice(-7) == "Radiant"){
+				itemId = "Set5_RadiantItems/"+itemId;
+			}
+			
+			if(itemId.slice(-10) == "EmblemItem"){
+				itemId = "TFT13_EmblemItems/"+itemId;
+			}
+			
+			if(itemId.substring(0, 11) == "TFT13_Crime"){
+				itemId = "TFT13_Crime_Illegal_Items/"+itemId;
+			}
+		    var item = data.data[itemId]; // 대괄호 표기법으로 접근
+		    if (item) {
+		     const imageUrl = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/tft-item/" + item.image.full; // 이미지 URL 만들기
+		        img.src = imageUrl;
+		    }
+         });
+     });
+     
+     
+     
+     
+     fetch("https://ddragon.leagueoflegends.com/cdn/14.23.1/data/ko_KR/tft-champion.json")
+     .then(response => response.json())
+     .then(data => {
+         const texts = document.querySelectorAll('.most-champion');
+         texts.forEach(txt => {
+             const championId = txt.getAttribute("data-id"); // 각 요소에서 ID 가져오기
+             if(championId !== "TFT13_Sion") {
+            	 const formattedChampionId = championId.slice(0, 7).toUpperCase() + championId.slice(7);
+                 var link = "Maps/Shipping/Map22/Sets/TFTSet13/Shop/" + formattedChampionId;
+                 // 해당 챔피언의 데이터 가져오기
+                 const champion = data.data[link];
+                 // 챔피언이 존재하면 이름을 텍스트로 설정
+                 if (champion) {
+                     txt.textContent = champion.name; // 해당 챔피언 이름으로 텍스트 설정
+                 }
+             }
+         });
+         
+		 const images = document.querySelectorAll('.most-champion-img');
+         var link = "Maps/Shipping/Map22/Sets/TFTSet13/Shop/";
+         images.forEach(img => {
+             const championId = img.getAttribute("data-id"); // 각 이미지에서 ID 가져오기
+             if(championId != "TFT13_Sion"){
+            	 const formattedChampionId = championId.slice(0, 7).toUpperCase() + championId.slice(7);
+                 var link = "Maps/Shipping/Map22/Sets/TFTSet13/Shop/";
+                 link += formattedChampionId;
+                 var champion = data.data[link]; // 대괄호 표기법으로 접근
+                 if (champion) {
+    	             const imageUrl = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/tft-champion/" + champion.image.full; // 이미지 URL 만들기
+                     img.src = imageUrl;
+                 }
+             }
+             else{
+            	 const imageUrl = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/champion/Sion.png"; // 이미지 URL 만들기
+                 img.src = imageUrl;
+             }
+         });
+     });
+
+
+     
+     
+     
+     fetch("https://ddragon.leagueoflegends.com/cdn/14.23.1/data/ko_KR/tft-item.json")
+     .then(response => response.json())
+     .then(data => {
+         // 텍스트 요소들
+         const texts = document.querySelectorAll('.most-item');
+         texts.forEach(txt => {
+             var itemId = txt.getAttribute("data-id"); // 각 텍스트에서 ID 가져오기
+             if (itemId.slice(-7) == "Radiant") {
+                 itemId = "Set5_RadiantItems/" + itemId;
+             }
+
+             if (itemId.slice(-10) == "EmblemItem") {
+                 itemId = "TFT13_EmblemItems/" + itemId;
+             }
+
+             if (itemId.substring(0, 11) == "TFT13_Crime") {
+                 itemId = "TFT13_Crime_Illegal_Items/" + itemId;
+             }
+             var item = data.data[itemId]; // 대괄호 표기법으로 접근
+             if (item) {
+                 txt.textContent = item.name; // 해당 아이템 이름으로 텍스트 설정
+             }
+         });
+
+         // 이미지 요소들
+         const images = document.querySelectorAll('.most-item-img');
+         images.forEach(img => {
+             var itemId = img.getAttribute("data-id"); // 각 이미지에서 ID 가져오기
+             if (itemId.slice(-7) == "Radiant") {
+                 itemId = "Set5_RadiantItems/" + itemId;
+             }
+
+             if (itemId.slice(-10) == "EmblemItem") {
+                 itemId = "TFT13_EmblemItems/" + itemId;
+             }
+
+             if (itemId.substring(0, 11) == "TFT13_Crime") {
+                 itemId = "TFT13_Crime_Illegal_Items/" + itemId;
+             }
+             var item = data.data[itemId]; // 대괄호 표기법으로 접근
+             if (item) {
+                 const imageUrl = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/tft-item/" + item.image.full; // 이미지 URL 만들기
+                 img.src = imageUrl;
+             }
+         });
+     });
+	
+     
+     fetch("https://ddragon.leagueoflegends.com/cdn/14.23.1/data/ko_KR/tft-trait.json")
+     .then(response => response.json())
+     .then(data => {
+         // 텍스트 요소들
+         const texts = document.querySelectorAll('.most-trait');
+         texts.forEach(txt => {
+             var itemId = txt.getAttribute("data-id"); // 각 텍스트에서 ID 가져오기
+             var item = data.data[itemId]; // 대괄호 표기법으로 접근
+             if (item) {
+                 txt.textContent = item.name; // 해당 아이템 이름으로 텍스트 설정
+             }
+         });
+
+         // 이미지 요소들
+         const images = document.querySelectorAll('.most-trait-img');
+         images.forEach(img => {
+             var itemId = img.getAttribute("data-id"); // 각 이미지에서 ID 가져오기
+             var item = data.data[itemId]; // 대괄호 표기법으로 접근
+             if (item) {
+                 const imageUrl = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/tft-trait/" + item.image.full; // 이미지 URL 만들기
+                 img.src = imageUrl;
+             }
+         });
+     });
     </script>
 </head>
 
@@ -88,11 +301,14 @@
 		    </div>
 		    <div class="info">
 		        <div class="name">
-		            <h2>[[${sumName}]]</h2>
+		            <h2>
+		            	[[${sumName}]]
+		            	<input type = "hidden" th:value = "${sumName}" id = "sumName"/> 
+		            </h2>
 		        </div>
 		    </div>
 		    <div class="buttons">
-		        <button class="updateButton">
+		        <button class="updateButton" onclick = "userSearch();">
 		            <span>전적 갱신</span>
 		        </button>
 		    </div>
@@ -103,21 +319,22 @@
 			    <span class="highlight">[[${entry.tier}]] [[${entry.rank}]]</span>
 			    <span>[[${entry.leaguePoints}]] LP</span>
 			    <hr>
-			    <span>승리 [[${(entry.wins + entry.losses)}]]</span>
-				<span>승률 [[${(entry.wins + entry.losses)}]]%</span>
-				<span>Top4 [[${entry.wins}]]</span>
+			    <span>승리 [[${firstPlace}]]</span>
+				<span>승률 [[${firstPlace * 100 / 20.0}]]%</span>
+				<span>Top4 [[${entry.wins}]]회</span>
 				<span>
 				    Top4 비율 
 				    [[${#numbers.formatDecimal((entry.wins * 100.0) / (entry.wins + entry.losses), 1, 1)}]]%
 				</span>
-				<span>평균 등수: #0.00</span>
-				<span>게임 수 [[${entry.wins + entry.losses}]]</span>
+				<span>
+				평균 등수: #[[${#numbers.formatDecimal(placement / 20.0, 1, 2)}]]</span>
+				<span>랭크 게임 수 : [[${entry.wins + entry.losses}]]</span>
 			</div>
 			
 			<div class = "Match Statistics">
 				<div class = "top">
 					<h2>최근 20매치</h2>
-					<h2 style = "color:gray; margin-left:5px;">랭크 통계</h2>
+					<h2 style = "color:gray; margin-left:5px;">통계</h2>
 				</div>
 				<div class = "statistic-table-container">
 					<div class = "StatisticTable">
@@ -127,44 +344,18 @@
 							<div class = "plays">게임 수</div>
 							<div class = "avg-rank">평균 등수</div>
 						</div>
-						<div class = "data">
+						<div class = "data" th:each = "item, iterStat : ${usedChampionList}" th:if="${iterStat.index < 6}">
 							<div class = "label">
-								<img alt = "챔피언이미지" />
-								챔피언이름
+								<img class = "most-champion-img" th:data-id = "${item.key}" alt = "챔피언이미지" />
+								<span class = "most-champion" th:data-id = "${item.key}"></span>
 							</div>
-							<div class = "plays">1</div>
-							<div class = "avg-rank">
-								#0.00
-							</div>
-						</div>
-						<div class = "data">
-							<div class = "label">
-								<img alt = "챔피언이미지" />
-								챔피언이름
-							</div>
-							<div class = "plays">1</div>
-							<div class = "avg-rank">
-								#0.00
-							</div>
-						</div>
-						<div class = "data">
-							<div class = "label">
-								<img alt = "챔피언이미지" />
-								챔피언이름
-							</div>
-							<div class = "plays">1</div>
-							<div class = "avg-rank">
-								#0.00
-							</div>
-						</div>
-						<div class = "data">
-							<div class = "label">
-								<img alt = "챔피언이미지" />
-								챔피언이름
-							</div>
-							<div class = "plays">1</div>
-							<div class = "avg-rank">
-								#0.00
+							<div class = "plays">[[${item.value}]]</div>
+							<div class="avg-rank">
+							    <th:block th:each="placementSum : ${championPlacementSum}">
+							        <th:block th:if="${placementSum.key == item.key}">
+							           #[[${#numbers.formatDecimal(placementSum.value / T(java.lang.Double).parseDouble(item.value), 1, 2)}]]
+							        </th:block>
+							    </th:block>
 							</div>
 						</div>
 					</div>
@@ -178,16 +369,22 @@
 							<div class = "plays">게임 수</div>
 							<div class = "avg-rank">평균 등수</div>
 						</div>
-						<div class = "data">
+						
+						<div class = "data" th:each = "item, iterStat : ${usedTraitList}" th:if="${iterStat.index < 6}">
 							<div class = "label">
-								<img alt = "챔피언이미지" />
-								챔피언이름
+								<img class = "most-trait-img" th:data-id = "${item.key}" alt = "특성이미지" />
+								<span class = "most-trait" th:data-id = "${item.key}"></span>
 							</div>
-							<div class = "plays">1</div>
-							<div class = "avg-rank">
-								#0.00
+							<div class = "plays">[[${item.value}]]</div>
+							<div class="avg-rank">
+							    <th:block th:each="placementSum : ${traitPlacementSum}">
+							        <th:block th:if="${placementSum.key == item.key}">
+							           #[[${#numbers.formatDecimal(placementSum.value / T(java.lang.Double).parseDouble(item.value), 1, 2)}]]
+							        </th:block>
+							    </th:block>
 							</div>
 						</div>
+						
 					</div>
 				</div>
 				<div class = "statistic-table-container">
@@ -198,46 +395,22 @@
 							<div class = "plays">게임 수</div>
 							<div class = "avg-rank">평균 등수</div>
 						</div>
-						<div class = "data">
+						
+						<div class = "data" th:each = "item, iterStat : ${usedItemList}" th:if="${iterStat.index < 6}">
 							<div class = "label">
-								<img alt = "챔피언이미지" />
-								챔피언이름
+								<img class = "most-item-img" th:data-id = "${item.key}" alt = "아이템이미지" />
+								<span class = "most-item" th:data-id = "${item.key}"></span>
 							</div>
-							<div class = "plays">1</div>
-							<div class = "avg-rank">
-								#0.00
+							<div class = "plays">[[${item.value}]]</div>
+							<div class="avg-rank">
+							    <th:block th:each="placementSum : ${itemPlacementSum}">
+							        <th:block th:if="${placementSum.key == item.key}">
+							           #[[${#numbers.formatDecimal(placementSum.value / T(java.lang.Double).parseDouble(item.value), 1, 2)}]]
+							        </th:block>
+							    </th:block>
 							</div>
 						</div>
-						<div class = "data">
-							<div class = "label">
-								<img alt = "챔피언이미지" />
-								챔피언이름
-							</div>
-							<div class = "plays">1</div>
-							<div class = "avg-rank">
-								#0.00
-							</div>
-						</div>
-						<div class = "data">
-							<div class = "label">
-								<img alt = "챔피언이미지" />
-								챔피언이름
-							</div>
-							<div class = "plays">1</div>
-							<div class = "avg-rank">
-								#0.00
-							</div>
-						</div>
-						<div class = "data">
-							<div class = "label">
-								<img alt = "챔피언이미지" />
-								챔피언이름
-							</div>
-							<div class = "plays">1</div>
-							<div class = "avg-rank">
-								#0.00
-							</div>
-						</div>	
+						
 					</div>
 				</div>
 			</div>
@@ -288,9 +461,32 @@
 												<th:block th:if = "${participant.riotIdGameName == accountDTO.gameName}">
 													<th:block th:each = "trait : ${participant.traits}">
 														<th:block th:if = "${trait.tier_current > 0}">
-															<div class="trait-bg" style="background: url(&quot;//cdn.dak.gg/tft/images2/tft/traits/background/gold.svg?3&quot;) center center / cover no-repeat;">
-																<img class = "tft-trait" th:data-id = "${trait.name}" alt="trait-icon">
-															</div>
+															<th:block th:if = "${trait.tier_current == 1}">
+																<th:block th:if = "${trait.style == 3}">
+																	<div class="trait-bg" style="background: url(&quot;//cdn.dak.gg/tft/images2/tft/traits/background/unique.svg?3&quot;) center center / cover no-repeat;">
+																		<img class = "tft-trait" th:data-id = "${trait.name}" alt="trait-icon">
+																	</div>
+																</th:block>
+																
+																<th:block th:if = "${trait.style != 3}">
+																	<div class="trait-bg" style="background: url(&quot;//cdn.dak.gg/tft/images2/tft/traits/background/bronze.svg?3&quot;) center center / cover no-repeat;">
+																		<img class = "tft-trait" th:data-id = "${trait.name}" alt="trait-icon">
+																	</div>
+																</th:block>
+															</th:block>
+															
+															<th:block th:if = "${trait.tier_current == 2}">
+																<div class="trait-bg" style="background: url(&quot;//cdn.dak.gg/tft/images2/tft/traits/background/silver.svg?3&quot;) center center / cover no-repeat;">
+																	<img class = "tft-trait" th:data-id = "${trait.name}" alt="trait-icon">
+																</div>
+															</th:block>
+															
+															<th:block th:if = "${trait.tier_current > 2}">
+																<div class="trait-bg" style="background: url(&quot;//cdn.dak.gg/tft/images2/tft/traits/background/gold.svg?3&quot;) center center / cover no-repeat;">
+																	<img class = "tft-trait" th:data-id = "${trait.name}" alt="trait-icon">
+																</div>
+															</th:block>
+															
 														</th:block>
 													</th:block>
 												</th:block>
@@ -301,20 +497,31 @@
 							</div>
 							
 							<div class = "Champions">
-								<div class="Champion css-1yxvbbj e1ofjnsm0">
-									<div class="stars">
-										<img src="//cdn.dak.gg/tft/images2/tft/stars/cost1.svg" alt="">
-										<img src="//cdn.dak.gg/tft/images2/tft/stars/cost1.svg" alt="">
-									</div>
-									<div class="champion-portrait" style="border-color: rgb(132, 137, 153);">
-										<img src="//cdn.lolchess.gg/upload/images/champions/Morgana_1731058248-Morgana.png" alt="champion-portrait">
-									</div>
-									<div class="items">
-										<div class="item">
-											<img src="//ddragon.leagueoflegends.com/cdn/14.23.1/img/tft-item/TFT_Item_Moonstone.png" alt="item">
-										</div>
-									</div>
-								</div>
+								<th:block th:each = "participant : ${matchDTO.info.participants}">
+									<th:block th:if = "${participant.riotIdGameName == accountDTO.gameName}">
+										<th:block th:each = "unit : ${participant.units}">
+											<th:block th:if = "${unit.character_id != 'TFT13_JayceSummon'}">
+											<div class="Champion css-1yxvbbj e1ofjnsm0">
+												<div class="stars" th:data-id = "${unit.character_id}" th:style="'visibility:' + (${unit.character_id} == 'TFT13_Sion' ? 'hidden' : 'visible')">
+													<th:block th:each="num : ${#numbers.sequence(1,unit.tier)}">
+														<img alt="">
+													</th:block>
+												</div>
+												<div class="champion-portrait" style="border-color: rgb(132, 137, 153);">
+													<img th:data-id = "${unit.character_id}" style = "border-radius :0;" class = "tft-champion" src = "">
+												</div>
+												<div class="items">
+													<th:block th:each = "itemName : ${unit.itemNames}">
+														<div class="itemContainer">
+															<img alt="item" class = "tft-item" th:data-id = "${itemName}">
+														</div>
+													</th:block>
+												</div>
+											</div>
+											</th:block>
+										</th:block>
+									</th:block>
+								</th:block>
 							</div>
 						</div>
 						

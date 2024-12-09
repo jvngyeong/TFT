@@ -8,8 +8,12 @@
 		GOODS_NUM, GOODS_NAME, GOODS_PRICE, GOODS_CONTENTS, VISIT_COUNT, 
 		GOODS_MAIN_IMAGE, GOODS_MAIN_STORE_IMAGE, GOODS_DETAIL_IMAGE, GOODS_DETAIL_STORE_IMAGE,
 		EMP_NUM, GOODS_REGIST, UPDATE_EMP_NUM, GOODS_UPDATE_DATE
-		
 	</sql>
+	
+	<select id="goodsSelectList" resultType="goodsDTO">
+		select <include refid="goodsColumns"></include>
+		from goods
+	</select>
 	
 	<insert id="goodsInsert" parameterType="goodsDTO">
 		insert into goods(<include refid="goodsColumns"></include>)
@@ -18,10 +22,7 @@
 		sysdate, #{empNum}, sysdate)
 	</insert>
 	
-	<select id="goodsSelectList" resultType="goodsDTO">
-		select <include refid="goodsColumns"></include>
-		from goods
-	</select>
+
 	
 	<select id="goodsSelectOne">
 		select <include refid="goodsColumns"></include>

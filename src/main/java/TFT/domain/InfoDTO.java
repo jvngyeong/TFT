@@ -16,5 +16,5 @@ public class InfoDTO {
 	 String gameVersion;
 	 List<ParticipantDTO> participants;
 	 int queueId;
-	 int tftSetNumber;
+	 int tft_set_number;
 }
